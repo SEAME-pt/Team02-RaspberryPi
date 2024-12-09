@@ -15,7 +15,7 @@ jobs:
     steps:
       # Checkout the code
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # Install clang-format
       - name: Install clang-format

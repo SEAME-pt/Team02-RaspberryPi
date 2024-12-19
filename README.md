@@ -1,4 +1,21 @@
-# Instrument Cluster
+
+<br />
+<div align="center">
+  <a href="">
+    <img src="images/logo.png" alt="Logo" width="" height="100">
+  </a>
+  <h1 align="center">Instrument Cluster</h1>
+  <p align="center">
+    A real-time vehicle speed and data display.
+    <br />
+    <br />
+    <a href="https://github.com/othneildrew/Best-README-Template">View Demo</a>
+    ·
+    <a href="https://github.com/othneildrew/Best-README-Template/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
+    ·
+    <a href="https://github.com/othneildrew/Best-README-Template/issues/new?labels=enhancement&template=feature-request---.md">Request Feature</a>
+  </p>
+</div>
 
 ## Table of Contents
 1. [About The Project](#about-the-project)

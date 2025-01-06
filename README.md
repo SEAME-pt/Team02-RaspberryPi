@@ -101,6 +101,7 @@ A demonstration of the running application can be seen in the GIF below:
   <a href="https://github.com/ziliolu">Luiza Zilio</a>
     .
   <a href="https://github.com/luis-ffe">Luis Filipe Carvalho</a>
+    .  
   <a href="https://github.com/mjorgecruz">Jorge Cruz</a>
 
 ## Contributing

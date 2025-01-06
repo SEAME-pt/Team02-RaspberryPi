@@ -96,13 +96,10 @@ A demonstration of the running application can be seen in the GIF below:
 ## The team
 > We worked together to develop and enhance this project, sharing knowledge and experiences throughout the process.
 
-  <a href="https://github.com/Rui-Pedro-Pires">Rui Pires</a>
-    ·
-  <a href="https://github.com/ziliolu">Luiza Zilio</a>
-    .
-  <a href="https://github.com/luis-ffe">Luis Filipe Carvalho</a>
-    .  
-  <a href="https://github.com/mjorgecruz">Jorge Cruz</a>
+  - <a href="https://github.com/Rui-Pedro-Pires">Rui Pires</a>
+  - <a href="https://github.com/ziliolu">Luiza Zilio</a>
+  - <a href="https://github.com/luis-ffe">Luis Filipe Carvalho</a>
+  - <a href="https://github.com/mjorgecruz">Jorge Cruz</a>
 
 ## Contributing
 

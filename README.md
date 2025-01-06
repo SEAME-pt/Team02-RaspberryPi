@@ -1,15 +1,12 @@
 
 <br />
 <div align="center">
-  <a href="">
-    <img src="images/logo.png" alt="Logo" width="" height="100">
-  </a>
   <h1 align="center">Instrument Cluster</h1>
   <p align="center">
     A real-time vehicle speed and data display.
     <br />
+    [GIF]
     <br />
-    <a href="https://github.com/othneildrew/Best-README-Template">View Demo</a>
     ·
     <a href="https://github.com/othneildrew/Best-README-Template/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
     ·
@@ -80,6 +77,8 @@ This section lists the major frameworks, libraries, and tools used in this proje
 ### Usage
 Once the application is up and running, the instrument cluster will display `real-time speed data` and the `vehicle's battery status` on an LCD screen. The data is continuously updated as it is received **via the CAN bus**.
 
+[**step by step usage will be attached**]
+
 A demonstration of the running application can be seen in the GIF below:
 
 [DEMONSTRATION GIF WILL BE ATTACHED]
@@ -94,30 +93,50 @@ A demonstration of the running application can be seen in the GIF below:
 
 ---
 
+## The team
+> We worked together to develop and enhance this project, sharing knowledge and experiences throughout the process.
+
+<div align="center">
+  <div style="display: inline-block; text-align: center; margin: 10px;">
+    <img src="https://github.com/Rui-Pedro-Pires.png" alt="Rui Pires" style="border-radius: 50%; width: 120px; height: 120px;">
+    <br>
+    <a href="https://github.com/Rui-Pedro-Pires"><b>Rui Pires</b></a>
+  </div>
+  <div style="display: inline-block; text-align: center; margin: 10px;">
+    <img src="https://github.com/ziliolu.png" alt="Luiza Zilio" style="border-radius: 50%; width: 120px; height: 120px;">
+    <br>
+    <a href="https://github.com/ziliolu"><b>Luiza Zilio</b></a>
+  </div>
+  <div style="display: inline-block; text-align: center; margin: 10px;">
+    <img src="https://github.com/mjorgecruz.png" alt="Jorge Cruz" style="border-radius: 50%; width: 120px; height: 120px;">
+    <br>
+    <a href="https://github.com/mjorgecruz"><b>Jorge Cruz</b></a>
+  </div>
+  <div style="display: inline-block; text-align: center; margin: 10px;">
+    <img src="https://github.com/luis-ffe.png" alt="Luis Filipe Carvalho" style="border-radius: 50%; width: 120px; height: 120px;">
+    <br>
+    <a href="https://github.com/luis-ffe"><b>Luis Filipe Carvalho</b></a>
+  </div>
+</div>
+
+
 ## Contributing
 
-If you’d like to contribute to this project, please fork the repository, create a feature branch, and submit a pull request with your changes. Contributions are welcome to improve the system, add new features, or fix bugs.
+Contributions are what make the open source community such an amazing place to learn, inspire, and create. **Any contributions you make are greatly appreciated.**
 
-- Fork the repository
-- Create a new branch for your feature (`git checkout -b feature-name`)
-- Commit your changes (`git commit -am 'Add feature'`)
-- Push to the branch (`git push origin feature-name`)
-- Open a pull request
+If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement". Don't forget to give the project a star! Thanks again!
+
+1. Fork the repository
+2. Create a new branch for your feature (`git checkout -b feature-name`)
+3. Commit your changes (`git commit -am 'Add feature'`)
+4. Push to the branch (`git push origin feature-name`)
+5. Open a pull request
 
 ---
 
 ## License
 
 Distributed under the MIT License. See `LICENSE` for more information.
-
----
-
-## Contact
-
-For questions or suggestions, feel free to reach out:
-
-- **Project lead:** [Your Name](https://your-website.com)
-- **Email:** your-email@example.com
 
 ---
 

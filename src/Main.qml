@@ -1,15 +1,17 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
+import com.example.canbus 1.0
 
 ApplicationWindow {
     visible: true
-    width: 1000
-    height: 400
+    width: Screen.width
+    height: Screen.height
     title: "Instrument Cluster with Smooth Transitions"
 
-    // Initial values declared here
-    property int speedValue: 0
-    property int batteryValue: 284
+    CANBusHandler {
+        id: canBusHandler
+        onSpeedChanged: speedGauge.requestPaint()
+    }
 
     Rectangle {
         anchors.fill: parent
@@ -97,8 +99,6 @@ ApplicationWindow {
             }
         }
 
-
-
         // Left Speedometer Gauge
         Canvas {
             id: speedGauge
@@ -125,7 +125,7 @@ ApplicationWindow {
 
                 // Draw Speed Arc based on speed value
                 var arcStartAngle = 0.75 * Math.PI; // Start at 270 degrees (left)
-                var arcEndAngle = arcStartAngle + (Math.PI * speedValue / 180); // Map speedValue to an arc from 0 to 180 degrees
+                var arcEndAngle = arcStartAngle + (Math.PI * canBusHandler.speed / 180); // Map speedValue to an arc from 0 to 180 degrees
                 var arcGradient = ctx.createLinearGradient(0, 0, width, height);
                 arcGradient.addColorStop(0, "#00ff00");
                 arcGradient.addColorStop(1, "#004000");
@@ -139,7 +139,7 @@ ApplicationWindow {
                 ctx.font = "36px Arial";
                 ctx.fillStyle = "white";
                 ctx.textAlign = "center";
-                ctx.fillText(speedValue + " km/h", width / 2, height / 2);
+                ctx.fillText(canBusHandler.speed + " km/h", width / 2, height / 2);
 
                 // Label
                 ctx.font = "18px Arial";
@@ -153,7 +153,7 @@ ApplicationWindow {
                 target: speedGauge
                 property: "angle"
                 from: speedGauge.angle
-                to: 0.75 * Math.PI + (Math.PI * speedValue / 180)
+                to: 0.75 * Math.PI + (Math.PI * canBusHandler.speed / 180)
                 duration: 1000 // 1 second transition for smoother effect
                 easing.type: Easing.InOutQuad // Smoother easing
                 running: true
@@ -224,32 +224,6 @@ ApplicationWindow {
                 onRunningChanged: {
                     batteryGauge.requestPaint(); // Trigger repaint when animation is running
                 }
-            }
-        }
-
-        // Dynamic Speed Timer
-        Timer {
-            id: speedTimer
-            interval: 500 // 500 milliseconds for more frequent updates
-            repeat: true
-            running: true
-            onTriggered: {
-                speedValue = Math.floor(Math.random() * 180); // Simulate random speed between 0 and 180 km/h
-                speedAnimation.stop(); // Stop any ongoing animation
-                speedAnimation.start(); // Start a new animation
-            }
-        }
-
-        // Dynamic Battery Timer
-        Timer {
-            id: batteryTimer
-            interval: 1000 // 1 second for more frequent updates
-            repeat: true
-            running: true
-            onTriggered: {
-                batteryValue = Math.floor(Math.random() * 500); // Simulate random battery value between 0 and 500 km
-                batteryAnimation.stop(); // Stop any ongoing animation
-                batteryAnimation.start(); // Start a new animation
             }
         }
     }

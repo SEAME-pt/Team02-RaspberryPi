@@ -93,8 +93,8 @@ A demonstration of the running application can be seen in the GIF below:
 
 ---
 
-## The team
-> We worked together to develop and enhance this project, sharing knowledge and experiences throughout the process.
+## The Team 🤝
+> Together, we've collaborated to bring this project to life, combining our knowledge, skills, and experience every step of the way. It has been a great journey of learning and growing as a team.
 
   - <a href="https://github.com/Rui-Pedro-Pires">Rui Pires</a>
   - <a href="https://github.com/ziliolu">Luiza Zilio</a>

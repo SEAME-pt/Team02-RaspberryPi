@@ -121,6 +121,7 @@ A demonstration of the running application can be seen in the GIF below:
 
 
 
+
 ## Contributing
 
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. **Any contributions you make are greatly appreciated.**

@@ -16,8 +16,6 @@ jobs:
       # Checkout the code
       - name: Checkout Code
         uses: actions/checkout@v4
-        with:
-          submodules: true
 
       # Install clang-format
       - name: Install clang-format

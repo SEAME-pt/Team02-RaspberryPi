@@ -12,7 +12,8 @@
 CANBusHandler::CANBusHandler(QObject *parent)
     : QObject(parent),
       canSocket(-1),
-      m_speed(0)
+      m_speed(0),
+      m_battery(0)
 {
     struct ifreq ifr;
     struct sockaddr_can addr;
@@ -46,7 +47,6 @@ CANBusHandler::~CANBusHandler()
 {
     if (canSocket >= 0) {
         close(canSocket);  // Close the CAN socket
-        canSocket = -1;
     }
 }
 
@@ -60,6 +60,19 @@ void CANBusHandler::setSpeed(int speed)
     if (m_speed != speed) {
         m_speed = speed;
         emit speedChanged(m_speed);
+    }
+}
+
+int CANBusHandler::getBattery() const
+{
+    return m_battery;
+}
+
+void CANBusHandler::setBattery(int battery)
+{
+    if (m_battery != battery) {
+        m_battery = battery;
+        emit batteryChanged(m_battery);
     }
 }
 
@@ -78,10 +91,16 @@ void CANBusHandler::readFrames()
         memcpy(&speed, frame.data, sizeof(int));
 
         speed = ntohl(speed);
-        
+
         // qDebug() << "Speed:" << speed; // Print the speed value
         setSpeed(speed);
-    } else {
-        qDebug() << "Received CAN frame with ID:" << frame.can_id;
+    } else if (frame.can_id == 0x02) {
+        int battery;
+        memcpy(&battery, frame.data, sizeof(int));
+
+        battery = ntohl(battery);
+
+        // qDebug() << "Battery:" << battery; // Print the speed value
+        setBattery(battery);
     }
 }

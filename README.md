@@ -96,28 +96,12 @@ A demonstration of the running application can be seen in the GIF below:
 ## The team
 > We worked together to develop and enhance this project, sharing knowledge and experiences throughout the process.
 
-<div align="center">
-  <div style="display: inline-block; text-align: center; margin: 10px; overflow: hidden; width: 120px; height: 120px; border-radius: 50%;">
-    <img src="https://github.com/Rui-Pedro-Pires.png?size=120" alt="Rui Pires" style="width: 100%; height: 100%; object-fit: cover;">
-    <br>
-    <a href="https://github.com/Rui-Pedro-Pires"><b>Rui Pires</b></a>
-  </div>
-  <div style="display: inline-block; text-align: center; margin: 10px; overflow: hidden; width: 120px; height: 120px; border-radius: 50%;">
-    <img src="https://github.com/ziliolu.png?size=120" alt="Luiza Zilio" style="width: 100%; height: 100%; object-fit: cover;">
-    <br>
-    <a href="https://github.com/ziliolu"><b>Luiza Zilio</b></a>
-  </div>
-  <div style="display: inline-block; text-align: center; margin: 10px; overflow: hidden; width: 120px; height: 120px; border-radius: 50%;">
-    <img src="https://github.com/mjorgecruz.png?size=120" alt="Jorge Cruz" style="width: 100%; height: 100%; object-fit: cover;">
-    <br>
-    <a href="https://github.com/mjorgecruz"><b>Jorge Cruz</b></a>
-  </div>
-  <div style="display: inline-block; text-align: center; margin: 10px; overflow: hidden; width: 120px; height: 120px; border-radius: 50%;">
-    <img src="https://github.com/luis-ffe.png?size=120" alt="Luis Filipe Carvalho" style="width: 100%; height: 100%; object-fit: cover;">
-    <br>
-    <a href="https://github.com/luis-ffe"><b>Luis Filipe Carvalho</b></a>
-  </div>
-</div>
+ <a href="https://github.com/Rui-Pedro-Pires">Rui Pires</a>
+    ·
+  <a href="https://github.com/ziliolu">Luiza Zilio</a>
+    .
+  <a href="https://github.com/luis-ffe">Luis Filipe Carvalho</a>
+  <a href="https://github.com/mjorgecruz">Jorge Cruz</a>
 
 ## Contributing
 

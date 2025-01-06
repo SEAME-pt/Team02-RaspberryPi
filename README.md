@@ -98,26 +98,27 @@ A demonstration of the running application can be seen in the GIF below:
 
 <div align="center">
   <div style="display: inline-block; text-align: center; margin: 10px;">
-    <img src="https://github.com/Rui-Pedro-Pires.png" alt="Rui Pires" style="border-radius: 50%; width: 120px; height: 120px;">
+    <img src="https://github.com/Rui-Pedro-Pires.png?size=120" alt="Rui Pires" style="border-radius: 50%; width: 120px; height: 120px; object-fit: cover; overflow: hidden;">
     <br>
     <a href="https://github.com/Rui-Pedro-Pires"><b>Rui Pires</b></a>
   </div>
   <div style="display: inline-block; text-align: center; margin: 10px;">
-    <img src="https://github.com/ziliolu.png" alt="Luiza Zilio" style="border-radius: 50%; width: 120px; height: 120px;">
+    <img src="https://github.com/ziliolu.png?size=120" alt="Luiza Zilio" style="border-radius: 50%; width: 120px; height: 120px; object-fit: cover; overflow: hidden;">
     <br>
     <a href="https://github.com/ziliolu"><b>Luiza Zilio</b></a>
   </div>
   <div style="display: inline-block; text-align: center; margin: 10px;">
-    <img src="https://github.com/mjorgecruz.png" alt="Jorge Cruz" style="border-radius: 50%; width: 120px; height: 120px;">
+    <img src="https://github.com/mjorgecruz.png?size=120" alt="Jorge Cruz" style="border-radius: 50%; width: 120px; height: 120px; object-fit: cover; overflow: hidden;">
     <br>
     <a href="https://github.com/mjorgecruz"><b>Jorge Cruz</b></a>
   </div>
   <div style="display: inline-block; text-align: center; margin: 10px;">
-    <img src="https://github.com/luis-ffe.png" alt="Luis Filipe Carvalho" style="border-radius: 50%; width: 120px; height: 120px;">
+    <img src="https://github.com/luis-ffe.png?size=120" alt="Luis Filipe Carvalho" style="border-radius: 50%; width: 120px; height: 120px; object-fit: cover; overflow: hidden;">
     <br>
     <a href="https://github.com/luis-ffe"><b>Luis Filipe Carvalho</b></a>
   </div>
 </div>
+
 
 
 ## Contributing

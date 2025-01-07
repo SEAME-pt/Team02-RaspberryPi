@@ -7,10 +7,11 @@ class CANBusHandler : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(int speed READ getSpeed WRITE setSpeed NOTIFY speedChanged)
-    Q_PROPERTY(int battery READ getBattery WRITE setBattery NOTIFY batteryChanged)
+    Q_PROPERTY(
+        int battery READ getBattery WRITE setBattery NOTIFY batteryChanged)
 
-public:
-    explicit CANBusHandler(QObject *parent = nullptr);
+  public:
+    explicit CANBusHandler(QObject* parent = nullptr);
     ~CANBusHandler();
 
     int getSpeed() const;
@@ -18,14 +19,14 @@ public:
     int getBattery() const;
     void setBattery(int battery);
 
-signals:
+  signals:
     void speedChanged(int speed);
     void batteryChanged(int battery);
 
-private slots:
+  private slots:
     void readFrames();
 
-private:
+  private:
     int canSocket;
     int m_speed;
     int m_battery;

@@ -8,9 +8,9 @@
     [GIF]
     <br />
     ·
-    <a href="https://github.com/SEAME-pt/Team02-Cluster/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
+    <a href="https://github.com/SEAME-pt/Team02-Cluster/issues/new?labels=bug&template=bug-report.yml">Report Bug</a>
     ·
-    <a href="https://github.com/SEAME-pt/Team02-Cluster/issues/new?labels=enhancement&template=feature-request---.md">Request Feature</a>
+    <a href="https://github.com/SEAME-pt/Team02-Cluster/issues/new?labels=enhancement&template=feature-request.yml">Request Feature</a>
   </p>
 </div>
 

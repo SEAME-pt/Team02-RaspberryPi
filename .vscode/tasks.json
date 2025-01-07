@@ -1,26 +1,29 @@
 {
-    // See https://go.microsoft.com/fwlink/?LinkId=733558
-    // for the documentation about the tasks.json format
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "build",
+            "label": "Build with Docker",
             "type": "shell",
-            "command": "msbuild",
-            "args": [
-                // Ask msbuild to generate full paths for file names.
-                "/property:GenerateFullPaths=true",
-                "/t:build",
-                // Do not generate summary otherwise it leads to duplicate errors in Problems panel
-                "/consoleloggerparameters:NoSummary"
-            ],
-            "group": "build",
-            "presentation": {
-                // Reveal the output only if unrecognized errors occur.
-                "reveal": "silent"
-            },
-            // Use the standard MS compiler pattern to detect errors, warnings and infos
-            "problemMatcher": "$msCompile"
-        }
+            "command": "./helperTasks.sh build_docker_image",
+            "group": "build"
+        },
+        {
+            "label": "Copy binary from tmp container",
+            "type": "shell",
+            "command": "./helperTasks.sh create_binary_and_copy",
+            "group": "build"
+        },
+        {
+            "label": "Send binary to Rasp",
+            "type": "shell",
+            "command": "./helperTasks.sh send_binary_to_rasp",
+            "group": "build"
+        },
+        {
+            "label": "Run gdbserver on Rasp",
+            "type": "shell",
+            "command": "./helperTasks.sh run_gdb_server_on_rasp",
+            "group": "build"
+        }    
     ]
 }

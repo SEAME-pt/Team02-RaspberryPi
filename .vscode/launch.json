@@ -1,0 +1,26 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Remote Debug on Raspberry Pi",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "/Users/ruipedropires/SEA:ME/QTonRaspberryPi/HelloQt6", // Be sure that this is the path where binary is exist on host
+            "stopAtEntry": false,
+            "cwd": "/Users/ruipedropires/SEA:ME/QTonRaspberryPi", // should be host path not target
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "miDebuggerPath": "/usr/bin/gdb-multiarch", // gdb-multiacrh should be used not gdb
+            "miDebuggerServerAddress": "192.168.178.21:2000", // Replace with your Raspberry Pi's IP and the gdbserver port
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ],
+            "preLaunchTask": "", // Optional: Specify a task to run before debugging starts
+            "postDebugTask": "" // Optional: Specify a task to run after debugging ends
+        }
+    ]
+}

@@ -9,17 +9,15 @@
 #include <arpa/inet.h>
 #include "../include/CANBusHandler.hpp"
 
-CANBusHandler::CANBusHandler(QObject *parent)
-    : QObject(parent),
-      canSocket(-1),
-      m_speed(0),
-      m_battery(0)
+CANBusHandler::CANBusHandler(QObject* parent)
+    : QObject(parent), canSocket(-1), m_speed(0), m_battery(0)
 {
     struct ifreq ifr;
     struct sockaddr_can addr;
 
     canSocket = socket(PF_CAN, SOCK_RAW, CAN_RAW);
-    if (canSocket < 0) {
+    if (canSocket < 0)
+    {
         qWarning() << "Cannot create CAN socket!";
         return;
     }
@@ -27,9 +25,10 @@ CANBusHandler::CANBusHandler(QObject *parent)
     strcpy(ifr.ifr_name, "can0");
     ioctl(canSocket, SIOCGIFINDEX, &ifr);
 
-    addr.can_family = AF_CAN;
+    addr.can_family  = AF_CAN;
     addr.can_ifindex = ifr.ifr_ifindex;
-    if (bind(canSocket, (struct sockaddr *)&addr, sizeof(addr)) < 0) {
+    if (bind(canSocket, (struct sockaddr*)&addr, sizeof(addr)) < 0)
+    {
         qWarning() << "Cannot bind CAN socket!";
         close(canSocket);
         return;
@@ -38,15 +37,16 @@ CANBusHandler::CANBusHandler(QObject *parent)
     qDebug() << "CAN socket bound to can0 interface successfully.";
 
     // Set up a timer to periodically read frames
-    QTimer *timer = new QTimer(this);
+    QTimer* timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, [this]() { readFrames(); });
     timer->start(10); // Adjust the interval as needed
 }
 
 CANBusHandler::~CANBusHandler()
 {
-    if (canSocket >= 0) {
-        close(canSocket);  // Close the CAN socket
+    if (canSocket >= 0)
+    {
+        close(canSocket); // Close the CAN socket
     }
 }
 
@@ -57,7 +57,8 @@ int CANBusHandler::getSpeed() const
 
 void CANBusHandler::setSpeed(int speed)
 {
-    if (m_speed != speed) {
+    if (m_speed != speed)
+    {
         m_speed = speed;
         emit speedChanged(m_speed);
     }
@@ -70,7 +71,8 @@ int CANBusHandler::getBattery() const
 
 void CANBusHandler::setBattery(int battery)
 {
-    if (m_battery != battery) {
+    if (m_battery != battery)
+    {
         m_battery = battery;
         emit batteryChanged(m_battery);
     }
@@ -81,12 +83,14 @@ void CANBusHandler::readFrames()
     struct can_frame frame;
     int nbytes = read(canSocket, &frame, sizeof(struct can_frame));
 
-    if (nbytes < 0) {
+    if (nbytes < 0)
+    {
         qWarning() << "Error reading CAN frame!";
         return;
     }
 
-    if (frame.can_id == 0x01) {
+    if (frame.can_id == 0x01)
+    {
         int speed;
         memcpy(&speed, frame.data, sizeof(int));
 
@@ -94,7 +98,9 @@ void CANBusHandler::readFrames()
 
         // qDebug() << "Speed:" << speed; // Print the speed value
         setSpeed(speed);
-    } else if (frame.can_id == 0x02) {
+    }
+    else if (frame.can_id == 0x02)
+    {
         int battery;
         memcpy(&battery, frame.data, sizeof(int));
 

@@ -6,13 +6,7 @@ ApplicationWindow {
     visible: true
     width: Screen.width
     height: Screen.height
-    title: "Instrument Cluster with Smooth Transitions"
-
-    CANBusHandler {
-        id: canBusHandler
-        onSpeedChanged: speedGauge.requestPaint()
-        onBatteryChanged: batteryGauge.requestPaint()
-    }
+    flags: Qt.FramelessWindowHint
 
     Rectangle {
         anchors.fill: parent
@@ -60,56 +54,22 @@ ApplicationWindow {
             }
         }
 
-        // Left Speedometer Gauge
-        Canvas {
-            id: speedGauge
-            width: 300
-            height: 300
+        Text {
+            text: canBusHandler.speed
+            font.pixelSize: 50
+            color: "white"
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: parent.left
-            anchors.leftMargin: 20
-
-            onPaint: {
-                var ctx = getContext("2d");
-                ctx.clearRect(0, 0, width, height);
-
-                // Speed Value
-                ctx.font = "36px sans-serif";
-                ctx.fillStyle = "white";
-                ctx.textAlign = "center";
-                ctx.fillText(canBusHandler.speed, width / 2, height / 2);
-
-                // Label
-                ctx.font = "18px sans-serif";
-                ctx.fillStyle = "lightgray";
-                ctx.fillText("Speed", width / 2, height / 2 + 40);
-            }
+            anchors.leftMargin: 300
         }
 
-        // Right Battery Status Gauge
-        Canvas {
-            id: batteryGauge
-            width: 300
-            height: 300
+        Text {
+            text: canBusHandler.battery
+            font.pixelSize: 50
+            color: "white"
             anchors.verticalCenter: parent.verticalCenter
             anchors.right: parent.right
-            anchors.rightMargin: 20
-
-            onPaint: {
-                var ctx = getContext("2d");
-                ctx.clearRect(0, 0, width, height);
-
-                // Battery Value
-                ctx.font = "36px sans-serif";
-                ctx.fillStyle = "white";
-                ctx.textAlign = "center";
-                ctx.fillText(canBusHandler.battery + " %", width / 2, height / 2);
-
-                // Label
-                ctx.font = "18px sans-serif";
-                ctx.fillStyle = "lightgray";
-                ctx.fillText("Battery", width / 2, height / 2 + 40);
-            }
+            anchors.rightMargin: 300
         }
     }
 }

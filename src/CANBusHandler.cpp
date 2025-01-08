@@ -1,12 +1,3 @@
-#include <QtCore/QDebug>
-#include <QtCore/QTimer>
-#include <sys/socket.h>
-#include <linux/can.h>
-#include <linux/can/raw.h>
-#include <net/if.h>
-#include <sys/ioctl.h>
-#include <unistd.h>
-#include <arpa/inet.h>
 #include "../include/CANBusHandler.hpp"
 
 CANBusHandler::CANBusHandler(QObject* parent)
@@ -36,17 +27,16 @@ CANBusHandler::CANBusHandler(QObject* parent)
 
     qDebug() << "CAN socket bound to can0 interface successfully.";
 
-    // Set up a timer to periodically read frames
     QTimer* timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, [this]() { readFrames(); });
-    timer->start(10); // Adjust the interval as needed
+    timer->start(50);
 }
 
 CANBusHandler::~CANBusHandler()
 {
     if (canSocket >= 0)
     {
-        close(canSocket); // Close the CAN socket
+        close(canSocket);
     }
 }
 
@@ -96,7 +86,9 @@ void CANBusHandler::readFrames()
 
         speed = ntohl(speed);
 
-        // qDebug() << "Speed:" << speed; // Print the speed value
+        double wheelDiame = 0.067;
+
+        speed = wheelDiame * 3.14 * speed * 10 / 60;
         setSpeed(speed);
     }
     else if (frame.can_id == 0x02)
@@ -105,8 +97,6 @@ void CANBusHandler::readFrames()
         memcpy(&battery, frame.data, sizeof(int));
 
         battery = ntohl(battery);
-
-        // qDebug() << "Battery:" << battery; // Print the speed value
         setBattery(battery);
     }
 }

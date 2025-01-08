@@ -2,13 +2,22 @@
 #define CANBUSHANDLER_HPP
 
 #include <QtCore/QObject>
+#include <QtCore/QDebug>
+#include <QtCore/QTimer>
+#include <sys/socket.h>
+#include <linux/can.h>
+#include <linux/can/raw.h>
+#include <net/if.h>
+#include <sys/ioctl.h>
+#include <unistd.h>
+#include <arpa/inet.h>
 
 class CANBusHandler : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(int speed READ getSpeed WRITE setSpeed NOTIFY speedChanged)
+    Q_PROPERTY(int speed READ getSpeed NOTIFY speedChanged)
     Q_PROPERTY(
-        int battery READ getBattery WRITE setBattery NOTIFY batteryChanged)
+        int battery READ getBattery NOTIFY batteryChanged)
 
   public:
     explicit CANBusHandler(QObject* parent = nullptr);

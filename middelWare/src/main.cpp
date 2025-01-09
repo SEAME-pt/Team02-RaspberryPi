@@ -36,13 +36,16 @@ int main(int argc, char** argv)
         exit(1);
     }
 
-    std::cout << "CAN socket bound to can0 interface successfully." << std::endl;
+    std::cout << "CAN socket bound to can0 interface successfully."
+              << std::endl;
 
     Config config = Config::create_default();
-    auto session = Session::open(std::move(config));
+    auto session  = Session::open(std::move(config));
 
-    auto pubSpeed = session.declare_publisher(KeyExpr("seame/car/1/speedSensor"));
-    auto pubBattery = session.declare_publisher(KeyExpr("seame/car/1/batterySensor"));
+    auto pubSpeed =
+        session.declare_publisher(KeyExpr("seame/car/1/speedSensor"));
+    auto pubBattery =
+        session.declare_publisher(KeyExpr("seame/car/1/batterySensor"));
 
     while (1)
     {
@@ -60,8 +63,8 @@ int main(int argc, char** argv)
             double wheelDiame = 0.067;
 
             memcpy(&speed, frame.data, sizeof(int));
-            speed = ntohl(speed);
-            speed = wheelDiame * 3.14 * speed * 10 / 60;
+            speed                 = ntohl(speed);
+            speed                 = wheelDiame * 3.14 * speed * 10 / 60;
             std::string speed_str = std::to_string(speed);
 
             printf("Publishing speed: '%d'\n", speed);
@@ -71,7 +74,7 @@ int main(int argc, char** argv)
         {
             int battery;
             memcpy(&battery, frame.data, sizeof(int));
-            battery = ntohl(battery);
+            battery                 = ntohl(battery);
             std::string battery_str = std::to_string(battery);
 
             printf("Publishing battery: '%d\n", battery);

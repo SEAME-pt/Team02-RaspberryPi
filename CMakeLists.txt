@@ -1,35 +1,30 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(HelloQt6 LANGUAGES CXX)
-message("CMAKE_SYSROOT " ${CMAKE_SYSROOT})
-message("CMAKE_LIBRARY_ARCHITECTURE " ${CMAKE_LIBRARY_ARCHITECTURE})
+# Project Name and Language
+project(Speedometer LANGUAGES CXX)
+
+# Set the C++ Standard
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt6 COMPONENTS Core Quick DBus SerialBus REQUIRED)
-# find_package(fastrtps REQUIRED)
+# Find Required Qt Modules
+find_package(Qt6 COMPONENTS Core Quick SerialBus REQUIRED)
 
-set(CMAKE_C_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -Wl,-rpath-link, ${CMAKE_SYSROOT}/usr/lib/${CMAKE_LIBRARY_ARCHITECTURE} -L${CMAKE_SYSROOT}/usr/lib/${CMAKE_LIBRARY_ARCHITECTURE}")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -Wl,-rpath-link,${CMAKE_SYSROOT}/usr/lib/${CMAKE_LIBRARY_ARCHITECTURE} -L${CMAKE_SYSROOT}/usr/lib/${CMAKE_LIBRARY_ARCHITECTURE}")
-# Enable automatic MOC, UIC, and RCC processing
+# Enable Qt's Automatic MOC, UIC, and RCC
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 
+# Add Resource File (QML and Other Resources)
 qt_add_resources(QT_RESOURCES ./src/resources.qrc)
 
-add_executable(speedometer ${QT_RESOURCES} 
-    ./src/main.cpp
-    ./src/CANBusHandler.cpp
-    ./include/CANBusHandler.hpp
+# Define Executable Target
+add_executable(speedometer
+    ${QT_RESOURCES}       # Add Resource File
+    ./src/main.cpp        # Main C++ File
+    ./src/CANBusHandler.cpp # CANBusHandler Implementation
+    ./include/CANBusHandler.hpp # CANBusHandler Header
 )
 
-target_link_libraries(speedometer -lm -ldl Qt6::Core Qt6::DBus Qt6::Quick Qt6::SerialBus)
-
-# add_executable(middelWare
-#     ./middelWare/src/anotherMain.cpp
-#     ./middelWare/src/AnotherClass.hpp
-#     ./middelWare/include/AnotherClass.hpp
-# )
-
-# target_link_libraries(middelWare fastrtps fastcdr)
+# Link Qt Libraries
+target_link_libraries(speedometer PRIVATE Qt6::Core Qt6::Quick Qt6::SerialBus)

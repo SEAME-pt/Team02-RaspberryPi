@@ -2,4 +2,15 @@
     <qresource prefix="/">
         <file>Main.qml</file>
     </qresource>
+
+    <qresource prefix="/assets/icons">
+        <file alias="back_fog_on.png">../assets/icons/back_fog_on.png</file>
+        <file alias="front_fog_on.png">../assets/icons/front_fog_on.png</file>
+        <file alias="green-battery.png">../assets/icons/green-battery.png</file>
+        <file alias="high_beam_on.png">../assets/icons/high_beam_on.png</file>
+        <file alias="low_beam_on.png">../assets/icons/low_beam_on.png</file>
+        <file alias="parking_lights_on.png">../assets/icons/parking_lights_on.png</file>
+        <file alias="turn_left_on.png">../assets/icons/turn_left_on.png</file>
+        <file alias="turn_right_on.png">../assets/icons/turn_right_on.png</file>
+    </qresource>
 </RCC>

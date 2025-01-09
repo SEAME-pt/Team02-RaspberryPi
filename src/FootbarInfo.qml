@@ -19,7 +19,24 @@ Row {
                 font.pixelSize: app.letterSize
                 color: "gray"
             }
-            // ...remaining gear indicators...
+            Text {
+                font.family: "Open Sans"
+                text: "R"
+                font.pixelSize: app.letterSize
+                color: "gray"
+            }
+            Text {
+                font.family: "Open Sans"
+                text: "N"
+                font.pixelSize: app.letterSize
+                color: "gray"
+            }
+            Text {
+                font.family: "Open Sans"
+                text: "D"
+                font.pixelSize: app.letterSize
+                color: "blue"
+            }
         }
     }
 

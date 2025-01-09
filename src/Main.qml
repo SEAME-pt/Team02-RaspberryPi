@@ -11,6 +11,12 @@ ApplicationWindow {
     font.family: "Roboto" // Set the global font family
     font.pixelSize: 30    // Set the default font size
     font.bold: false
+    // flags: Qt.FramelessWindowHint
+
+
+    font.family: "Roboto" // Set the global font family
+    font.pixelSize: 30    // Set the default font size
+    font.bold: false
 
     Rectangle {
         anchors.fill: parent
@@ -21,10 +27,97 @@ ApplicationWindow {
             onPaint: {
                 var ctx = getContext("2d");
                 ctx.fillStyle = "#000000";
+                ctx.fillStyle = "#000000";
                 ctx.fillRect(0, 0, width, height);
             }
         }
 
+        Row {
+
+            anchors.left: parent.left
+            anchors.leftMargin: 200
+            anchors.verticalCenter: parent.verticalCenter
+            spacing: 10
+
+            Image {
+                anchors.verticalCenter: parent.verticalCenter
+                id: turnLeftSignal
+                source: "qrc:/assets/icons/turn_left_on.png"
+                width: 70
+                height: 70
+                opacity: 0.0
+
+                property bool isBlinkingLeft: false // space to add the variable
+
+                Timer {
+                    id: blinkTimerLeft
+                    interval: 500 // (500ms = 0,5s)
+                    running: true
+                    repeat: true
+                    onTriggered: {
+                        if (turnLeftSignal.isBlinkingLeft) {
+                            turnLeftSignal.opacity = turnLeftSignal.opacity === 1.0 ? 0.0 : 1.0;
+                        } else {
+                            turnLeftSignal.opacity = 0.0;
+                        }
+                    }
+                }
+            }
+
+            // Speed
+            Column {
+
+                anchors.verticalCenter: parent.verticalCenter
+                spacing: 5
+
+
+                Text {
+                    font.family: "Open Sans"
+                    text: canBusHandler.speed
+                    font.pixelSize: 160
+                    color: "white"
+                }
+
+                Text {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    //text: canBusHandler.speedType
+                    text: "DM/S"
+                    font.family: "Open Sans"
+                    font.pixelSize: 25
+                    color: "gray"
+                }
+            }
+
+            Image {
+                anchors.verticalCenter: parent.verticalCenter
+                id: turnRightSignal
+                source: "qrc:/assets/icons/turn_right_on.png"
+                width: 70
+                height: 70
+                opacity: 0.0
+
+                property bool isBlinkingRight: true // space to add the variable
+
+                Timer {
+                    id: blinkTimerRight
+                    interval: 500 // (500ms = 0,5s)
+                    running: true
+                    repeat: true
+                    onTriggered: {
+                        if (turnRightSignal.isBlinkingRight) {
+                            turnRightSignal.opacity = turnRightSignal.opacity === 1.0 ? 0.0 : 1.0;
+                        } else {
+                            turnRightSignal.opacity = 0.0;
+                        }
+                    }
+                }
+            }
+
+        }
+
+
+        // Footbar infos
+        Row {
         Row {
 
             anchors.left: parent.left

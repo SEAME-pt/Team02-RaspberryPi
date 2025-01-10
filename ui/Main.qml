@@ -35,8 +35,9 @@ ApplicationWindow {
         }
 
         Row {
-            anchors.horizontalCenter: parent.horizontalCenter
             anchors.verticalCenter: parent.verticalCenter
+            anchors.left: parent.left
+            anchors.leftMargin: 100
             spacing: 10
 
             TurnSignals { 
@@ -50,15 +51,24 @@ ApplicationWindow {
             }
         }
 
-        StatusIcons {
+        GearShiftInfo {
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.left: parent.left
+            anchors.leftMargin: 20
+        }
+
+        LightInfo {
             anchors.top: parent.top
-            anchors.topMargin: 50
-            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.topMargin: 30
+            anchors.left: parent.left
+            anchors.leftMargin: 70
         }
 
         FootbarInfo {
             anchors.bottom: parent.bottom
-            anchors.bottomMargin: 50
+            anchors.bottomMargin: 60
+            anchors.left: parent.left
+            anchors.leftMargin: 70
         }
     }
 }

@@ -6,7 +6,7 @@ Column {
     Text {
         font.family: "Open Sans"
         text: canBusHandler.speed
-        font.pixelSize: 150
+        font.pixelSize: 110
         color: "white"
         opacity: 1.0
     }

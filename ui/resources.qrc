@@ -3,8 +3,9 @@
         <file>Main.qml</file>
         <file>TurnSignals.qml</file>
         <file>SpeedDisplay.qml</file>
-        <file>StatusIcons.qml</file>
+        <file>LightInfo.qml</file>
         <file>FootbarInfo.qml</file>
+        <file>GearShiftInfo.qml</file>
     </qresource>
 
     <qresource prefix="/assets/icons">

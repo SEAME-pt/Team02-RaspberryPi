@@ -7,7 +7,7 @@ Row {
     padding: 10
 
     Column {
-        anchors.right: parent.right
+        // anchors.right: parent.right
         anchors.rightMargin: 200
         spacing: 25
 
@@ -41,7 +41,7 @@ Row {
     }
 
     Column {
-        anchors.left: parent.left
+        // anchors.left: parent.left
         anchors.leftMargin: 200
         spacing: 25
 

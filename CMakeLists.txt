@@ -8,7 +8,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(zenohc_DIR "/usr/local/lib/cmake/zenohc")
 set(zenohcxx_DIR "/usr/local/lib/cmake/zenohcxx")
-find_package(Qt6 COMPONENTS Core Quick DBus SerialBus REQUIRED)
+find_package(Qt6 COMPONENTS Core Quick DBus REQUIRED)
 find_package(zenohc REQUIRED)
 find_package(zenohcxx REQUIRED)
 
@@ -18,7 +18,7 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 
 # Add Resource File (QML and Other Resources)
-qt_add_resources(QT_RESOURCES ./src/resources.qrc)
+qt_add_resources(QT_RESOURCES ./ui/resources.qrc)
 
 # Define Executable Target
 add_executable(speedometer
@@ -28,7 +28,7 @@ add_executable(speedometer
     ./include/CANBusHandler.hpp # CANBusHandler Header
 )
 
-target_link_libraries(speedometer zenohcxx::zenohc -lm -ldl Qt6::Core Qt6::DBus Qt6::Quick Qt6::SerialBus)
+target_link_libraries(speedometer zenohcxx::zenohc -lm -ldl Qt6::Core Qt6::DBus Qt6::Quick)
 
 add_executable(zenoh
     ./middelWare/src/main.cpp

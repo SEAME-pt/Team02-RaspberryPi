@@ -70,5 +70,67 @@ ApplicationWindow {
             anchors.left: parent.left
             anchors.leftMargin: 70
         }
+
+        TimeInfo {
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 60
+            anchors.right: parent.right
+            anchors.rightMargin: 70
+        }
     }
+
+    // Logo Screen
+    Rectangle {
+        id: splashScreen
+        visible: app.showSplash
+        anchors.fill: parent
+        color: "black"
+
+        // O retângulo sempre fica visível, mas apenas o logo tem a opacidade animada
+        Image {
+            id: logo
+            source: "qrc:/assets/icons/seame-logo.png" // Substitua pelo logo do carro
+            anchors.centerIn: parent
+            width: parent.width * 0.5
+            height: parent.width * 0.5
+            fillMode: Image.PreserveAspectFit
+            opacity: 1.0 // Começa visível
+
+            SequentialAnimation {
+                running: true
+                loops: 1
+
+                // Transição para mostrar o logo
+                PropertyAnimation {
+                    target: logo
+                    property: "opacity"
+                    from: 0.0
+                    to: 1.0
+                    duration: 3000 // 3 segundos
+                }
+
+                PauseAnimation { duration: 1000 } // Aguarda 1 segundo com o logo visível
+
+                // Transição para esconder o logo
+                PropertyAnimation {
+                    target: logo
+                    property: "opacity"
+                    from: 1.0
+                    to: 0.0
+                    duration: 2000 // 2 segundos
+                }
+
+                PauseAnimation { duration: 1000 } // Aguarda 2 segundos com a tela preta
+
+                ScriptAction {
+                    script: {
+                        app.showSplash = false; // Oculta a splash screen
+                        app.carClusterVisible = true; // Mostra o cluster
+                    }
+                }
+            }
+        }
+    }
+
+
 }

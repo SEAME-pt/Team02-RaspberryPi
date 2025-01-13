@@ -6,6 +6,8 @@
         <file>LightInfo.qml</file>
         <file>FootbarInfo.qml</file>
         <file>GearShiftInfo.qml</file>
+        <file>TimeInfo.qml</file>
+
     </qresource>
 
     <qresource prefix="/assets/icons">
@@ -17,5 +19,11 @@
         <file alias="parking_lights_on.png">../assets/icons/parking_lights_on.png</file>
         <file alias="turn_left_on.png">../assets/icons/turn_left_on.png</file>
         <file alias="turn_right_on.png">../assets/icons/turn_right_on.png</file>
+        <file alias="seame-logo.png">../assets/icons/seame-logo.png</file>
+        <file alias="battery-1.png">../assets/icons/battery-1.png</file>
+        <file alias="battery-2.png">../assets/icons/battery-2.png</file>
+        <file alias="battery-3.png">../assets/icons/battery-3.png</file>
+        <file alias="battery-4.png">../assets/icons/battery-4.png</file>
+        <file alias="battery-5.png">../assets/icons/battery-5.png</file>
     </qresource>
 </RCC>

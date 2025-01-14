@@ -20,12 +20,11 @@ set(CMAKE_AUTORCC ON)
 qt_add_resources(QT_RESOURCES ./ui/resources.qrc)
 
 # Define Executable Target
-add_executable(speedometer
-    ${QT_RESOURCES}       # Add Resource File
-    ./src/main.cpp        # Main C++ File
-    ./src/CANBusHandler.cpp # CANBusHandler Implementation
-    ./include/CANBusHandler.hpp # CANBusHandler Header
+add_executable(InstrumentCluster
+    ${QT_RESOURCES}
+    ./src/main.cpp
+    ./src/InstrumentCluster.cpp
+    ./include/InstrumentCluster.hpp
 )
 
-target_link_libraries(speedometer zenohcxx::zenohc -lm -ldl Qt6::Core Qt6::DBus Qt6::Quick)
-
+target_link_libraries(InstrumentCluster zenohcxx::zenohc -lm -ldl Qt6::Core Qt6::DBus Qt6::Quick)

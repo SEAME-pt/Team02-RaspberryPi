@@ -118,7 +118,7 @@ void InstrumentCluster::setHighBeam(bool highBeam)
     if (m_highBeam != highBeam)
     {
         m_highBeam = highBeam;
-        emit batteryChanged(m_highBeam);
+        emit highBeamChanged(m_highBeam);
     }
 }
 
@@ -127,7 +127,7 @@ void InstrumentCluster::setFrontFogLight(bool frontFogLight)
     if (m_frontFogLight != frontFogLight)
     {
         m_frontFogLight = frontFogLight;
-        emit speedChanged(m_frontFogLight);
+        emit frontFogLightChanged(m_frontFogLight);
     }
 }
 
@@ -136,7 +136,7 @@ void InstrumentCluster::setRearFogLight(bool rearFogLight)
     if (m_rearFogLight != rearFogLight)
     {
         m_rearFogLight = rearFogLight;
-        emit rightBlinkerChanged(m_rearFogLight);
+        emit rearFogLightChanged(m_rearFogLight);
     }
 }
 
@@ -145,7 +145,7 @@ void InstrumentCluster::setHazardLight(bool hazardLight)
     if (m_hazardLight != hazardLight)
     {
         m_hazardLight = hazardLight;
-        emit speedChanged(m_hazardLight);
+        emit hazardLightChanged(m_hazardLight);
     }
 }
 

@@ -63,7 +63,7 @@ bool InstrumentCluster::getParkingLight() const
     return m_parkingLight;
 }
 
-GearPosition InstrumentCluster::getGear() const
+InstrumentCluster::GearPosition InstrumentCluster::getGear() const
 {
     return m_gear;
 }

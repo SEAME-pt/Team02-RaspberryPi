@@ -91,7 +91,7 @@ int main(int argc, char* argv[])
 
     auto parkingLight_handler = [&instrumentCluster](const Sample& sample)
     {
-        int rearFogLight = std::stoi(sample.get_payload().as_string());
+        int parkingLight = std::stoi(sample.get_payload().as_string());
         std::cout << "Sub parkingLight: " << parkingLight << std::endl;
         instrumentCluster.setParkingLight(parkingLight);
     };
@@ -100,7 +100,7 @@ int main(int argc, char* argv[])
     {
         int gear = std::stoi(sample.get_payload().as_string());
         std::cout << "Sub gear: " << gear << std::endl;
-        instrumentCluster.setGear(gear);
+        instrumentCluster.setGear(InstrumentCluster::GearPosition::PARK);
     };
 
     auto subSpeed = session.declare_subscriber("seame/car/1/speedSensor",

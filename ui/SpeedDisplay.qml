@@ -5,7 +5,7 @@ Column {
 
     Text {
         font.family: "Open Sans"
-        text: canBusHandler.speed
+        text: instrumentCluster.speed
         font.pixelSize: 110
         color: "white"
         opacity: 1.0

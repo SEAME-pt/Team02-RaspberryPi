@@ -25,9 +25,9 @@ InstrumentCluster::InstrumentCluster(QObject* parent)
           "seame/car/1/lights",
           [this](const Sample& sample)
           {
-              auto lightsStr = sample.get_payload().data();
               LightStatus lights;
-              memcpy(&lights, lightsStr, sizeof(LightStatus));
+              memcpy(&lights, sample.get_payload().as_string().c_str(),
+                     sizeof(LightStatus));
               std::cout << "Sub lights" << std::endl;
               this->setLights(lights);
           },
@@ -36,9 +36,9 @@ InstrumentCluster::InstrumentCluster(QObject* parent)
           "seame/car/1/gear",
           [this](const Sample& sample)
           {
-              auto gearStr = sample.get_payload().data();
               GearPosition gear;
-              memcpy(&gear, gearStr, sizeof(GearPosition));
+              memcpy(&gear, sample.get_payload().as_string().c_str(),
+                     sizeof(GearPosition));
               std::cout << "Sub gear" << std::endl;
               this->setGear(gear);
           },

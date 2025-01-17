@@ -9,16 +9,6 @@ using namespace zenoh;
 
 struct LightStatus
 {
-    Q_GADGET
-    Q_PROPERTY(bool rightBlinker MEMBER rightBlinker)
-    Q_PROPERTY(bool leftBlinker MEMBER leftBlinker)
-    Q_PROPERTY(bool lowBeam MEMBER lowBeam)
-    Q_PROPERTY(bool highBeam MEMBER highBeam)
-    Q_PROPERTY(bool frontFogLight MEMBER frontFogLight)
-    Q_PROPERTY(bool rearFogLight MEMBER rearFogLight)
-    Q_PROPERTY(bool hazardLight MEMBER hazardLight)
-    Q_PROPERTY(bool parkingLight MEMBER parkingLight)
-  public:
     bool rightBlinker{false};
     bool leftBlinker{false};
     bool lowBeam{false};
@@ -28,7 +18,6 @@ struct LightStatus
     bool hazardLight{false};
     bool parkingLight{false};
 
-  public:
     bool operator!=(const LightStatus& lights) const
     {
         return rightBlinker != lights.rightBlinker ||
@@ -40,7 +29,6 @@ struct LightStatus
                parkingLight != lights.parkingLight;
     }
 };
-Q_DECLARE_METATYPE(LightStatus)
 
 enum GearPosition
 {

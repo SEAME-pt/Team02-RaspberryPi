@@ -1,10 +1,51 @@
 #include "../include/InstrumentCluster.hpp"
 
-InstrumentCluster::InstrumentCluster(Session& session, QObject* parent)
-    : QObject(parent), m_speed(0), m_battery(0), m_rightBlinker(false),
-      m_leftBlinker(false), m_lowBeam(false), m_highBeam(false),
-      m_frontFogLight(false), m_rearFogLight(false), m_hazardLight(false),
-      m_parkingLight(false), m_gear(GearPosition::PARK), m_session(session)
+InstrumentCluster::InstrumentCluster(QObject* parent)
+    : QObject(parent),
+      m_session(Session::open(std::move(Config::create_default()))),
+      m_subSpeed(m_session.declare_subscriber(
+          "seame/car/1/speedSensor",
+          [this](const Sample& sample)
+          {
+              int speed = std::stoi(sample.get_payload().as_string());
+              std::cout << "Sub speed" << std::endl;
+              this->setSpeed(speed);
+          },
+          closures::none)),
+      m_subBattery(m_session.declare_subscriber(
+          "seame/car/1/batterySensor",
+          [this](const Sample& sample)
+          {
+              BatteryStatus battery;
+              memcpy(&battery, sample.get_payload().as_string().c_str(),
+                     sizeof(BatteryStatus));
+              std::cout << "Sub battery" << std::endl;
+              this->setBattery(battery);
+          },
+          closures::none)),
+      m_subLights(m_session.declare_subscriber(
+          "seame/car/1/lights",
+          [this](const Sample& sample)
+          {
+              LightStatus lights;
+              memcpy(&lights, sample.get_payload().as_string().c_str(),
+                     sizeof(LightStatus));
+              std::cout << "Sub lights" << std::endl;
+              this->setLights(lights);
+          },
+          closures::none)),
+      m_subGear(m_session.declare_subscriber(
+          "seame/car/1/gear",
+          [this](const Sample& sample)
+          {
+              GearPosition gear;
+              memcpy(&gear, sample.get_payload().as_string().c_str(),
+                     sizeof(GearPosition));
+              std::cout << "Sub gear" << std::endl;
+              this->setGear(gear);
+          },
+          closures::none)),
+      m_speed(0), m_gear(GearPosition::PARK)
 {
 }
 
@@ -18,52 +59,17 @@ int InstrumentCluster::getSpeed() const
     return m_speed;
 }
 
-int InstrumentCluster::getBattery() const
+BatteryStatus InstrumentCluster::getBattery() const
 {
     return m_battery;
 }
 
-bool InstrumentCluster::getRightBlinker() const
+LightStatus InstrumentCluster::getLights() const
 {
-    return m_rightBlinker;
+    return m_lights;
 }
 
-bool InstrumentCluster::getLeftBlinker() const
-{
-    return m_leftBlinker;
-}
-
-bool InstrumentCluster::getLowBeam() const
-{
-    return m_lowBeam;
-}
-
-bool InstrumentCluster::getHighBeam() const
-{
-    return m_highBeam;
-}
-
-bool InstrumentCluster::getFrontFogLight() const
-{
-    return m_frontFogLight;
-}
-
-bool InstrumentCluster::getRearFogLight() const
-{
-    return m_rearFogLight;
-}
-
-bool InstrumentCluster::getHazardLight() const
-{
-    return m_hazardLight;
-}
-
-bool InstrumentCluster::getParkingLight() const
-{
-    return m_parkingLight;
-}
-
-InstrumentCluster::GearPosition InstrumentCluster::getGear() const
+GearPosition InstrumentCluster::getGear() const
 {
     return m_gear;
 }
@@ -77,7 +83,7 @@ void InstrumentCluster::setSpeed(int speed)
     }
 }
 
-void InstrumentCluster::setBattery(int battery)
+void InstrumentCluster::setBattery(BatteryStatus battery)
 {
     if (m_battery != battery)
     {
@@ -86,75 +92,12 @@ void InstrumentCluster::setBattery(int battery)
     }
 }
 
-void InstrumentCluster::setRightBlinker(bool rightBlinker)
+void InstrumentCluster::setLights(LightStatus lights)
 {
-    if (m_rightBlinker != rightBlinker)
+    if (m_lights != lights)
     {
-        m_rightBlinker = rightBlinker;
-        emit rightBlinkerChanged(m_rightBlinker);
-    }
-}
-
-void InstrumentCluster::setLeftBlinker(bool leftBlinker)
-{
-    if (m_leftBlinker != leftBlinker)
-    {
-        m_leftBlinker = leftBlinker;
-        emit leftBlinkerChanged(m_leftBlinker);
-    }
-}
-
-void InstrumentCluster::setLowBeam(bool lowBeam)
-{
-    if (m_lowBeam != lowBeam)
-    {
-        m_lowBeam = lowBeam;
-        emit lowBeamChanged(m_lowBeam);
-    }
-}
-
-void InstrumentCluster::setHighBeam(bool highBeam)
-{
-    if (m_highBeam != highBeam)
-    {
-        m_highBeam = highBeam;
-        emit highBeamChanged(m_highBeam);
-    }
-}
-
-void InstrumentCluster::setFrontFogLight(bool frontFogLight)
-{
-    if (m_frontFogLight != frontFogLight)
-    {
-        m_frontFogLight = frontFogLight;
-        emit frontFogLightChanged(m_frontFogLight);
-    }
-}
-
-void InstrumentCluster::setRearFogLight(bool rearFogLight)
-{
-    if (m_rearFogLight != rearFogLight)
-    {
-        m_rearFogLight = rearFogLight;
-        emit rearFogLightChanged(m_rearFogLight);
-    }
-}
-
-void InstrumentCluster::setHazardLight(bool hazardLight)
-{
-    if (m_hazardLight != hazardLight)
-    {
-        m_hazardLight = hazardLight;
-        emit hazardLightChanged(m_hazardLight);
-    }
-}
-
-void InstrumentCluster::setParkingLight(bool parkingLight)
-{
-    if (m_parkingLight != parkingLight)
-    {
-        m_parkingLight = parkingLight;
-        emit parkingLightChanged(m_parkingLight);
+        m_lights = lights;
+        emit lightsChanged(m_lights);
     }
 }
 

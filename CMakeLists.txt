@@ -28,4 +28,3 @@ add_executable(InstrumentClusterApp
 )
 
 target_link_libraries(InstrumentClusterApp zenohcxx::zenohc -lm -ldl Qt6::Core Qt6::DBus Qt6::Quick)
-target_compile_options(InstrumentClusterApp PRIVATE -Wall -Werror -Wextra)

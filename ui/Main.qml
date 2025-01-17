@@ -33,7 +33,7 @@ ApplicationWindow {
 
         Row {
             anchors.verticalCenter: parent.verticalCenter
-            anchors.verticalCenterOffset: -90
+            anchors.verticalCenterOffset: -100
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.leftMargin: 2
             spacing: 10
@@ -56,10 +56,15 @@ ApplicationWindow {
         }
 
         LightInfo {
-            anchors.top: parent.top
-            anchors.topMargin: 30
-            anchors.left: parent.left
-            anchors.leftMargin: 70
+            // anchors.top: parent.top
+            // anchors.topMargin: 30
+            // anchors.left: parent.left
+            // anchors.leftMargin: 70
+
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.verticalCenterOffset: -10
+            anchors.right: parent.right
+            anchors.rightMargin: 20
         }
 
         FootbarInfo {

@@ -7,6 +7,37 @@
 
 using namespace zenoh;
 
+struct LightStatus
+{
+    bool rightBlinker{false};
+    bool leftBlinker{false};
+    bool lowBeam{false};
+    bool highBeam{false};
+    bool frontFogLight{false};
+    bool rearFogLight{false};
+    bool hazardLight{false};
+    bool parkingLight{false};
+
+    bool operator!=(const LightStatus& lights) const
+    {
+        return rightBlinker != lights.rightBlinker ||
+               leftBlinker != lights.leftBlinker || lowBeam != lights.lowBeam ||
+               highBeam != lights.highBeam ||
+               frontFogLight != lights.frontFogLight ||
+               rearFogLight != lights.rearFogLight ||
+               hazardLight != lights.hazardLight ||
+               parkingLight != lights.parkingLight;
+    }
+};
+
+enum GearPosition
+{
+    PARK,
+    REVERSE,
+    NEUTRAL,
+    DRIVE
+};
+
 class InstrumentCluster : public QObject
 {
     Q_OBJECT

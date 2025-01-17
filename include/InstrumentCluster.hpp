@@ -9,6 +9,17 @@ using namespace zenoh;
 
 struct LightStatus
 {
+    Q_GADGET
+  public:
+    Q_PROPERTY(bool rightBlinker MEMBER rightBlinker)
+    Q_PROPERTY(bool leftBlinker MEMBER leftBlinker)
+    Q_PROPERTY(bool lowBeam MEMBER lowBeam)
+    Q_PROPERTY(bool highBeam MEMBER highBeam)
+    Q_PROPERTY(bool frontFogLight MEMBER frontFogLight)
+    Q_PROPERTY(bool rearFogLight MEMBER rearFogLight)
+    Q_PROPERTY(bool hazardLight MEMBER hazardLight)
+    Q_PROPERTY(bool parkingLight MEMBER parkingLight)
+
     bool rightBlinker{false};
     bool leftBlinker{false};
     bool lowBeam{false};
@@ -29,6 +40,24 @@ struct LightStatus
                parkingLight != lights.parkingLight;
     }
 };
+Q_DECLARE_METATYPE(LightStatus)
+
+struct BatteryStatus
+{
+    Q_GADGET
+  public:
+    Q_PROPERTY(bool percentage MEMBER percentage)
+    Q_PROPERTY(bool autonomy MEMBER autonomy)
+
+    int percentage;
+    int autonomy;
+
+    bool operator!=(const BatteryStatus& battery) const
+    {
+        return percentage != battery.percentage || autonomy != battery.autonomy;
+    }
+};
+Q_DECLARE_METATYPE(BatteryStatus)
 
 enum GearPosition
 {
@@ -42,13 +71,13 @@ class InstrumentCluster : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(int speed READ getSpeed NOTIFY speedChanged)
-    Q_PROPERTY(int battery READ getBattery NOTIFY batteryChanged)
+    Q_PROPERTY(BatteryStatus battery READ getBattery NOTIFY batteryChanged)
     Q_PROPERTY(LightStatus lights READ getLights NOTIFY lightsChanged)
     Q_PROPERTY(GearPosition gear READ getGear NOTIFY gearChanged)
 
   private:
     int m_speed;
-    int m_battery;
+    BatteryStatus m_battery;
     LightStatus m_lights;
     GearPosition m_gear;
 
@@ -63,18 +92,18 @@ class InstrumentCluster : public QObject
     ~InstrumentCluster();
 
     int getSpeed() const;
-    int getBattery() const;
+    BatteryStatus getBattery() const;
     LightStatus getLights() const;
     GearPosition getGear() const;
 
     void setSpeed(int speed);
-    void setBattery(int battery);
+    void setBattery(BatteryStatus battery);
     void setLights(LightStatus lights);
     void setGear(GearPosition gear);
 
   signals:
     void speedChanged(int speed);
-    void batteryChanged(int battery);
+    void batteryChanged(BatteryStatus battery);
     void lightsChanged(LightStatus lights);
     void gearChanged(GearPosition gear);
 };

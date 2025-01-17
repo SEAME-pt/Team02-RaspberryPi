@@ -27,9 +27,18 @@ InstrumentCluster::InstrumentCluster(QObject* parent)
           "seame/car/1/lights",
           [this](const Sample& sample)
           {
+              uint8_t data =
+                  static_cast<uint8_t>(sample.get_payload().as_string()[0]);
+
               LightStatus lights;
-              memcpy(&lights, sample.get_payload().as_string().c_str(),
-                     sizeof(LightStatus));
+              lights.rightBlinker  = (data & (1 << 0)) != 0;
+              lights.leftBlinker   = (data & (1 << 1)) != 0;
+              lights.lowBeam       = (data & (1 << 2)) != 0;
+              lights.highBeam      = (data & (1 << 3)) != 0;
+              lights.frontFogLight = (data & (1 << 4)) != 0;
+              lights.rearFogLight  = (data & (1 << 5)) != 0;
+              lights.hazardLight   = (data & (1 << 6)) != 0;
+              lights.parkingLight  = (data & (1 << 7)) != 0;
               std::cout << "Sub lights" << std::endl;
               this->setLights(lights);
           },

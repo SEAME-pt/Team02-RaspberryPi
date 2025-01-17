@@ -9,17 +9,6 @@ using namespace zenoh;
 
 struct LightStatus
 {
-    Q_GADGET
-  public:
-    Q_PROPERTY(bool rightBlinker MEMBER rightBlinker)
-    Q_PROPERTY(bool leftBlinker MEMBER leftBlinker)
-    Q_PROPERTY(bool lowBeam MEMBER lowBeam)
-    Q_PROPERTY(bool highBeam MEMBER highBeam)
-    Q_PROPERTY(bool frontFogLight MEMBER frontFogLight)
-    Q_PROPERTY(bool rearFogLight MEMBER rearFogLight)
-    Q_PROPERTY(bool hazardLight MEMBER hazardLight)
-    Q_PROPERTY(bool parkingLight MEMBER parkingLight)
-
     bool rightBlinker{false};
     bool leftBlinker{false};
     bool lowBeam{false};
@@ -40,15 +29,9 @@ struct LightStatus
                parkingLight != lights.parkingLight;
     }
 };
-Q_DECLARE_METATYPE(LightStatus)
 
 struct BatteryStatus
 {
-    Q_GADGET
-  public:
-    Q_PROPERTY(bool percentage MEMBER percentage)
-    Q_PROPERTY(bool autonomy MEMBER autonomy)
-
     int percentage;
     int autonomy;
 
@@ -57,7 +40,6 @@ struct BatteryStatus
         return percentage != battery.percentage || autonomy != battery.autonomy;
     }
 };
-Q_DECLARE_METATYPE(BatteryStatus)
 
 enum GearPosition
 {

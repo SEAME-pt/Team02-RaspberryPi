@@ -2,6 +2,7 @@ import QtQuick 2.15
 
 Column {
     spacing: 10
+    
     Text {
         font.family: "Open Sans"
         text: "P"

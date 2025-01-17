@@ -20,12 +20,12 @@ set(CMAKE_AUTORCC ON)
 qt_add_resources(QT_RESOURCES ./ui/resources.qrc)
 
 # Define Executable Target
-add_executable(InstrumentCluster
+add_executable(InstrumentClusterApp
     ${QT_RESOURCES}
     ./src/main.cpp
     ./src/InstrumentCluster.cpp
     ./include/InstrumentCluster.hpp
 )
 
-target_link_libraries(InstrumentCluster zenohcxx::zenohc -lm -ldl Qt6::Core Qt6::DBus Qt6::Quick)
-target_compile_options(InstrumentCluster PRIVATE -Wall -Werror -Wextra)
+target_link_libraries(InstrumentClusterApp zenohcxx::zenohc -lm -ldl Qt6::Core Qt6::DBus Qt6::Quick)
+target_compile_options(InstrumentClusterApp PRIVATE -Wall -Werror -Wextra)

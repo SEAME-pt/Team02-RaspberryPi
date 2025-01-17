@@ -9,7 +9,7 @@ Row {
         source: "qrc:/assets/icons/low_beam_on.png"
         width: app.iconWidth
         height: app.iconHeight
-        visible: true
+        visible: instrumentCluster.lowBeam
     }
 
     Image {
@@ -17,7 +17,7 @@ Row {
         source: "qrc:/assets/icons/high_beam_on.png"
         width: app.iconWidth
         height: app.iconHeight
-        visible: true
+        visible: instrumentCluster.highBeam
     }
 
     Image {
@@ -25,7 +25,7 @@ Row {
         source: "qrc:/assets/icons/front_fog_on.png"
         width: app.iconWidth
         height: app.iconHeight
-        visible: true
+        visible: instrumentCluster.frontFogLight
     }
 
     Image {
@@ -33,7 +33,7 @@ Row {
         source: "qrc:/assets/icons/parking_lights_on.png"
         width: app.iconWidth
         height: app.iconHeight
-        visible: true
+        visible: instrumentCluster.parkingLight
     }
 
     Image {
@@ -41,6 +41,6 @@ Row {
         source: "qrc:/assets/icons/back_fog_on.png"
         width: app.iconWidth
         height: app.iconHeight
-        visible: true
+        visible: instrumentCluster.readFogLight
     }
 }

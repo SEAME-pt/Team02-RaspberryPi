@@ -1,11 +1,12 @@
 import QtQuick 2.15
 
 Column {
-    spacing: 5
+    spacing: 3
 
     Text {
         font.family: "Open Sans"
-        text: instrumentCluster.speed
+        // text: instrumentCluster.speed
+        text: "12"
         font.pixelSize: 110
         color: "white"
         opacity: 1.0

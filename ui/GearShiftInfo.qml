@@ -2,7 +2,7 @@ import QtQuick 2.15
 
 Column {
     spacing: 10
-    
+
     Text {
         font.family: "Open Sans"
         text: "P"
@@ -21,14 +21,14 @@ Column {
         font.family: "Open Sans"
         text: "N"
         font.pixelSize: app.letterSize
-        // color: instrumentCluster.gear === GearPosition.NEUTRAL ? "blue" : "white"
+        color: instrumentCluster.gear === GearPosition.NEUTRAL ? "blue" : "white"
         color: "white"
     }
     Text {
         font.family: "Open Sans"
         text: "D"
         font.pixelSize: app.letterSize
-        // color: instrumentCluster.gear === GearPosition.DRIVE ? "blue" : "white"
+        color: instrumentCluster.gear === GearPosition.DRIVE ? "blue" : "white"
         color: "white"
     }
 }

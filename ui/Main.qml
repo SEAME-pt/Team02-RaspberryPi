@@ -33,9 +33,9 @@ ApplicationWindow {
 
         Row {
             anchors.verticalCenter: parent.verticalCenter
-            anchors.verticalCenterOffset: -100
+            anchors.verticalCenterOffset: -110
             anchors.horizontalCenter: parent.horizontalCenter
-            anchors.leftMargin: 2
+            anchors.leftMargin: 3
             spacing: 10
 
             // Left Turn Signal

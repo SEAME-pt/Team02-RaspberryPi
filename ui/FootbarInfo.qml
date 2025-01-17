@@ -28,7 +28,7 @@ Row {
                 width: 80
                 visible: true
                 fillMode: Image.PreserveAspectFit
-                source: "qrc:/assets/icons/battery-5.png" 
+                source: "qrc:/assets/icons/battery-4.png" 
                 // Adjust this value to move the image up or down
             }
         }

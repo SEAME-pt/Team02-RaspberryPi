@@ -22,13 +22,11 @@ Column {
         text: "N"
         font.pixelSize: app.letterSize
         color: instrumentCluster.gear === GearPosition.NEUTRAL ? "blue" : "white"
-        color: "white"
     }
     Text {
         font.family: "Open Sans"
         text: "D"
         font.pixelSize: app.letterSize
         color: instrumentCluster.gear === GearPosition.DRIVE ? "blue" : "white"
-        color: "white"
     }
 }

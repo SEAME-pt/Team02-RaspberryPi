@@ -39,13 +39,13 @@ ApplicationWindow {
             spacing: 10
 
             // Left Turn Signal
-            TurnSignals {}
+            TurnSignalLeft {}
 
             // Speed Display (example)
             SpeedDisplay {}
 
             // Right Turn Signal
-            TurnSignals {}
+            TurnSignalRight {}
         }
 
         GearShiftInfo {
@@ -56,11 +56,6 @@ ApplicationWindow {
         }
 
         LightInfo {
-            // anchors.top: parent.top
-            // anchors.topMargin: 30
-            // anchors.left: parent.left
-            // anchors.leftMargin: 70
-
             anchors.verticalCenter: parent.verticalCenter
             anchors.verticalCenterOffset: -10
             anchors.right: parent.right

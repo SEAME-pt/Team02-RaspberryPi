@@ -73,8 +73,12 @@ int main(int argc, char** argv)
         else if (frame.can_id == 0x02)
         {
             int battery;
+            float percentage;
+
             memcpy(&battery, frame.data, sizeof(int));
-            battery                 = ntohl(battery);
+            battery    = ntohl(battery);
+            percentage = ((battery - 9.5f) / (12.6f - 9.5f)) * 100.0f;
+            battery    = std::min(100.0f, std::max(0.0f, percentage));
             std::string battery_str = std::to_string(battery);
 
             printf("Publishing battery: '%d\n", battery);

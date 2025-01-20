@@ -1,4 +1,4 @@
-#include "../include/InstrumentCluster.hpp"
+#include "InstrumentCluster.hpp"
 
 InstrumentCluster::InstrumentCluster(QObject* parent)
     : QObject(parent),

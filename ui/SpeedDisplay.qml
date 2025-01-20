@@ -5,8 +5,7 @@ Column {
 
     Text {
         font.family: "Open Sans"
-        // text: instrumentCluster.speed
-        text: "12"
+        text: instrumentCluster.speed
         font.pixelSize: 110
         color: "white"
         opacity: 1.0

@@ -7,16 +7,16 @@ Row {
     Image {
         anchors.verticalCenter: parent.verticalCenter
         id: turnSignal
-        source: instrumentCluster.rightBlinker ? "qrc:/assets/icons/turn_right_on.png" : "qrc:/assets/icons/turn_left_on.png"
+        source: instrumentCluster.lights.rightBlinker ? "qrc:/assets/icons/turn_right_on.png" : "qrc:/assets/icons/turn_left_on.png"
         width: 70
         height: 70
         opacity: 0.0
-        visible: instrumentCluster.rightBlinker || instrumentCluster.leftBlinker
+        visible: instrumentCluster.lights.rightBlinker || instrumentCluster.lights.leftBlinker
         
         Timer {
             id: blinkTimer
             interval: 500
-            running: instrumentCluster.rightBlinker || instrumentCluster.leftBlinker // Start the timer if any blinker is on
+            running: instrumentCluster.lights.rightBlinker || instrumentCluster.lights.leftBlinker // Start the timer if any blinker is on
             repeat: true
             onTriggered: {
                 // Toggle opacity when blinking
@@ -24,4 +24,5 @@ Row {
             }
         }
     }
+    
 }

@@ -59,7 +59,7 @@ class InstrumentCluster : public QObject
 
   private:
     int m_speed;
-    BatteryStatus m_battery;
+    int m_battery;
     LightStatus m_lights;
     GearPosition m_gear;
 
@@ -74,18 +74,18 @@ class InstrumentCluster : public QObject
     ~InstrumentCluster();
 
     int getSpeed() const;
-    BatteryStatus getBattery() const;
+    int getBattery() const;
     LightStatus getLights() const;
     GearPosition getGear() const;
 
     void setSpeed(int speed);
-    void setBattery(BatteryStatus battery);
+    void setBattery(int battery);
     void setLights(LightStatus lights);
     void setGear(GearPosition gear);
 
   signals:
     void speedChanged(int speed);
-    void batteryChanged(BatteryStatus battery);
+    void batteryChanged(int battery);
     void lightsChanged(LightStatus lights);
     void gearChanged(GearPosition gear);
 };

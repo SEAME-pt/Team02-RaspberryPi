@@ -16,9 +16,7 @@ InstrumentCluster::InstrumentCluster(QObject* parent)
           "seame/car/1/batterySensor",
           [this](const Sample& sample)
           {
-              BatteryStatus battery;
-              memcpy(&battery, sample.get_payload().as_string().c_str(),
-                     sizeof(BatteryStatus));
+              int battery = std::stoi(sample.get_payload().as_string());
               std::cout << "Sub battery" << std::endl;
               this->setBattery(battery);
           },
@@ -68,7 +66,7 @@ int InstrumentCluster::getSpeed() const
     return m_speed;
 }
 
-BatteryStatus InstrumentCluster::getBattery() const
+int InstrumentCluster::getBattery() const
 {
     return m_battery;
 }
@@ -92,7 +90,7 @@ void InstrumentCluster::setSpeed(int speed)
     }
 }
 
-void InstrumentCluster::setBattery(BatteryStatus battery)
+void InstrumentCluster::setBattery(int battery)
 {
     if (m_battery != battery)
     {

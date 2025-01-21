@@ -103,6 +103,8 @@ class InstrumentCluster : public QObject
 
   public:
     explicit InstrumentCluster(QObject* parent = nullptr);
+    explicit InstrumentCluster(const std::string& configFile,
+                               QObject* parent = nullptr);
     ~InstrumentCluster();
 
     int getSpeed() const;

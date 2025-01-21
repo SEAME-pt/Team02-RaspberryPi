@@ -22,8 +22,8 @@ find_package(zenohcxx REQUIRED)
 # include_directories(${libs_SOURCE_DIR}/Communication/CAN/include)
 # include_directories(${libs_SOURCE_DIR}/Peripherals/INA219/include) 
 
-add_executable(middleWareApp
+add_executable(MiddleWareApp
     ./src/main.cpp
 )
 
-target_link_libraries(middleWareApp PRIVATE zenohcxx::zenohc)
+target_link_libraries(MiddleWareApp PRIVATE zenohcxx::zenohc)

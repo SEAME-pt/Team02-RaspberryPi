@@ -48,14 +48,19 @@ InstrumentCluster::InstrumentCluster(QObject* parent)
           "seame/car/1/gear",
           [this](const Sample& sample)
           {
+              uint8_t data =
+                  static_cast<uint8_t>(sample.get_payload().as_string()[0]);
+
               GearPosition gear;
-              int gearPayload = std::stoi(sample.get_payload().as_string());
-              gear            = static_cast<GearPosition>(gearPayload);
+              gear.park    = (data & (1 << 0)) != 0;
+              gear.reverse = (data & (1 << 1)) != 0;
+              gear.neutral = (data & (1 << 2)) != 0;
+              gear.drive   = (data & (1 << 3)) != 0;
               std::cout << "Sub gear" << std::endl;
               this->setGear(gear);
           },
           closures::none)),
-      m_speed(0), m_gear(GearPosition::PARK)
+      m_speed(0)
 {
 }
 

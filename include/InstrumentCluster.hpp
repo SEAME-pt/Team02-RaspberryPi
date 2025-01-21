@@ -59,12 +59,26 @@ struct BatteryStatus
     }
 };
 
-enum GearPosition
+struct GearPosition
 {
-    PARK,
-    REVERSE,
-    NEUTRAL,
-    DRIVE
+    Q_GADGET
+
+    Q_PROPERTY(bool park MEMBER park)
+    Q_PROPERTY(bool reverse MEMBER reverse)
+    Q_PROPERTY(bool neutral MEMBER neutral)
+    Q_PROPERTY(bool drive MEMBER drive)
+
+  public:
+    bool park{true};
+    bool reverse{false};
+    bool neutral{false};
+    bool drive{false};
+
+    bool operator!=(const GearPosition& gear) const
+    {
+        return park != gear.park || reverse != gear.reverse ||
+               neutral != gear.neutral || drive != gear.drive;
+    }
 };
 
 class InstrumentCluster : public QObject

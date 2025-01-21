@@ -24,11 +24,9 @@ ApplicationWindow {
         anchors.fill: parent
         visible: app.carClusterVisible
 
-        // Background Image
-        Image {
-            source: "qrc:/assets/images/car-background.png"
-            // fillMode: Image.PreserveAspectCrop
-            anchors.fill: parent
+        gradient: Gradient {
+            GradientStop { position: 0.0; color: "#000000" } // Start color
+            GradientStop { position: 1.0; color: "#FFFFFF" } // End color
         }
 
         Row {
@@ -38,21 +36,15 @@ ApplicationWindow {
             anchors.leftMargin: 3
             spacing: 10
 
-            // Left Turn Signal
-            TurnSignals {}
-
-            // Speed Display (example)
+            TurnSignalLeft {}
             SpeedDisplay {}
-
-            // Right Turn Signal
-            TurnSignals {}
+            TurnSignalRight {}
         }
 
         GearShiftInfo {
-            anchors.verticalCenter: parent.verticalCenter
-            anchors.verticalCenterOffset: -10
-            anchors.left: parent.left
-            anchors.leftMargin: 20
+            anchors.bottom: parent.bottom
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.bottomMargin: 15
         }
 
         LightInfo {
@@ -68,15 +60,15 @@ ApplicationWindow {
         }
 
         FootbarInfo {
-            anchors.bottom: parent.bottom
-            anchors.bottomMargin: 0
+            anchors.top: parent.top
+            anchors.topMargin: 0
             anchors.left: parent.left
             anchors.leftMargin: 20
         }
 
         TimeInfo {
-            anchors.bottom: parent.bottom
-            anchors.bottomMargin: 5
+            anchors.top: parent.top
+            anchors.topMargin: 5
             anchors.right: parent.right
             anchors.rightMargin: 20
         }

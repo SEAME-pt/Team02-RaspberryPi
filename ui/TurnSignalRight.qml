@@ -4,24 +4,23 @@ Row {
     id: root
     spacing: 10
     
-    Rectangle {
+ Rectangle {
         width: 70
         height: 70
         color: "transparent"
-
         Image {
             anchors.verticalCenter: parent.verticalCenter
             id: turnSignal
-            source: "qrc:/assets/icons/turn_left_on.png"
+            source: "qrc:/assets/icons/turn_right_on.png"
             width: 70
             height: 70
             opacity: 0.0
-            visible: instrumentCluster.lights.leftBlinker
+            visible: instrumentCluster.lights.rightBlinker
             
             Timer {
                 id: blinkTimer
                 interval: 500
-                running: instrumentCluster.lights.leftBlinker
+                running: instrumentCluster.lights.rightBlinker
                 repeat: true
                 onTriggered: {
                     // Toggle opacity when blinking
@@ -30,5 +29,4 @@ Row {
             }
         }
     }
-    
 }

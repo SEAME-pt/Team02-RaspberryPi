@@ -2,7 +2,7 @@
 
 InstrumentCluster::InstrumentCluster(QObject* parent)
     : QObject(parent),
-      m_session(Session::open(std::move(Config::create_default()))),
+      m_session(Session::open(std::move(Config::from_file("local.json")))),
       m_subSpeed(m_session.declare_subscriber(
           "seame/car/1/speedSensor",
           [this](const Sample& sample)

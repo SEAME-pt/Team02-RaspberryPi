@@ -1,4 +1,4 @@
-#include "../include/InstrumentCluster.hpp"
+#include "InstrumentCluster.hpp"
 
 InstrumentCluster::InstrumentCluster(QObject* parent)
     : QObject(parent),
@@ -8,7 +8,7 @@ InstrumentCluster::InstrumentCluster(QObject* parent)
           [this](const Sample& sample)
           {
               int speed = std::stoi(sample.get_payload().as_string());
-              //   std::cout << "Sub speed" << std::endl;
+              std::cout << "Sub speed" << std::endl;
               this->setSpeed(speed);
           },
           closures::none)),
@@ -16,8 +16,11 @@ InstrumentCluster::InstrumentCluster(QObject* parent)
           "seame/car/1/batterySensor",
           [this](const Sample& sample)
           {
-              int battery = std::stoi(sample.get_payload().as_string());
-              //   std::cout << "Sub battery" << std::endl;
+              int batteryPercentage =
+                  std::stoi(sample.get_payload().as_string());
+              BatteryStatus battery;
+              battery.percentage = batteryPercentage;
+              std::cout << "Sub battery" << std::endl;
               this->setBattery(battery);
           },
           closures::none)),
@@ -25,6 +28,9 @@ InstrumentCluster::InstrumentCluster(QObject* parent)
           "seame/car/1/lights",
           [this](const Sample& sample)
           {
+              uint8_t data =
+                  static_cast<uint8_t>(sample.get_payload().as_string()[0]);
+
               LightStatus lights;
               lights.rightBlinker  = (data & (1 << 0)) != 0;
               lights.leftBlinker   = (data & (1 << 1)) != 0;
@@ -34,7 +40,7 @@ InstrumentCluster::InstrumentCluster(QObject* parent)
               lights.rearFogLight  = (data & (1 << 5)) != 0;
               lights.hazardLight   = (data & (1 << 6)) != 0;
               lights.parkingLight  = (data & (1 << 7)) != 0;
-              //   std::cout << "Sub lights" << std::endl;
+              std::cout << "Sub lights" << std::endl;
               this->setLights(lights);
           },
           closures::none)),
@@ -42,17 +48,19 @@ InstrumentCluster::InstrumentCluster(QObject* parent)
           "seame/car/1/gear",
           [this](const Sample& sample)
           {
-              Enums::GearPosition gear;
-              memcpy(&gear, sample.get_payload().as_string().c_str(),
-                     sizeof(Enums::GearPosition));
-              //   std::cout << "Sub gear" << std::endl;
-              //   std::cout << "Gear: " << gear << std::endl;
-              std::cout << "Gear: " << sample.get_payload().as_string().c_str()
-                        << std::endl;
+              uint8_t data =
+                  static_cast<uint8_t>(sample.get_payload().as_string()[0]);
+
+              GearPosition gear;
+              gear.park    = (data & (1 << 0)) != 0;
+              gear.reverse = (data & (1 << 1)) != 0;
+              gear.neutral = (data & (1 << 2)) != 0;
+              gear.drive   = (data & (1 << 3)) != 0;
+              std::cout << "Sub gear" << std::endl;
               this->setGear(gear);
           },
           closures::none)),
-      m_speed(0), m_gear(Enums::GearPosition::PARK)
+      m_speed(0)
 {
 }
 
@@ -76,7 +84,7 @@ LightStatus InstrumentCluster::getLights() const
     return m_lights;
 }
 
-Enums::GearPosition InstrumentCluster::getGear() const
+GearPosition InstrumentCluster::getGear() const
 {
     return m_gear;
 }
@@ -108,7 +116,7 @@ void InstrumentCluster::setLights(LightStatus lights)
     }
 }
 
-void InstrumentCluster::setGear(Enums::GearPosition gear)
+void InstrumentCluster::setGear(GearPosition gear)
 {
     if (m_gear != gear)
     {

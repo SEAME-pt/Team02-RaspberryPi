@@ -10,6 +10,7 @@ using namespace zenoh;
 struct LightStatus
 {
     Q_GADGET
+
     Q_PROPERTY(bool rightBlinker MEMBER rightBlinker)
     Q_PROPERTY(bool leftBlinker MEMBER leftBlinker)
     Q_PROPERTY(bool lowBeam MEMBER lowBeam)
@@ -40,57 +41,59 @@ struct LightStatus
                parkingLight != lights.parkingLight;
     }
 };
-Q_DECLARE_METATYPE(LightStatus)
 
-// struct BatteryStatus
-// {
-//     int percentage;
-//     int autonomy;
-
-//     bool operator!=(const BatteryStatus& battery) const
-//     {
-//         return percentage != battery.percentage || autonomy !=
-//         battery.autonomy;
-//     }
-// };
-
-// enum GearPosition
-// {
-//     PARK,
-//     REVERSE,
-//     NEUTRAL,
-//     DRIVE
-// };
-// Q_ENUM(GearPosition)
-
-class Enums
+struct BatteryStatus
 {
     Q_GADGET
 
+    Q_PROPERTY(int percentage MEMBER percentage)
+    Q_PROPERTY(int autonomy MEMBER autonomy)
+
   public:
-    enum class GearPosition
+    int percentage;
+    int autonomy;
+
+    bool operator!=(const BatteryStatus& battery) const
     {
-        PARK,
-        REVERSE,
-        NEUTRAL,
-        DRIVE
-    };
-    Q_ENUM(GearPosition)
+        return percentage != battery.percentage || autonomy != battery.autonomy;
+    }
+};
+
+struct GearPosition
+{
+    Q_GADGET
+
+    Q_PROPERTY(bool park MEMBER park)
+    Q_PROPERTY(bool reverse MEMBER reverse)
+    Q_PROPERTY(bool neutral MEMBER neutral)
+    Q_PROPERTY(bool drive MEMBER drive)
+
+  public:
+    bool park{true};
+    bool reverse{false};
+    bool neutral{false};
+    bool drive{false};
+
+    bool operator!=(const GearPosition& gear) const
+    {
+        return park != gear.park || reverse != gear.reverse ||
+               neutral != gear.neutral || drive != gear.drive;
+    }
 };
 
 class InstrumentCluster : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(int speed READ getSpeed NOTIFY speedChanged)
-    Q_PROPERTY(int battery READ getBattery NOTIFY batteryChanged)
+    Q_PROPERTY(BatteryStatus battery READ getBattery NOTIFY batteryChanged)
     Q_PROPERTY(LightStatus lights READ getLights NOTIFY lightsChanged)
-    Q_PROPERTY(Enums::GearPosition gear READ getGear NOTIFY gearChanged)
+    Q_PROPERTY(GearPosition gear READ getGear NOTIFY gearChanged)
 
   private:
     int m_speed;
-    int m_battery;
+    BatteryStatus m_battery;
     LightStatus m_lights;
-    Enums::GearPosition m_gear;
+    GearPosition m_gear;
 
     Session m_session;
     Subscriber<void> m_subSpeed;
@@ -103,21 +106,20 @@ class InstrumentCluster : public QObject
     ~InstrumentCluster();
 
     int getSpeed() const;
-    int getBattery() const;
+    BatteryStatus getBattery() const;
     LightStatus getLights() const;
-    Enums::GearPosition getGear() const;
+    GearPosition getGear() const;
 
     void setSpeed(int speed);
-    void setBattery(int battery);
+    void setBattery(BatteryStatus battery);
     void setLights(LightStatus lights);
-    void setGear(Enums::GearPosition gear);
+    void setGear(GearPosition gear);
 
   signals:
     void speedChanged(int speed);
-    void batteryChanged(int battery);
+    void batteryChanged(BatteryStatus battery);
     void lightsChanged(LightStatus lights);
-    void gearChanged(Enums::GearPosition gear);
+    void gearChanged(GearPosition gear);
 };
 
-Q_DECLARE_METATYPE(Enums::GearPosition)
 #endif // INSTRUMENTCLUSTER_HPP

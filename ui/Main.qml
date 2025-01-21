@@ -10,6 +10,7 @@ ApplicationWindow {
     visibility: Window.FullScreen  // Add this line
 
     property int letterSize: 25
+    property int letterSizeLoaded: 30
     property int iconWidth: 40
     property int iconHeight: 40
     property bool carClusterVisible: true
@@ -25,10 +26,25 @@ ApplicationWindow {
         visible: app.carClusterVisible
 
         gradient: Gradient {
-            GradientStop { position: 0.0; color: "#000000" } // Start color
-            GradientStop { position: 1.0; color: "#FFFFFF" } // End color
+            GradientStop { position: 0.0; color: "#000000" }
+            GradientStop { position: 1.0; color: "#808080" }
         }
+        
+        Rectangle {
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.left: parent.left
+            anchors.leftMargin: 200
 
+            width: 100
+            height: 100
+            color: "transparent"
+            Image {
+                id: car
+                anchors.centerIn: parent
+                source: "qrc:/assets/images/car.png"
+                visible: true
+            }
+        }
         Row {
             anchors.verticalCenter: parent.verticalCenter
             anchors.verticalCenterOffset: -110
@@ -48,11 +64,6 @@ ApplicationWindow {
         }
 
         LightInfo {
-            // anchors.top: parent.top
-            // anchors.topMargin: 30
-            // anchors.left: parent.left
-            // anchors.leftMargin: 70
-
             anchors.verticalCenter: parent.verticalCenter
             anchors.verticalCenterOffset: -10
             anchors.right: parent.right

@@ -35,11 +35,11 @@ Column {
         visible: instrumentCluster.lights.parkingLight
     }
 
-    // Image {
-    //     id: backFogSignal
-    //     source: "qrc:/assets/icons/back_fog_on.png"
-    //     width: app.iconWidth
-    //     height: app.iconHeight
-    //     visible: instrumentCluster.lights.backFogLight
-    // }
+    Image {
+        id: backFogSignal
+        source: "qrc:/assets/icons/back_fog_on.png"
+        width: app.iconWidth
+        height: app.iconHeight
+        visible: instrumentCluster.lights.rearFogLight
+    }
 }

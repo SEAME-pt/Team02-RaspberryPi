@@ -8,8 +8,6 @@ int main(int argc, char* argv[])
     QGuiApplication app(argc, argv);
     QQmlApplicationEngine engine;
 
-    engine.addImportPath("qrc:/LightInfo.qml");
-
     InstrumentCluster instrumentCluster;
     engine.rootContext()->setContextProperty("instrumentCluster",
                                              &instrumentCluster);

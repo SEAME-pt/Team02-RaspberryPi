@@ -3,7 +3,6 @@ import QtQuick 2.15
 Row {
     spacing: 5
 
-    // Hora
     Text {
         font.family: "Open Sans"
         id: timeDisplay
@@ -13,7 +12,6 @@ Row {
         opacity: 0.0
     }
 
-    // AM/PM
     Text {
         font.family: "Open Sans"
         id: amPmDisplay
@@ -37,7 +35,6 @@ Row {
         }
     }
 
-    // Funções encapsuladas em um QtObject
     QtObject {
         id: timeHelper
 

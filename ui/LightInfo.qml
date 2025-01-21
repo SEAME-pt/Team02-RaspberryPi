@@ -3,43 +3,63 @@ import QtQuick 2.15
 Column {
     spacing: 10
 
-    Image {
-        id: lowBeamSignal
-        source: "qrc:/assets/icons/low_beam_on.png"
+    Rectangle {
         width: app.iconWidth
         height: app.iconHeight
-        visible: instrumentCluster.lights.lowBeam
+        color: "transparent" // Keeps the placeholder invisible
+        Image {
+            id: lowBeamSignal
+            anchors.centerIn: parent
+            source: "qrc:/assets/icons/low_beam_on.png"
+            visible: instrumentCluster.lights.lowBeam
+        }
     }
 
-    Image {
-        id: highBeamSignal
-        source: "qrc:/assets/icons/high_beam_on.png"
+    Rectangle {
         width: app.iconWidth
         height: app.iconHeight
-        visible: instrumentCluster.lights.highBeam
+        color: "transparent"
+        Image {
+            id: highBeamSignal
+            anchors.centerIn: parent
+            source: "qrc:/assets/icons/high_beam_on.png"
+            visible: instrumentCluster.lights.highBeam
+        }
     }
 
-    Image {
-        id: frontFogSignal
-        source: "qrc:/assets/icons/front_fog_on.png"
+    Rectangle {
         width: app.iconWidth
         height: app.iconHeight
-        visible: instrumentCluster.lights.frontFogLight
+        color: "transparent"
+        Image {
+            id: frontFogSignal
+            anchors.centerIn: parent
+            source: "qrc:/assets/icons/front_fog_on.png"
+            visible: instrumentCluster.lights.frontFogLight
+        }
     }
 
-    Image {
-        id: parkingLightsSignal
-        source: "qrc:/assets/icons/parking_lights_on.png"
+    Rectangle {
         width: app.iconWidth
         height: app.iconHeight
-        visible: instrumentCluster.lights.parkingLight
+        color: "transparent"
+        Image {
+            id: parkingLightsSignal
+            anchors.centerIn: parent
+            source: "qrc:/assets/icons/parking_lights_on.png"
+            visible: instrumentCluster.lights.parkingLight
+        }
     }
 
-    // Image {
-    //     id: backFogSignal
-    //     source: "qrc:/assets/icons/back_fog_on.png"
-    //     width: app.iconWidth
-    //     height: app.iconHeight
-    //     visible: instrumentCluster.lights.backFogLight
-    // }
+    Rectangle {
+        width: app.iconWidth
+        height: app.iconHeight
+        color: "transparent"
+        Image {
+            id: backFogSignal
+            anchors.centerIn: parent
+            source: "qrc:/assets/icons/back_fog_on.png"
+            visible: instrumentCluster.lights.rearFogLight
+        }
+    }
 }

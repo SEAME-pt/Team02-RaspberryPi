@@ -1,14 +1,14 @@
 import QtQuick 2.15
 
+
 Row {
     id: root
     spacing: 10
     
-    Rectangle {
+ Rectangle {
         width: 70
         height: 70
         color: "transparent"
-
         Image {
             anchors.verticalCenter: parent.verticalCenter
             id: turnSignal
@@ -30,5 +30,5 @@ Row {
             }
         }
     }
-    
 }
+

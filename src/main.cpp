@@ -1,20 +1,12 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
-#include "../include/InstrumentCluster.hpp"
+#include "InstrumentCluster.hpp"
 
 int main(int argc, char* argv[])
 {
     QGuiApplication app(argc, argv);
     QQmlApplicationEngine engine;
-
-    qmlRegisterType<InstrumentCluster>("com.example", 1, 0,
-                                       "InstrumentCluster");
-    engine.addImportPath("qrc:/LightInfo.qml");
-    engine.addImportPath("qrc:/FootbarInfo.qml");
-    engine.addImportPath("qrc:/TurnSignalLeft.qml");
-    engine.addImportPath("qrc:/TurnSignalRight.qml");
-    engine.addImportPath("qrc:/GearShiftInfo.qml");
 
     InstrumentCluster instrumentCluster;
     engine.rootContext()->setContextProperty("instrumentCluster",

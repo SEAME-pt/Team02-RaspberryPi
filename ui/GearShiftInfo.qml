@@ -1,34 +1,31 @@
 import QtQuick 2.15
+// import com.example.gearPosition 1.0
 
 Row {
-    spacing: 10
+    spacing: 15
 
     Text {
         font.family: "Open Sans"
         text: "P"
-        font.pixelSize: app.letterSize
-        color: instrumentCluster.gear === GearPosition.PARK ? "blue" : "white"
-        // color: "white"
+        font.pixelSize: instrumentCluster.gear.park ? app.letterSizeLoaded : app.letterSize
+        color: instrumentCluster.gear.park ? "blue" : "white"
     }
     Text {
         font.family: "Open Sans"
         text: "R"
-        font.pixelSize: app.letterSize
-        color: instrumentCluster.gear === GearPosition.REVERSE ? "blue" : "white"
-        // color: "white"
+        font.pixelSize: instrumentCluster.gear.reverse ? app.letterSizeLoaded : app.letterSize
+        color: instrumentCluster.gear.reverse ? "blue" : "white"
     }
     Text {
         font.family: "Open Sans"
         text: "N"
-        font.pixelSize: app.letterSize
-        // color: instrumentCluster.gear === GearPosition.NEUTRAL ? "blue" : "white"
-        color: "white"
+                font.pixelSize: instrumentCluster.gear.neutral ? app.letterSizeLoaded : app.letterSize
+        color: instrumentCluster.gear.neutral ? "blue" : "white"
     }
     Text {
         font.family: "Open Sans"
         text: "D"
-        font.pixelSize: app.letterSize
-        // color: instrumentCluster.gear === GearPosition.DRIVE ? "blue" : "white"
-        color: "white"
+        font.pixelSize: instrumentCluster.gear.drive ? app.letterSizeLoaded : app.letterSize
+        color: instrumentCluster.gear.drive ? "blue" : "white"
     }
 }

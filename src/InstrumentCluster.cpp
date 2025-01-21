@@ -49,8 +49,8 @@ InstrumentCluster::InstrumentCluster(QObject* parent)
           [this](const Sample& sample)
           {
               GearPosition gear;
-              memcpy(&gear, sample.get_payload().as_string().c_str(),
-                     sizeof(GearPosition));
+              int gearPayload = std::stoi(sample.get_payload().as_string());
+              gear            = static_cast<GearPosition>(gearPayload);
               std::cout << "Sub gear" << std::endl;
               this->setGear(gear);
           },

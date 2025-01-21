@@ -39,7 +39,7 @@ int main(int argc, char** argv)
     std::cout << "CAN socket bound to can0 interface successfully."
               << std::endl;
 
-    Config config = Config::create_default();
+    Config config = Config::from_file("middleWare.json");
     auto session  = Session::open(std::move(config));
 
     auto pubSpeed =

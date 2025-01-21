@@ -3,6 +3,8 @@
 #include <QQmlContext>
 #include "InstrumentCluster.hpp"
 
+using namespace zenoh;
+
 int main(int argc, char* argv[])
 {
     QGuiApplication app(argc, argv);

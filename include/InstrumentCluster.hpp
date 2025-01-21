@@ -9,6 +9,18 @@ using namespace zenoh;
 
 struct LightStatus
 {
+    Q_GADGET
+
+    Q_PROPERTY(bool rightBlinker MEMBER rightBlinker)
+    Q_PROPERTY(bool leftBlinker MEMBER leftBlinker)
+    Q_PROPERTY(bool lowBeam MEMBER lowBeam)
+    Q_PROPERTY(bool highBeam MEMBER highBeam)
+    Q_PROPERTY(bool frontFogLight MEMBER frontFogLight)
+    Q_PROPERTY(bool rearFogLight MEMBER rearFogLight)
+    Q_PROPERTY(bool hazardLight MEMBER hazardLight)
+    Q_PROPERTY(bool parkingLight MEMBER parkingLight)
+
+  public:
     bool rightBlinker{false};
     bool leftBlinker{false};
     bool lowBeam{false};
@@ -32,6 +44,12 @@ struct LightStatus
 
 struct BatteryStatus
 {
+    Q_GADGET
+
+    Q_PROPERTY(int percentage MEMBER percentage)
+    Q_PROPERTY(int autonomy MEMBER autonomy)
+
+  public:
     int percentage;
     int autonomy;
 
@@ -59,7 +77,7 @@ class InstrumentCluster : public QObject
 
   private:
     int m_speed;
-    int m_battery;
+    BatteryStatus m_battery;
     LightStatus m_lights;
     GearPosition m_gear;
 
@@ -74,18 +92,18 @@ class InstrumentCluster : public QObject
     ~InstrumentCluster();
 
     int getSpeed() const;
-    int getBattery() const;
+    BatteryStatus getBattery() const;
     LightStatus getLights() const;
     GearPosition getGear() const;
 
     void setSpeed(int speed);
-    void setBattery(int battery);
+    void setBattery(BatteryStatus battery);
     void setLights(LightStatus lights);
     void setGear(GearPosition gear);
 
   signals:
     void speedChanged(int speed);
-    void batteryChanged(int battery);
+    void batteryChanged(BatteryStatus battery);
     void lightsChanged(LightStatus lights);
     void gearChanged(GearPosition gear);
 };

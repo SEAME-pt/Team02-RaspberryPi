@@ -1,7 +1,7 @@
 import QtQuick 2.15
 
 Row {
-    spacing: 40
+    spacing: 20
 
     Rectangle {
         width: app.iconWidth
@@ -13,7 +13,9 @@ Row {
             width: parent.width
             height: parent.height
             source: "qrc:/assets/icons/low_beam_on.png"
-            visible: instrumentCluster.lights.lowBeam
+            // visible: instrumentCluster.lights.lowBeam
+            visible: true
+
         }
     }
 
@@ -27,7 +29,8 @@ Row {
             width: parent.width
             height: parent.height
             source: "qrc:/assets/icons/high_beam_on.png"
-            visible: instrumentCluster.lights.highBeam
+            // visible: instrumentCluster.lights.highBeam
+            visible: true
         }
     }
 
@@ -41,7 +44,8 @@ Row {
              width: parent.width
             height: parent.height
             source: "qrc:/assets/icons/front_fog_on.png"
-            visible: instrumentCluster.lights.frontFogLight
+            // visible: instrumentCluster.lights.frontFogLight
+            visible: true
         }
     }
 
@@ -55,7 +59,8 @@ Row {
              width: parent.width
             height: parent.height
             source: "qrc:/assets/icons/parking_lights_on.png"
-            visible: instrumentCluster.lights.parkingLight
+            // visible: instrumentCluster.lights.parkingLight
+            visible: true
         }
     }
 
@@ -69,7 +74,8 @@ Row {
              width: parent.width
             height: parent.height
             source: "qrc:/assets/icons/back_fog_on.png"
-            visible: instrumentCluster.lights.rearFogLight
+            // visible: instrumentCluster.lights.rearFogLight
+            visible: true
         }
     }
 }

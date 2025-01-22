@@ -2,6 +2,20 @@ import QtQuick 2.15
 
 Row {
     spacing: 5
+    Image {
+        id: clockIcon
+        source: "qrc:/assets/icons/watch.png"
+        width: app.iconWidth - 5 
+        height: app.iconHeight - 5
+        visible: true
+        fillMode: Image.PreserveAspectFit
+    }
+
+    Rectangle {
+        width: 7 // Adjust the width to set the desired space
+        height: 1
+        color: "transparent"
+    }
 
     Text {
         font.family: "Open Sans"

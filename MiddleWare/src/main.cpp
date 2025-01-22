@@ -39,8 +39,12 @@ int main(int argc, char** argv)
     std::cout << "CAN socket bound to can0 interface successfully."
               << std::endl;
 
-    Config config = Config::from_file("MiddleWareConfig.json");
-    auto session  = Session::open(std::move(config));
+    auto config = Config::create_default();
+    if (argc == 2)
+    {
+        config = Config::from_file(argv[1]);
+    }
+    auto session = Session::open(std::move(config));
 
     auto pubSpeed =
         session.declare_publisher(KeyExpr("seame/car/1/speedSensor"));

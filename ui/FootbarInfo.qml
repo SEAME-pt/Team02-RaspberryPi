@@ -38,7 +38,7 @@ Row {
 
             Text {
                 font.family: "Open Sans"
-                text: instrumentCluster.battery
+                text: instrumentCluster.battery.percentage
                 font.pixelSize: app.letterSize
                 color: "white"
             }
@@ -73,6 +73,16 @@ Row {
 
         Row {
             spacing: 5
+
+            Image {
+                id: cloudIcon
+                source: "qrc:/assets/icons/cloud.png"
+                width: app.iconWidth / 2
+                height: app.iconHeight / 2
+                visible: true
+                fillMode: Image.PreserveAspectFit
+            }
+
             Text {
                 font.family: "Open Sans"
                 text: "22°"

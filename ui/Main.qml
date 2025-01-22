@@ -11,8 +11,8 @@ ApplicationWindow {
 
     property int letterSize: 25
     property int letterSizeLoaded: 30
-    property int iconWidth: 40
-    property int iconHeight: 40
+    property int iconWidth: 10
+    property int iconHeight: 10
     property bool carClusterVisible: true
     property bool showSplash: true
 
@@ -32,8 +32,7 @@ ApplicationWindow {
         
         Rectangle {
             anchors.verticalCenter: parent.verticalCenter
-            anchors.left: parent.left
-            anchors.leftMargin: 200
+            anchors.horizontalCenter: parent.horizontalCenter
 
             width: 100
             height: 100
@@ -47,9 +46,8 @@ ApplicationWindow {
         }
         Row {
             anchors.verticalCenter: parent.verticalCenter
-            anchors.verticalCenterOffset: -110
-            anchors.horizontalCenter: parent.horizontalCenter
-            anchors.leftMargin: 3
+            anchors.right: parent.right
+            anchors.rightMargin: 20
             spacing: 10
 
             TurnSignalLeft {}
@@ -64,10 +62,9 @@ ApplicationWindow {
         }
 
         LightInfo {
-            anchors.verticalCenter: parent.verticalCenter
-            anchors.verticalCenterOffset: -10
-            anchors.right: parent.right
-            anchors.rightMargin: 20
+            anchors.top: parent.top
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.topMargin: 15
         }
 
         FootbarInfo {

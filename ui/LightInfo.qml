@@ -1,7 +1,7 @@
 import QtQuick 2.15
 
-Column {
-    spacing: 10
+Row {
+    spacing: 40
 
     Rectangle {
         width: app.iconWidth
@@ -10,6 +10,8 @@ Column {
         Image {
             id: lowBeamSignal
             anchors.centerIn: parent
+            width: parent.width
+            height: parent.height
             source: "qrc:/assets/icons/low_beam_on.png"
             visible: instrumentCluster.lights.lowBeam
         }
@@ -22,6 +24,8 @@ Column {
         Image {
             id: highBeamSignal
             anchors.centerIn: parent
+            width: parent.width
+            height: parent.height
             source: "qrc:/assets/icons/high_beam_on.png"
             visible: instrumentCluster.lights.highBeam
         }
@@ -34,6 +38,8 @@ Column {
         Image {
             id: frontFogSignal
             anchors.centerIn: parent
+             width: parent.width
+            height: parent.height
             source: "qrc:/assets/icons/front_fog_on.png"
             visible: instrumentCluster.lights.frontFogLight
         }
@@ -46,6 +52,8 @@ Column {
         Image {
             id: parkingLightsSignal
             anchors.centerIn: parent
+             width: parent.width
+            height: parent.height
             source: "qrc:/assets/icons/parking_lights_on.png"
             visible: instrumentCluster.lights.parkingLight
         }
@@ -58,6 +66,8 @@ Column {
         Image {
             id: backFogSignal
             anchors.centerIn: parent
+             width: parent.width
+            height: parent.height
             source: "qrc:/assets/icons/back_fog_on.png"
             visible: instrumentCluster.lights.rearFogLight
         }

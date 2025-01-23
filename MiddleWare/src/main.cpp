@@ -96,7 +96,7 @@ int main(int argc, char** argv)
             memcpy(&lights, frame.data, sizeof(char));
 
             printf("Publishing lights: '%lf\n", lights);
-            pubLights.put(lights.c_str());
+            pubLights.put(std::to_string(lights));
         }
         else if (frame.can_id == 0x04)
         {
@@ -105,7 +105,7 @@ int main(int argc, char** argv)
             memcpy(&gear, frame.data, sizeof(char));
 
             printf("Publishing gear: '%lf\n", gear);
-            pubGear.put(gear.c_str());
+            pubGear.put(std::to_string(gear));
         }
         usleep(10);
     }

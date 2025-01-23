@@ -50,6 +50,8 @@ int main(int argc, char** argv)
         session.declare_publisher(KeyExpr("seame/car/1/speedSensor"));
     auto pubBattery =
         session.declare_publisher(KeyExpr("seame/car/1/batterySensor"));
+    auto pubLights = session.declare_publisher(KeyExpr("seame/car/1/lights"));
+    auto pubGear   = session.declare_publisher(KeyExpr("seame/car/1/gear"));
 
     while (1)
     {
@@ -86,6 +88,24 @@ int main(int argc, char** argv)
 
             printf("Publishing battery: '%lf\n", battery);
             pubBattery.put(battery_str.c_str());
+        }
+        else if (frame.can_id == 0x03)
+        {
+            char lights;
+
+            memcpy(&lights, frame.data, sizeof(char));
+
+            printf("Publishing lights: '%lf\n", lights);
+            pubLights.put(lights.c_str());
+        }
+        else if (frame.can_id == 0x04)
+        {
+            char gear;
+
+            memcpy(&gear, frame.data, sizeof(char));
+
+            printf("Publishing gear: '%lf\n", gear);
+            pubGear.put(gear.c_str());
         }
         usleep(10);
     }

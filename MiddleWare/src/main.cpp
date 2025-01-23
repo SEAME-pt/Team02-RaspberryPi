@@ -73,7 +73,7 @@ int main(int argc, char** argv)
             speed                 = wheelDiame * 3.14 * speed * 10 / 60;
             std::string speed_str = std::to_string(speed);
 
-            printf("Publishing speed: '%d'\n", speed);
+            // printf("Publishing speed: '%d'\n", speed);
             pubSpeed.put(speed_str.c_str());
         }
         else if (frame.can_id == 0x02)
@@ -86,7 +86,7 @@ int main(int argc, char** argv)
             battery          = std::min(100.0f, std::max(0.0f, percentage));
             std::string battery_str = std::to_string(battery);
 
-            printf("Publishing battery: '%lf\n", battery);
+            // printf("Publishing battery: '%lf\n", battery);
             pubBattery.put(battery_str.c_str());
         }
         else if (frame.can_id == 0x03)
@@ -95,17 +95,25 @@ int main(int argc, char** argv)
 
             memcpy(&lights, frame.data, sizeof(char));
 
-            printf("Publishing lights: '%lf\n", lights);
-            pubLights.put(std::to_string(lights));
+            printf("Can received lights: ");
+            for (int i = 7; i >= 0; i--)
+            {
+                printf("%d", (lights >> i) & 0x01);
+            }
+            printf("\n");
+
+            // printf("Publishing lights: '%lf\n", lights[0]);
+            std::string light_str(1, lights);
+            pubLights.put(light_str);
         }
         else if (frame.can_id == 0x04)
         {
-            char gear;
+            uint8_t gear[1];
 
-            memcpy(&gear, frame.data, sizeof(char));
+            memcpy(gear, frame.data, sizeof(gear));
 
-            printf("Publishing gear: '%lf\n", gear);
-            pubGear.put(std::to_string(gear));
+            // printf("Publishing gear: '%lf\n", gear[0]);
+            pubGear.put(std::to_string(gear[0]));
         }
         usleep(10);
     }

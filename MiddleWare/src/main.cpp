@@ -108,12 +108,13 @@ int main(int argc, char** argv)
         }
         else if (frame.can_id == 0x04)
         {
-            uint8_t gear[1];
+            char gear;
 
-            memcpy(gear, frame.data, sizeof(gear));
+            memcpy(&gear, frame.data, sizeof(char));
 
             // printf("Publishing gear: '%lf\n", gear[0]);
-            pubGear.put(std::to_string(gear[0]));
+            std::string gear_str(1, gear);
+            pubGear.put(std::to_string(gear_str));
         }
         usleep(10);
     }

@@ -3,14 +3,24 @@
 #include <QQmlContext>
 #include "InstrumentCluster.hpp"
 
+using namespace zenoh;
+
 int main(int argc, char* argv[])
 {
     QGuiApplication app(argc, argv);
     QQmlApplicationEngine engine;
 
-    InstrumentCluster instrumentCluster;
+    InstrumentCluster* instrumentCluster;
+    if (argc == 2)
+    {
+        instrumentCluster = new InstrumentCluster(argv[1]);
+    }
+    else
+    {
+        instrumentCluster = new InstrumentCluster();
+    }
     engine.rootContext()->setContextProperty("instrumentCluster",
-                                             &instrumentCluster);
+                                             instrumentCluster);
 
     const QUrl url(QStringLiteral("qrc:/Main.qml"));
     QObject::connect(
@@ -23,5 +33,7 @@ int main(int argc, char* argv[])
         Qt::QueuedConnection);
     engine.load(url);
 
-    return app.exec();
+    int result = app.exec();
+    delete instrumentCluster;
+    return result;
 }

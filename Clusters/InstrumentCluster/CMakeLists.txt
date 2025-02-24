@@ -16,7 +16,7 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 
-include_directories(include)
+include_directories(../include)
 
 # Add Resource File (QML and Other Resources)
 qt_add_resources(QT_RESOURCES ./ui/resources.qrc)

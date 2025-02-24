@@ -5,73 +5,26 @@ Row {
     height: 50
     spacing: 30
     padding: 10
+
     Column {
-
-        // Row {
-
-        //     anchors.verticalCenterOffset: -10
-        //     Image {
-        //         id: batteryLevel
-        //         // source: {
-        //         //     if (canBusHandler.battery >= 80) {
-        //         //         "qrc:/assets/icons/battery-5.png"
-        //         //     } else if (canBusHandler.battery >= 60) {
-        //         //         "qrc:/assets/icons/battery-4.png"
-        //         //     } else if (canBusHandler.battery >= 40) {
-        //         //         "qrc:/assets/icons/battery-3.png"
-        //         //     } else if (canBusHandler.battery >= 20) {
-        //         //         "qrc:/assets/icons/battery-2.png"
-        //         //     } else {
-        //         //         "qrc:/assets/icons/battery-1.png"
-        //         //     }
-        //         // }
-        //         width: 80
-        //         visible: true
-        //         fillMode: Image.PreserveAspectFit
-        //         source: "qrc:/assets/icons/battery-4.png" 
-        //         // Adjust this value to move the image up or down
-        //     }
-        // }
         Row {
             spacing: 5
 
-            Text {
-                font.family: "Open Sans"
-                text: instrumentCluster.battery.percentage
-                font.pixelSize: app.letterSize
-                color: "white"
+            Image {
+                id: cloudIcon
+                source: "qrc:/assets/icons/cloud.png"
+                width: app.iconWidth - 5
+                height: app.iconHeight - 5
+                visible: true
+                fillMode: Image.PreserveAspectFit
             }
-            Text {
-                font.family: "Open Sans"
-                text: "%"
-                font.pixelSize: app.letterSize
-                color: "gray"
+            
+            Rectangle {
+                width: 7 // Adjust the width to set the desired space
+                height: 1
+                color: "transparent"
             }
-        }
-    }
 
-    Column {
-
-        Row {
-            spacing: 5
-            Text {
-                font.family: "Open Sans"
-                text: instrumentCluster.battery.autonomy
-                font.pixelSize: app.letterSize
-                color: "white"
-            }
-            Text {
-                font.family: "Open Sans"
-                text: "mi"
-                font.pixelSize: app.letterSize
-                color: "gray"
-            }
-        }
-    }
-    Column {
-
-        Row {
-            spacing: 5
             Text {
                 font.family: "Open Sans"
                 text: "22°"

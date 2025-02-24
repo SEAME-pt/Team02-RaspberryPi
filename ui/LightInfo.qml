@@ -1,46 +1,81 @@
 import QtQuick 2.15
 
 Row {
-    spacing: 10
-    padding: 10
+    spacing: 20
 
-    Image {
-        id: lowBeamSignal
-        source: "qrc:/assets/icons/low_beam_on.png"
+    Rectangle {
         width: app.iconWidth
         height: app.iconHeight
-        visible: true
+        color: "transparent" // Keeps the placeholder invisible
+        Image {
+            id: lowBeamSignal
+            anchors.centerIn: parent
+            width: parent.width
+            height: parent.height
+            source: "qrc:/assets/icons/low_beam_on.png"
+            // visible: instrumentCluster.lights.lowBeam
+            visible: true
+
+        }
     }
 
-    Image {
-        id: highBeamSignal
-        source: "qrc:/assets/icons/high_beam_on.png"
+    Rectangle {
         width: app.iconWidth
         height: app.iconHeight
-        visible: true
+        color: "transparent"
+        Image {
+            id: highBeamSignal
+            anchors.centerIn: parent
+            width: parent.width
+            height: parent.height
+            source: "qrc:/assets/icons/high_beam_on.png"
+            // visible: instrumentCluster.lights.highBeam
+            visible: true
+        }
     }
 
-    Image {
-        id: frontFogSignal
-        source: "qrc:/assets/icons/front_fog_on.png"
+    Rectangle {
         width: app.iconWidth
         height: app.iconHeight
-        visible: true
+        color: "transparent"
+        Image {
+            id: frontFogSignal
+            anchors.centerIn: parent
+             width: parent.width
+            height: parent.height
+            source: "qrc:/assets/icons/front_fog_on.png"
+            // visible: instrumentCluster.lights.frontFogLight
+            visible: true
+        }
     }
 
-    Image {
-        id: parkingLightsSignal
-        source: "qrc:/assets/icons/parking_lights_on.png"
+    Rectangle {
         width: app.iconWidth
         height: app.iconHeight
-        visible: true
+        color: "transparent"
+        Image {
+            id: parkingLightsSignal
+            anchors.centerIn: parent
+             width: parent.width
+            height: parent.height
+            source: "qrc:/assets/icons/parking_lights_on.png"
+            // visible: instrumentCluster.lights.parkingLight
+            visible: true
+        }
     }
 
-    Image {
-        id: backFogSignal
-        source: "qrc:/assets/icons/back_fog_on.png"
+    Rectangle {
         width: app.iconWidth
         height: app.iconHeight
-        visible: true
+        color: "transparent"
+        Image {
+            id: backFogSignal
+            anchors.centerIn: parent
+             width: parent.width
+            height: parent.height
+            source: "qrc:/assets/icons/back_fog_on.png"
+            // visible: instrumentCluster.lights.rearFogLight
+            visible: true
+        }
     }
 }

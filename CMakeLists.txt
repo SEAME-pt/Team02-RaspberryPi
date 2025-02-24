@@ -16,15 +16,17 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 
+include_directories(include)
+
 # Add Resource File (QML and Other Resources)
 qt_add_resources(QT_RESOURCES ./ui/resources.qrc)
 
 # Define Executable Target
-add_executable(InstrumentCluster
+add_executable(InstrumentClusterApp
     ${QT_RESOURCES}
     ./src/main.cpp
     ./src/InstrumentCluster.cpp
     ./include/InstrumentCluster.hpp
 )
 
-target_link_libraries(InstrumentCluster zenohcxx::zenohc -lm -ldl Qt6::Core Qt6::DBus Qt6::Quick)
+target_link_libraries(InstrumentClusterApp zenohcxx::zenohc -lm -ldl Qt6::Core Qt6::DBus Qt6::Quick)

@@ -7,7 +7,6 @@ Row {
     padding: 10
 
     Column {
-
         Row {
             spacing: 5
 

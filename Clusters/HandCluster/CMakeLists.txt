@@ -25,8 +25,8 @@ qt_add_resources(QT_RESOURCES ./ui/resources.qrc)
 add_executable(InstrumentClusterApp
     ${QT_RESOURCES}
     ./src/main.cpp
-    ./src/InstrumentCluster.cpp
-    ./include/InstrumentCluster.hpp
+    ../src/InstrumentCluster.cpp
+    ../include/InstrumentCluster.hpp
 )
 
 target_link_libraries(InstrumentClusterApp zenohcxx::zenohc -lm -ldl Qt6::Core Qt6::DBus Qt6::Quick)

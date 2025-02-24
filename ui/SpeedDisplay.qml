@@ -1,7 +1,8 @@
 import QtQuick 2.15
 
+
 Column {
-    spacing: 5
+    spacing: 3
 
     Text {
         font.family: "Open Sans"

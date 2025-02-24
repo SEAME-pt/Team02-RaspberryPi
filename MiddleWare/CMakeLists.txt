@@ -10,8 +10,20 @@ set(zenohcxx_DIR "/usr/local/lib/cmake/zenohcxx")
 find_package(zenohc REQUIRED)
 find_package(zenohcxx REQUIRED)
 
-add_executable(middleWare
+# include(FetchContent)
+# FetchContent_Declare(
+#     Libs
+#     GIT_REPOSITORY https://github.com/SEAME-pt/Team02-Libs
+#     GIT_TAG main
+# )
+# FetchContent_MakeAvailable(Libs)   
+
+# include_directories(${libs_SOURCE_DIR}/Communication/I2C/include)
+# include_directories(${libs_SOURCE_DIR}/Communication/CAN/include)
+# include_directories(${libs_SOURCE_DIR}/Peripherals/INA219/include) 
+
+add_executable(MiddleWareApp
     ./src/main.cpp
 )
 
-target_link_libraries(middleWare PRIVATE zenohcxx::zenohc)
+target_link_libraries(MiddleWareApp PRIVATE zenohcxx::zenohc)

@@ -13,9 +13,7 @@ Row {
             width: parent.width
             height: parent.height
             source: "qrc:/assets/icons/low_beam_on.png"
-            // visible: instrumentCluster.lights.lowBeam
-            visible: true
-
+            visible: instrumentCluster.lowBeam
         }
     }
 
@@ -29,8 +27,7 @@ Row {
             width: parent.width
             height: parent.height
             source: "qrc:/assets/icons/high_beam_on.png"
-            // visible: instrumentCluster.lights.highBeam
-            visible: true
+            visible: instrumentCluster.highBeam
         }
     }
 
@@ -44,8 +41,7 @@ Row {
              width: parent.width
             height: parent.height
             source: "qrc:/assets/icons/front_fog_on.png"
-            // visible: instrumentCluster.lights.frontFogLight
-            visible: true
+            visible: instrumentCluster.frontFogLight
         }
     }
 
@@ -59,8 +55,7 @@ Row {
              width: parent.width
             height: parent.height
             source: "qrc:/assets/icons/parking_lights_on.png"
-            // visible: instrumentCluster.lights.parkingLight
-            visible: true
+            visible: instrumentCluster.parkingLight
         }
     }
 
@@ -74,8 +69,7 @@ Row {
              width: parent.width
             height: parent.height
             source: "qrc:/assets/icons/back_fog_on.png"
-            // visible: instrumentCluster.lights.rearFogLight
-            visible: true
+            visible: instrumentCluster.rearFogLight
         }
     }
 }

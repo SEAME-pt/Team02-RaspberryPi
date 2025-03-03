@@ -1,191 +1,284 @@
 #include "InstrumentCluster.hpp"
 
 InstrumentCluster::InstrumentCluster(QObject* parent)
-    : QObject(parent),
-      m_session(Session::open(std::move(Config::create_default()))),
-      m_subSpeed(m_session.declare_subscriber(
-          "seame/car/1/speedSensor",
-          [this](const Sample& sample)
-          {
-              int speed = std::stoi(sample.get_payload().as_string());
-              std::cout << "Sub speed" << std::endl;
-              this->setSpeed(speed);
-          },
-          closures::none)),
-      m_subBattery(m_session.declare_subscriber(
-          "seame/car/1/batterySensor",
-          [this](const Sample& sample)
-          {
-              int batteryPercentage =
-                  std::stoi(sample.get_payload().as_string());
-              BatteryStatus battery;
-              battery.percentage = batteryPercentage;
-              std::cout << "Sub battery" << std::endl;
-              this->setBattery(battery);
-          },
-          closures::none)),
-      m_subLights(m_session.declare_subscriber(
-          "seame/car/1/lights",
-          [this](const Sample& sample)
-          {
-              uint8_t data =
-                  static_cast<uint8_t>(sample.get_payload().as_string()[0]);
-
-              LightStatus lights;
-              lights.rightBlinker  = (data & (1 << 0)) != 0;
-              lights.leftBlinker   = (data & (1 << 1)) != 0;
-              lights.lowBeam       = (data & (1 << 2)) != 0;
-              lights.highBeam      = (data & (1 << 3)) != 0;
-              lights.frontFogLight = (data & (1 << 4)) != 0;
-              lights.rearFogLight  = (data & (1 << 5)) != 0;
-              lights.hazardLight   = (data & (1 << 6)) != 0;
-              lights.parkingLight  = (data & (1 << 7)) != 0;
-              std::cout << "Sub lights" << std::endl;
-              this->setLights(lights);
-          },
-          closures::none)),
-      m_subGear(m_session.declare_subscriber(
-          "seame/car/1/gear",
-          [this](const Sample& sample)
-          {
-              uint8_t data =
-                  static_cast<uint8_t>(sample.get_payload().as_string()[0]);
-
-              GearPosition gear;
-              gear.park    = (data & (1 << 0)) != 0;
-              gear.reverse = (data & (1 << 1)) != 0;
-              gear.neutral = (data & (1 << 2)) != 0;
-              gear.drive   = (data & (1 << 3)) != 0;
-              std::cout << "Sub gear" << std::endl;
-              this->setGear(gear);
-          },
-          closures::none)),
-      m_speed(0)
+    : QObject(parent), m_speed(0), percentage(0), autonomy(0), gear(0)
 {
+    auto config = zenoh::Config::create_default();
+    session     = std::make_unique<zenoh::Session>(
+        zenoh::Session::open(std::move(config)));
+    this->setupSubscriptions();
 }
 
 InstrumentCluster::InstrumentCluster(const std::string& configFile,
                                      QObject* parent)
-    : QObject(parent),
-      m_session(Session::open(std::move(Config::from_file(configFile)))),
-      m_subSpeed(m_session.declare_subscriber(
-          "seame/car/1/speedSensor",
-          [this](const Sample& sample)
-          {
-              int speed = std::stoi(sample.get_payload().as_string());
-              std::cout << "Sub speed" << std::endl;
-              this->setSpeed(speed);
-          },
-          closures::none)),
-      m_subBattery(m_session.declare_subscriber(
-          "seame/car/1/batterySensor",
-          [this](const Sample& sample)
-          {
-              int batteryPercentage =
-                  std::stoi(sample.get_payload().as_string());
-              BatteryStatus battery;
-              battery.percentage = batteryPercentage;
-              std::cout << "Sub battery" << std::endl;
-              this->setBattery(battery);
-          },
-          closures::none)),
-      m_subLights(m_session.declare_subscriber(
-          "seame/car/1/lights",
-          [this](const Sample& sample)
-          {
-              uint8_t data =
-                  static_cast<uint8_t>(sample.get_payload().as_string()[0]);
-
-              LightStatus lights;
-              lights.rightBlinker  = (data & (1 << 0)) != 0;
-              lights.leftBlinker   = (data & (1 << 1)) != 0;
-              lights.lowBeam       = (data & (1 << 2)) != 0;
-              lights.highBeam      = (data & (1 << 3)) != 0;
-              lights.frontFogLight = (data & (1 << 4)) != 0;
-              lights.rearFogLight  = (data & (1 << 5)) != 0;
-              lights.hazardLight   = (data & (1 << 6)) != 0;
-              lights.parkingLight  = (data & (1 << 7)) != 0;
-              std::cout << "Sub lights" << std::endl;
-              this->setLights(lights);
-          },
-          closures::none)),
-      m_subGear(m_session.declare_subscriber(
-          "seame/car/1/gear",
-          [this](const Sample& sample)
-          {
-              uint8_t data =
-                  static_cast<uint8_t>(sample.get_payload().as_string()[0]);
-
-              GearPosition gear;
-              gear.park    = (data & (1 << 0)) != 0;
-              gear.reverse = (data & (1 << 1)) != 0;
-              gear.neutral = (data & (1 << 2)) != 0;
-              gear.drive   = (data & (1 << 3)) != 0;
-              std::cout << "Sub gear" << std::endl;
-              this->setGear(gear);
-          },
-          closures::none)),
-      m_speed(0)
+    : QObject(parent), m_speed(0), percentage(0), autonomy(0), gear(0)
 {
+    auto config = zenoh::Config::from_file(configFile);
+    session     = std::make_unique<zenoh::Session>(
+        zenoh::Session::open(std::move(config)));
+    this->setupSubscriptions();
 }
 
 InstrumentCluster::~InstrumentCluster()
 {
-    m_session.close();
+    session->close();
+}
+
+void InstrumentCluster::setupSubscriptions()
+{
+    speed_subscriber.emplace(session->declare_subscriber(
+        "Vehicle/1/Speed",
+        [this](const zenoh::Sample& sample)
+        {
+            int speed = std::stoi(sample.get_payload().as_string());
+            setSpeed(speed);
+        },
+        zenoh::closures::none));
+
+    beamLow_subscriber.emplace(session->declare_subscriber(
+        "Vehicle/1/Body/Lights/Beam/Low",
+        [this](const zenoh::Sample& sample)
+        {
+            bool isOn = std::stoi(sample.get_payload().as_string());
+            setLowBeam(isOn);
+        },
+        zenoh::closures::none));
+
+    beamHigh_subscriber.emplace(session->declare_subscriber(
+        "Vehicle/1/Body/Lights/Beam/High",
+        [this](const zenoh::Sample& sample)
+        {
+            bool isOn = std::stoi(sample.get_payload().as_string());
+            setHighBeam(isOn);
+        },
+        zenoh::closures::none));
+
+    directionIndicatorLeft_subscriber.emplace(session->declare_subscriber(
+        "Vehicle/1/Body/Lights/DirectionIndicator/Left",
+        [this](const zenoh::Sample& sample)
+        {
+            bool isSignaling = std::stoi(sample.get_payload().as_string());
+            setLeftBlinker(isSignaling);
+        },
+        zenoh::closures::none));
+
+    directionIndicatorRight_subscriber.emplace(session->declare_subscriber(
+        "Vehicle/1/Body/Lights/DirectionIndicator/Right",
+        [this](const zenoh::Sample& sample)
+        {
+            bool isSignaling = std::stoi(sample.get_payload().as_string());
+            setRightBlinker(isSignaling);
+        },
+        zenoh::closures::none));
+
+    hazard_subscriber.emplace(session->declare_subscriber(
+        "Vehicle/1/Body/Lights/Hazard",
+        [this](const zenoh::Sample& sample)
+        {
+            bool isSignaling = std::stoi(sample.get_payload().as_string());
+            setHazardLight(isSignaling);
+        },
+        zenoh::closures::none));
+
+    fogFront_subscriber.emplace(session->declare_subscriber(
+        "Vehicle/1/Body/Lights/Fog/Front",
+        [this](const zenoh::Sample& sample)
+        {
+            bool isOn = std::stoi(sample.get_payload().as_string());
+            setFrontFogLight(isOn);
+        },
+        zenoh::closures::none));
+
+    fogRear_subscriber.emplace(session->declare_subscriber(
+        "Vehicle/1/Body/Lights/Fog/Rear",
+        [this](const zenoh::Sample& sample)
+        {
+            bool isOn = std::stoi(sample.get_payload().as_string());
+            setRearFogLight(isOn);
+        },
+        zenoh::closures::none));
+
+    parking_subscriber.emplace(session->declare_subscriber(
+        "Vehicle/1/Body/Lights/Parking",
+        [this](const zenoh::Sample& sample)
+        {
+            bool isOn = std::stoi(sample.get_payload().as_string());
+            setParkingLight(isOn);
+        },
+        zenoh::closures::none));
+
+    stateOfCharge_subscriber.emplace(session->declare_subscriber(
+        "Vehicle/1/Powertrain/TractionBattery/StateOfCharge",
+        [this](const zenoh::Sample& sample)
+        {
+            int soc = std::stoi(sample.get_payload().as_string());
+            setPercentage(soc);
+        },
+        zenoh::closures::none));
+
+    currentGear_subscriber.emplace(session->declare_subscriber(
+        "Vehicle/1/Powertrain/Transmission/CurrentGear",
+        [this](const zenoh::Sample& sample)
+        {
+            int currentGear = std::stoi(sample.get_payload().as_string());
+            setGear(currentGear);
+        },
+        zenoh::closures::none));
 }
 
 int InstrumentCluster::getSpeed() const
 {
     return m_speed;
 }
-
-BatteryStatus InstrumentCluster::getBattery() const
-{
-    return m_battery;
-}
-
-LightStatus InstrumentCluster::getLights() const
-{
-    return m_lights;
-}
-
-GearPosition InstrumentCluster::getGear() const
-{
-    return m_gear;
-}
-
 void InstrumentCluster::setSpeed(int speed)
 {
     if (m_speed != speed)
     {
         m_speed = speed;
-        emit speedChanged(m_speed);
+        emit speedChanged(speed);
     }
 }
 
-void InstrumentCluster::setBattery(BatteryStatus battery)
+// Blinkers
+bool InstrumentCluster::getRightBlinker() const
 {
-    if (m_battery != battery)
+    return rightBlinker;
+}
+void InstrumentCluster::setRightBlinker(bool state)
+{
+    if (rightBlinker != state)
     {
-        m_battery = battery;
-        emit batteryChanged(m_battery);
+        rightBlinker = state;
+        emit rightBlinkerChanged(state);
     }
 }
 
-void InstrumentCluster::setLights(LightStatus lights)
+bool InstrumentCluster::getLeftBlinker() const
 {
-    if (m_lights != lights)
+    return leftBlinker;
+}
+void InstrumentCluster::setLeftBlinker(bool state)
+{
+    if (leftBlinker != state)
     {
-        m_lights = lights;
-        emit lightsChanged(m_lights);
+        leftBlinker = state;
+        emit leftBlinkerChanged(state);
     }
 }
 
-void InstrumentCluster::setGear(GearPosition gear)
+bool InstrumentCluster::getLowBeam() const
 {
-    if (m_gear != gear)
+    return lowBeam;
+}
+void InstrumentCluster::setLowBeam(bool state)
+{
+    if (lowBeam != state)
     {
-        m_gear = gear;
-        emit gearChanged(m_gear);
+        lowBeam = state;
+        emit lowBeamChanged(state);
+    }
+}
+
+bool InstrumentCluster::getHighBeam() const
+{
+    return highBeam;
+}
+void InstrumentCluster::setHighBeam(bool state)
+{
+    if (highBeam != state)
+    {
+        highBeam = state;
+        emit highBeamChanged(state);
+    }
+}
+
+bool InstrumentCluster::getFrontFogLight() const
+{
+    return frontFogLight;
+}
+void InstrumentCluster::setFrontFogLight(bool state)
+{
+    if (frontFogLight != state)
+    {
+        frontFogLight = state;
+        emit frontFogLightChanged(state);
+    }
+}
+
+bool InstrumentCluster::getRearFogLight() const
+{
+    return rearFogLight;
+}
+void InstrumentCluster::setRearFogLight(bool state)
+{
+    if (rearFogLight != state)
+    {
+        rearFogLight = state;
+        emit rearFogLightChanged(state);
+    }
+}
+
+bool InstrumentCluster::getHazardLight() const
+{
+    return hazardLight;
+}
+void InstrumentCluster::setHazardLight(bool state)
+{
+    if (hazardLight != state)
+    {
+        hazardLight = state;
+        emit hazardLightChanged(state);
+    }
+}
+
+bool InstrumentCluster::getParkingLight() const
+{
+    return parkingLight;
+}
+void InstrumentCluster::setParkingLight(bool state)
+{
+    if (parkingLight != state)
+    {
+        parkingLight = state;
+        emit parkingLightChanged(state);
+    }
+}
+
+int InstrumentCluster::getPercentage() const
+{
+    return percentage;
+}
+void InstrumentCluster::setPercentage(int value)
+{
+    if (percentage != value)
+    {
+        percentage = value;
+        emit percentageChanged(value);
+    }
+}
+
+int InstrumentCluster::getAutonomy() const
+{
+    return autonomy;
+}
+void InstrumentCluster::setAutonomy(int value)
+{
+    if (autonomy != value)
+    {
+        autonomy = value;
+        emit autonomyChanged(value);
+    }
+}
+
+int InstrumentCluster::getGear() const
+{
+    return gear;
+}
+void InstrumentCluster::setGear(int value)
+{
+    if (gear != value)
+    {
+        gear = value;
+        emit gearChanged(value);
     }
 }

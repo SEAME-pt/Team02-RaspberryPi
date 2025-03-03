@@ -15,12 +15,12 @@ Row {
             width: 70
             height: 70
             opacity: 0.0
-            visible: instrumentCluster.lights.rightBlinker
+            visible: instrumentCluster.rightBlinker
             
             Timer {
                 id: blinkTimer
                 interval: 500
-                running: instrumentCluster.lights.rightBlinker
+                running: instrumentCluster.rightBlinker
                 repeat: true
                 onTriggered: {
                     // Toggle opacity when blinking

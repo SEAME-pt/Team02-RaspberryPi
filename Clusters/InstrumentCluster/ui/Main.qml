@@ -68,15 +68,15 @@ ApplicationWindow {
             CircularProgressBar {
                 id: batteryPercentage
                 lineWidth: 10
-                value: 0.1
-                size: 150
+                value: instrumentCluster.percentage / 100
+                size: 115
                 secondaryColor: "#ffffff"
-                primaryColor: "#1b43c7"
+                primaryColor: instrumentCluster.percentage < 20 ? "#ff0000" : "#2fc71b"
 
                 Text {
                     text: parseInt(batteryPercentage.value * 100) + "%"
                     anchors.centerIn: parent
-                    font.pixelSize: 25
+                    font.pixelSize: 22
                     color: "#ffffff"
                 }
             }
@@ -84,7 +84,7 @@ ApplicationWindow {
             CircularProgressBar {
                 id: batteryAutonomy
                 lineWidth: 10
-                value: 0.2
+                value: instrumentCluster.autonomy / 100
                 size: 120
                 secondaryColor: "#ffffff"
                 primaryColor: "#1ba5c7"

@@ -1,10 +1,12 @@
 #include <stdio.h>
 #include <iostream>
 #include <string.h>
+#include <string>
 #include <sys/socket.h>
 #include <linux/can.h>
 #include <linux/can/raw.h>
 #include <net/if.h>
+#include <memory>
 #include <sys/ioctl.h>
 #include <unistd.h>
 #include <arpa/inet.h>
@@ -39,19 +41,52 @@ int main(int argc, char** argv)
     std::cout << "CAN socket bound to can0 interface successfully."
               << std::endl;
 
-    auto config = Config::create_default();
+    std::unique_ptr<zenoh::Session> session;
     if (argc == 2)
     {
-        config = Config::from_file(argv[1]);
+        auto config = Config::from_file(argv[1]);
+        session     = std::make_unique<zenoh::Session>(
+            zenoh::Session::open(std::move(config)));
     }
-    auto session = Session::open(std::move(config));
+    else
+    {
+        auto config = Config::create_default();
+        session     = std::make_unique<zenoh::Session>(
+            zenoh::Session::open(std::move(config)));
+    }
 
-    auto pubSpeed =
-        session.declare_publisher(KeyExpr("seame/car/1/speedSensor"));
-    auto pubBattery =
-        session.declare_publisher(KeyExpr("seame/car/1/batterySensor"));
-    auto pubLights = session.declare_publisher(KeyExpr("seame/car/1/lights"));
-    auto pubGear   = session.declare_publisher(KeyExpr("seame/car/1/gear"));
+    auto speed_pub =
+        session->declare_publisher(zenoh::KeyExpr("Vehicle/1/Speed"));
+    auto beamLow_pub = session->declare_publisher(
+        zenoh::KeyExpr("Vehicle/1/Body/Lights/Beam/Low"));
+    auto beamHigh_pub = session->declare_publisher(
+        zenoh::KeyExpr("Vehicle/1/Body/Lights/Beam/High"));
+    auto running_pub = session->declare_publisher(
+        zenoh::KeyExpr("Vehicle/1/Body/Lights/Running"));
+    auto parking_pub = session->declare_publisher(
+        zenoh::KeyExpr("Vehicle/1/Body/Lights/Parking"));
+    auto fogRear_pub = session->declare_publisher(
+        zenoh::KeyExpr("Vehicle/1/Body/Lights/Fog/Rear"));
+    auto fogFront_pub = session->declare_publisher(
+        zenoh::KeyExpr("Vehicle/1/Body/Lights/Fog/Front"));
+    auto brake_pub = session->declare_publisher(
+        zenoh::KeyExpr("Vehicle/1/Body/Lights/Brake"));
+    auto hazard_pub = session->declare_publisher(
+        zenoh::KeyExpr("Vehicle/1/Body/Lights/Hazard"));
+    auto directionIndicatorLeft_pub = session->declare_publisher(
+        zenoh::KeyExpr("Vehicle/1/Body/Lights/DirectionIndicator/Left"));
+    auto directionIndicatorRight_pub = session->declare_publisher(
+        zenoh::KeyExpr("Vehicle/1/Body/Lights/DirectionIndicator/Right"));
+    auto currentGear_pub = session->declare_publisher(
+        zenoh::KeyExpr("Vehicle/1/Powertrain/Transmission/CurrentGear"));
+    auto current_voltage_pub = session->declare_publisher(
+        zenoh::KeyExpr("Vehicle/1/Powertrain/TractionBattery/CurentVoltage"));
+    auto current_current_pub = session->declare_publisher(
+        zenoh::KeyExpr("Vehicle/1/Powertrain/TractionBattery/CurrentCurrent"));
+    auto current_power_pub = session->declare_publisher(
+        zenoh::KeyExpr("Vehicle/1/Powertrain/TractionBattery/CurrentPower"));
+    auto state_of_charge_pub = session->declare_publisher(
+        zenoh::KeyExpr("Vehicle/1/Powertrain/TractionBattery/StateOfCharge"));
 
     while (1)
     {
@@ -74,7 +109,7 @@ int main(int argc, char** argv)
             std::string speed_str = std::to_string(speed);
 
             // printf("Publishing speed: '%d'\n", speed);
-            pubSpeed.put(speed_str.c_str());
+            speed_pub.put(speed_str.c_str());
         }
         else if (frame.can_id == 0x02)
         {
@@ -87,7 +122,7 @@ int main(int argc, char** argv)
             std::string battery_str = std::to_string(battery);
 
             // printf("Publishing battery: '%lf\n", battery);
-            pubBattery.put(battery_str.c_str());
+            state_of_charge_pub.put(battery_str.c_str());
         }
         else if (frame.can_id == 0x03)
         {
@@ -102,19 +137,25 @@ int main(int argc, char** argv)
             }
             printf("\n");
 
-            // printf("Publishing lights: '%lf\n", lights[0]);
-            std::string light_str(1, lights);
-            pubLights.put(light_str);
+            directionIndicatorRight_pub.put(
+                std::to_string((lights & (1 << 0)) != 0));
+            directionIndicatorLeft_pub.put(
+                std::to_string((lights & (1 << 1)) != 0));
+            beamLow_pub.put(std::to_string((lights & (1 << 2)) != 0));
+            beamHigh_pub.put(std::to_string((lights & (1 << 3)) != 0));
+            fogFront_pub.put(std::to_string((lights & (1 << 4)) != 0));
+            fogRear_pub.put(std::to_string((lights & (1 << 5)) != 0));
+            hazard_pub.put(std::to_string((lights & (1 << 6)) != 0));
+            parking_pub.put(std::to_string((lights & (1 << 7)) != 0));
         }
         else if (frame.can_id == 0x04)
         {
-            char gear;
+            int gear;
 
-            memcpy(&gear, frame.data, sizeof(char));
+            memcpy(&gear, frame.data, sizeof(gear));
 
             // printf("Publishing gear: '%lf\n", gear[0]);
-            std::string gear_str(1, gear);
-            pubGear.put(std::to_string(gear_str));
+            currentGear_pub.put(std::to_string(gear));
         }
         usleep(10);
     }

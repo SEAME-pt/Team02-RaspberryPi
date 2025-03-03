@@ -3,24 +3,39 @@
 
 #include <QObject>
 #include <iostream>
+#include <memory>
 #include "zenoh.hxx"
 
 using namespace zenoh;
 
-struct LightStatus
+class InstrumentCluster : public QObject
 {
-    Q_GADGET
+    Q_OBJECT
+    Q_PROPERTY(int speed READ getSpeed WRITE setSpeed NOTIFY speedChanged)
+    Q_PROPERTY(bool rightBlinker READ getRightBlinker WRITE setRightBlinker
+                   NOTIFY rightBlinkerChanged)
+    Q_PROPERTY(bool leftBlinker READ getLeftBlinker WRITE setLeftBlinker NOTIFY
+                   leftBlinkerChanged)
+    Q_PROPERTY(
+        bool lowBeam READ getLowBeam WRITE setLowBeam NOTIFY lowBeamChanged)
+    Q_PROPERTY(
+        bool highBeam READ getHighBeam WRITE setHighBeam NOTIFY highBeamChanged)
+    Q_PROPERTY(bool frontFogLight READ getFrontFogLight WRITE setFrontFogLight
+                   NOTIFY frontFogLightChanged)
+    Q_PROPERTY(bool rearFogLight READ getRearFogLight WRITE setRearFogLight
+                   NOTIFY rearFogLightChanged)
+    Q_PROPERTY(bool hazardLight READ getHazardLight WRITE setHazardLight NOTIFY
+                   hazardLightChanged)
+    Q_PROPERTY(bool parkingLight READ getParkingLight WRITE setParkingLight
+                   NOTIFY parkingLightChanged)
+    Q_PROPERTY(int percentage READ getPercentage WRITE setPercentage NOTIFY
+                   percentageChanged)
+    Q_PROPERTY(
+        int autonomy READ getAutonomy WRITE setAutonomy NOTIFY autonomyChanged)
+    Q_PROPERTY(int gear READ getGear WRITE setGear NOTIFY gearChanged)
 
-    Q_PROPERTY(bool rightBlinker MEMBER rightBlinker)
-    Q_PROPERTY(bool leftBlinker MEMBER leftBlinker)
-    Q_PROPERTY(bool lowBeam MEMBER lowBeam)
-    Q_PROPERTY(bool highBeam MEMBER highBeam)
-    Q_PROPERTY(bool frontFogLight MEMBER frontFogLight)
-    Q_PROPERTY(bool rearFogLight MEMBER rearFogLight)
-    Q_PROPERTY(bool hazardLight MEMBER hazardLight)
-    Q_PROPERTY(bool parkingLight MEMBER parkingLight)
-
-  public:
+  private:
+    int m_speed;
     bool rightBlinker{false};
     bool leftBlinker{false};
     bool lowBeam{false};
@@ -29,77 +44,28 @@ struct LightStatus
     bool rearFogLight{false};
     bool hazardLight{false};
     bool parkingLight{false};
-
-    bool operator!=(const LightStatus& lights) const
-    {
-        return rightBlinker != lights.rightBlinker ||
-               leftBlinker != lights.leftBlinker || lowBeam != lights.lowBeam ||
-               highBeam != lights.highBeam ||
-               frontFogLight != lights.frontFogLight ||
-               rearFogLight != lights.rearFogLight ||
-               hazardLight != lights.hazardLight ||
-               parkingLight != lights.parkingLight;
-    }
-};
-
-struct BatteryStatus
-{
-    Q_GADGET
-
-    Q_PROPERTY(int percentage MEMBER percentage)
-    Q_PROPERTY(int autonomy MEMBER autonomy)
-
-  public:
     int percentage;
     int autonomy;
+    int gear;
 
-    bool operator!=(const BatteryStatus& battery) const
-    {
-        return percentage != battery.percentage || autonomy != battery.autonomy;
-    }
-};
-
-struct GearPosition
-{
-    Q_GADGET
-
-    Q_PROPERTY(bool park MEMBER park)
-    Q_PROPERTY(bool reverse MEMBER reverse)
-    Q_PROPERTY(bool neutral MEMBER neutral)
-    Q_PROPERTY(bool drive MEMBER drive)
-
-  public:
-    bool park{true};
-    bool reverse{false};
-    bool neutral{false};
-    bool drive{false};
-
-    bool operator!=(const GearPosition& gear) const
-    {
-        return park != gear.park || reverse != gear.reverse ||
-               neutral != gear.neutral || drive != gear.drive;
-    }
-};
-
-class InstrumentCluster : public QObject
-{
-    Q_OBJECT
-    Q_PROPERTY(int speed READ getSpeed NOTIFY speedChanged)
-    Q_PROPERTY(BatteryStatus battery READ getBattery NOTIFY batteryChanged)
-    Q_PROPERTY(LightStatus lights READ getLights NOTIFY lightsChanged)
-    Q_PROPERTY(GearPosition gear READ getGear NOTIFY gearChanged)
-
-  private:
-    int m_speed;
-    BatteryStatus m_battery;
-    LightStatus m_lights;
-    GearPosition m_gear;
-
-    Session m_session;
-    Subscriber<void> m_subSpeed;
-    Subscriber<void> m_subBattery;
-    Subscriber<void> m_subLights;
-    Subscriber<void> m_subGear;
+    std::unique_ptr<zenoh::Session> session;
+    std::optional<zenoh::Subscriber<void>> speed_subscriber;
+    std::optional<zenoh::Subscriber<void>> beamLow_subscriber;
+    std::optional<zenoh::Subscriber<void>> beamHigh_subscriber;
+    std::optional<zenoh::Subscriber<void>> running_subscriber;
+    std::optional<zenoh::Subscriber<void>> parking_subscriber;
+    std::optional<zenoh::Subscriber<void>> fogRear_subscriber;
+    std::optional<zenoh::Subscriber<void>> fogFront_subscriber;
+    std::optional<zenoh::Subscriber<void>> brake_subscriber;
+    std::optional<zenoh::Subscriber<void>> hazard_subscriber;
+    std::optional<zenoh::Subscriber<void>> directionIndicatorLeft_subscriber;
+    std::optional<zenoh::Subscriber<void>> directionIndicatorRight_subscriber;
+    std::optional<zenoh::Subscriber<void>> stateOfCharge_subscriber;
+    std::optional<zenoh::Subscriber<void>> maxVoltage_subscriber;
+    std::optional<zenoh::Subscriber<void>> currentVoltage_subscriber;
+    std::optional<zenoh::Subscriber<void>> currentCurrent_subscriber;
+    std::optional<zenoh::Subscriber<void>> currentPower_subscriber;
+    std::optional<zenoh::Subscriber<void>> currentGear_subscriber;
 
   public:
     explicit InstrumentCluster(QObject* parent = nullptr);
@@ -108,20 +74,57 @@ class InstrumentCluster : public QObject
     ~InstrumentCluster();
 
     int getSpeed() const;
-    BatteryStatus getBattery() const;
-    LightStatus getLights() const;
-    GearPosition getGear() const;
-
     void setSpeed(int speed);
-    void setBattery(BatteryStatus battery);
-    void setLights(LightStatus lights);
-    void setGear(GearPosition gear);
+
+    bool getRightBlinker() const;
+    void setRightBlinker(bool state);
+
+    bool getLeftBlinker() const;
+    void setLeftBlinker(bool state);
+
+    bool getLowBeam() const;
+    void setLowBeam(bool state);
+
+    bool getHighBeam() const;
+    void setHighBeam(bool state);
+
+    bool getFrontFogLight() const;
+    void setFrontFogLight(bool state);
+
+    bool getRearFogLight() const;
+    void setRearFogLight(bool state);
+
+    bool getHazardLight() const;
+    void setHazardLight(bool state);
+
+    bool getParkingLight() const;
+    void setParkingLight(bool state);
+
+    int getPercentage() const;
+    void setPercentage(int value);
+
+    int getAutonomy() const;
+    void setAutonomy(int value);
+
+    int getGear() const;
+    void setGear(int value);
+
+  private:
+    void setupSubscriptions();
 
   signals:
     void speedChanged(int speed);
-    void batteryChanged(BatteryStatus battery);
-    void lightsChanged(LightStatus lights);
-    void gearChanged(GearPosition gear);
+    void rightBlinkerChanged(bool state);
+    void leftBlinkerChanged(bool state);
+    void lowBeamChanged(bool state);
+    void highBeamChanged(bool state);
+    void frontFogLightChanged(bool state);
+    void rearFogLightChanged(bool state);
+    void hazardLightChanged(bool state);
+    void parkingLightChanged(bool state);
+    void percentageChanged(int value);
+    void autonomyChanged(int value);
+    void gearChanged(int gear);
 };
 
 #endif // INSTRUMENTCLUSTER_HPP

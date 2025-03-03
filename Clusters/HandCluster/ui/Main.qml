@@ -183,7 +183,7 @@ ApplicationWindow {
                     width: parent.width
                     height: parent.height
                     source: "qrc:/assets/icons/low_beam_on.png"
-                    visible: instrumentCluster.lights.lowBeam
+                    visible: instrumentCluster.lowBeam
                 }
             }
 
@@ -197,7 +197,7 @@ ApplicationWindow {
                     width: parent.width
                     height: parent.height
                     source: "qrc:/assets/icons/high_beam_on.png"
-                    visible: instrumentCluster.lights.highBeam
+                    visible: instrumentCluster.highBeam
                 }
             }
 
@@ -211,7 +211,7 @@ ApplicationWindow {
                      width: parent.width
                     height: parent.height
                     source: "qrc:/assets/icons/front_fog_on.png"
-                    visible: instrumentCluster.lights.frontFogLight
+                    visible: instrumentCluster.frontFogLight
                 }
             }
 
@@ -225,7 +225,7 @@ ApplicationWindow {
                      width: parent.width
                     height: parent.height
                     source: "qrc:/assets/icons/parking_lights_on.png"
-                    visible: instrumentCluster.lights.parkingLight
+                    visible: instrumentCluster.parkingLight
                 }
             }
 
@@ -239,7 +239,7 @@ ApplicationWindow {
                      width: parent.width
                     height: parent.height
                     source: "qrc:/assets/icons/back_fog_on.png"
-                    visible: instrumentCluster.lights.rearFogLight
+                    visible: instrumentCluster.rearFogLight
                 }
             }
     }
@@ -252,30 +252,30 @@ ApplicationWindow {
             Text {
                 font.family: "Open Sans"
                 text: "P"
-                font.pixelSize: instrumentCluster.gear.park ? app.letterSizeLoaded : app.letterSizeGear
-                color: instrumentCluster.gear.park ? "blue" : "white"
-                y: instrumentCluster.gear.park ? gearOffset : 0
+                font.pixelSize: instrumentCluster.gear == 127 ? app.letterSizeLoaded : app.letterSize
+                color: instrumentCluster.gear == 127 ? "blue" : "white"
+                y: instrumentCluster.gear == 127 ? gearOffset : 0
             }
             Text {
                 font.family: "Open Sans"
                 text: "R"
-                font.pixelSize: instrumentCluster.gear.reverse ? app.letterSizeLoaded : app.letterSizeGear
-                color: instrumentCluster.gear.reverse ? "blue" : "white"
-                y: instrumentCluster.gear.reverse ? gearOffset : 0
+                font.pixelSize: instrumentCluster.gear == -1 ? app.letterSizeLoaded : app.letterSize
+                color: instrumentCluster.gear == -1 ? "blue" : "white"
+                y: instrumentCluster.gear == -1 ? gearOffset : 0
             }
             Text {
                 font.family: "Open Sans"
                 text: "N"
-                font.pixelSize: instrumentCluster.gear.neutral ? app.letterSizeLoaded : app.letterSizeGear
-                color: instrumentCluster.gear.neutral ? "blue" : "white"
-                y: instrumentCluster.gear.neutral ? gearOffset : 0
+                font.pixelSize: instrumentCluster.gear == 0 ? app.letterSizeLoaded : app.letterSize
+                color: instrumentCluster.gear == 0 ? "blue" : "white"
+                y: instrumentCluster.gear == 0 ? gearOffset : 0
             }
             Text {
                 font.family: "Open Sans"
                 text: "D"
-                font.pixelSize: instrumentCluster.gear.drive ? app.letterSizeLoaded : app.letterSizeGear
-                color: instrumentCluster.gear.drive ? "blue" : "white"
-                y: instrumentCluster.gear.drive ? gearOffset : 0
+                font.pixelSize: instrumentCluster.gear == 1 ? app.letterSizeLoaded : app.letterSize
+                color: instrumentCluster.gear == 1 ? "blue" : "white"
+                y: instrumentCluster.gear == 1 ? gearOffset : 0
             }
         }
 
@@ -289,10 +289,10 @@ ApplicationWindow {
         CircularProgressBar {
             id: batteryPercentage
             lineWidth: 10
-            value: instrumentCluster.battery.percentage / 100
+            value: instrumentCluster.percentage / 100
             size: 115
             secondaryColor: "#ffffff"
-            primaryColor: instrumentCluster.battery.percentage < 20 ? "#ff0000" : "#2fc71b"
+            primaryColor: instrumentCluster.percentage < 20 ? "#ff0000" : "#2fc71b"
 
             Text {
                 text: parseInt(batteryPercentage.value * 100) + "%"

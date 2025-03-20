@@ -1,7 +1,7 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
-#include "InstrumentCluster.hpp"
+#include "../include/InstrumentCluster.hpp"
 
 using namespace zenoh;
 
@@ -19,10 +19,16 @@ int main(int argc, char* argv[])
     {
         instrumentCluster = new InstrumentCluster();
     }
-    engine.rootContext()->setContextProperty("instrumentCluster",
-                                             instrumentCluster);
-
-    const QUrl url(QStringLiteral("qrc:/Main.qml"));
+    
+   if (instrumentCluster) {
+    engine.rootContext()->setContextProperty("instrumentCluster", instrumentCluster);
+    } else {
+        std::cout << "ERROR" << std::endl;
+        qDebug() << "Error: instrumentCluster is NULL!";
+    }
+                                
+    const QUrl url(QStringLiteral("/home/lpicoli-/Documents/Team02-Course/RaspberryPi/Clusters/HandCluster/ui/Main.qml"));
+    engine.load(url);
     QObject::connect(
         &engine, &QQmlApplicationEngine::objectCreated, &app,
         [url](QObject* obj, const QUrl& objUrl)
@@ -31,9 +37,10 @@ int main(int argc, char* argv[])
                 QCoreApplication::exit(-1);
         },
         Qt::QueuedConnection);
-    engine.load(url);
 
     int result = app.exec();
     delete instrumentCluster;
     return result;
+
+    
 }

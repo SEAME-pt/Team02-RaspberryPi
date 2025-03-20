@@ -1,0 +1,4 @@
+/home/lpicoli-/Documents/Team02-Course/RaspberryPi/Clusters/HandCluster/build/CMakeFiles/HandCluster.dir
+/home/lpicoli-/Documents/Team02-Course/RaspberryPi/Clusters/HandCluster/build/CMakeFiles/edit_cache.dir
+/home/lpicoli-/Documents/Team02-Course/RaspberryPi/Clusters/HandCluster/build/CMakeFiles/rebuild_cache.dir
+/home/lpicoli-/Documents/Team02-Course/RaspberryPi/Clusters/HandCluster/build/CMakeFiles/HandCluster_autogen.dir

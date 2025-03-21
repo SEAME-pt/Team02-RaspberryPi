@@ -5,6 +5,7 @@
         <file>ui/GearDisplay.qml</file>
         <file>ui/LaneLines.qml</file>
         <file>ui/SpeedDisplay.qml</file>
+        <file>ui/TimeInfo.qml</file>
         <file>ui/CircularProgressBar.qml</file>
     </qresource>
 

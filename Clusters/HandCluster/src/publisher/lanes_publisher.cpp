@@ -10,16 +10,6 @@
 
 using namespace zenoh;
 
-void publishLaneData(std::shared_ptr<zenoh::Session> session, std::string laneData) {
-    // Define the lane data with the appropriate format
-
-    // laneData = 300, 500, 320, 400, 700, 500 // left, right - three values each for polynomial function 
-    
-    // Declare the publisher
-
-    // Publish the lane data string
-}
-
 int main(int argc, char** argv)
 {
     std::string laneData = "leftLane: 300,500 320,400 360,300\nrightLane: 600,500 580,400 600,300";

@@ -126,91 +126,51 @@ void InstrumentCluster::setupSubscriptions()
         },
         zenoh::closures::none));
     
-    lanes_subscriber.emplace(session->declare_subscriber(
-        "Vehicle/1/LaneData",
-        [this](const zenoh::Sample& sample)
-        {
+    leftLane_subscriber.emplace(session->declare_subscriber(
+        "Vehicle/1/leftLaneData",
+        [this](const zenoh::Sample& sample) {
             std::string laneData = sample.get_payload().as_string();
-            parseLaneData(laneData);
+            std::cout << "Recebido leftLaneData: " << laneData << std::endl;
+            parseLaneData(laneData, "leftLane");
+        },
+        zenoh::closures::none));
+
+    rightLane_subscriber.emplace(session->declare_subscriber(
+        "Vehicle/1/rightLaneData",
+        [this](const zenoh::Sample& sample) {
+            std::string laneData = sample.get_payload().as_string();
+            std::cout << "Recebido rightLaneData: " << laneData << std::endl;
+            parseLaneData(laneData, "rightLane");
         },
         zenoh::closures::none));
 }
 
-/* LANE DATA SYNTAX
-
-std::string laneData = "leftLane: 300,500 320,400\nrightLane: 600,500 580,400";
-
-session->declare_publisher("Vehicle/1/LaneData", laneData);
-leftLane: 300 500 320 400
-rightLane: 600 500 580 400
-
-*/
-
-void InstrumentCluster::parseLaneData(const std::string& laneData)
+void InstrumentCluster::parseLaneData(const std::string& laneData, const std::string& laneType)
 {
     std::istringstream stream(laneData);
-    std::string line;
+    int x, y;
 
-    std::vector<QPoint> leftLane;
-    std::vector<QPoint> rightLane;
+    std::vector<QPoint> lanePoints;
 
-    while (std::getline(stream, line))
-    {
-        std::istringstream lineStream;
-        std::string laneType;
-
-        if (line.rfind("leftLane:", 0) == 0) 
-        {
-            laneType = "leftLane";
-            line = line.substr(10); 
-        }
-        else if (line.rfind("rightLane:", 0) == 0){
-
-            laneType = "rightLane";
-            line = line.substr(11);
-        }
-        else
-        {
-            continue;
-        }
-
-        // 🔹 Substituir ',' por ' ' para permitir leitura correta dos números
-        for (char &c : line) {
-            if (c == ',') c = ' ';
-        }
-
-        lineStream = std::istringstream(line);
-
-        int x, y;
-        while (lineStream >> x >> y)
-        {   
-            if (laneType == "leftLane")
-                leftLane.push_back(QPoint(x, y));
-            else
-                rightLane.push_back(QPoint(x, y));
-        }
+    while (stream >> x >> y) {  
+        lanePoints.push_back(QPoint(x, y));
     }
 
-    QVariantList leftLaneList;
-    for (const auto& point : leftLane) {
+    QVariantList laneList;
+    for (const auto& point : lanePoints) {
         QVariantMap map;
         map["x"] = point.x();
         map["y"] = point.y();
-        leftLaneList.append(map);
+        laneList.append(map);
     }
-    // std::cout << "Left Lane: " << leftLaneList.size() << std::endl;
-    setLeftLanePoints(leftLaneList);
 
-    QVariantList rightLaneList;
-    for (const auto& point : rightLane) {
-        QVariantMap map;
-        map["x"] = point.x();
-        map["y"] = point.y();
-        std::cout << "Right Lane in parsing: " << point.x() << " " << point.y() << std::endl;
-        rightLaneList.append(map);
+    if (laneType == "leftLane") {
+        setLeftLanePoints(laneList);
+    } else {
+        setRightLanePoints(laneList);
     }
-    setRightLanePoints(rightLaneList);
 }
+
 
 int InstrumentCluster::getSpeed() const
 {
@@ -225,7 +185,6 @@ void InstrumentCluster::setSpeed(int speed)
     }
 }
 
-// Blinkers
 bool InstrumentCluster::getRightBlinker() const
 {
     return rightBlinker;
@@ -394,7 +353,7 @@ void InstrumentCluster::setLeftLanePoints(const QVariantList& points) {
     std::vector<QPoint> pointVec;
 
     for (const auto& var : points) {
-        QVariantMap map = var.toMap();  // Converte QVariant para QVariantMap
+        QVariantMap map = var.toMap();
         if (map.contains("x") && map.contains("y")) {
             int x = map["x"].toInt();
             int y = map["y"].toInt();
@@ -412,7 +371,7 @@ void InstrumentCluster::setLeftLanePoints(const QVariantList& points) {
         leftLaneList.append(map);
     }
     
-    emit leftLaneChanged(leftLaneList);  // Emit QVariantList, not std::vector<QPoint>
+    emit leftLaneChanged(leftLaneList);
 }
 
 
@@ -420,7 +379,7 @@ void InstrumentCluster::setRightLanePoints(const QVariantList& points) {
     std::vector<QPoint> pointVec;
 
     for (const auto& var : points) {
-        QVariantMap map = var.toMap();  // Converte QVariant para QVariantMap
+        QVariantMap map = var.toMap();
         if (map.contains("x") && map.contains("y")) {
             int x = map["x"].toInt();
             int y = map["y"].toInt();
@@ -438,7 +397,7 @@ void InstrumentCluster::setRightLanePoints(const QVariantList& points) {
         rightLaneList.append(map);
     }
     
-    emit rightLaneChanged(rightLaneList);  // Emit QVariantList, not std::vector<QPoint>
+    emit rightLaneChanged(rightLaneList);
 }
 
 

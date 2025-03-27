@@ -13,25 +13,25 @@ Canvas {
     property var leftLanePoints: instrumentCluster.leftLanePoints
     property var rightLanePoints: instrumentCluster.rightLanePoints
 
-    onLeftLanePointsChanged: {
-        console.log("Left lane updated:");
-        for (var i = 0; i < leftLanePoints.length; i++) {
-            console.log("Point " + i + ": (" + leftLanePoints[i].x + ", " + leftLanePoints[i].y + ")");
-        }
-        requestPaint();
-    }
+    // onLeftLanePointsChanged: {
+    //     // console.log("Left lane updated:");
+    //     // for (var i = 0; i < leftLanePoints.length; i++) {
+    //     //     console.log("Point " + i + ": (" + leftLanePoints[i].x + ", " + leftLanePoints[i].y + ")");
+    //     // }
+    //     requestPaint();
+    // }
 
     onRightLanePointsChanged: {
-        console.log("Right lane updated:");
-        for (var i = 0; i < rightLanePoints.length; i++) {
-            console.log("Point " + i + ": (" + rightLanePoints[i].x + ", " + rightLanePoints[i].y + ")");
-        }
+        // console.log("Right lane updated:");
+        // for (var i = 0; i < rightLanePoints.length; i++) {
+        //     console.log("Point " + i + ": (" + rightLanePoints[i].x + ", " + rightLanePoints[i].y + ")");
+        // }
         requestPaint();
     }
 
-    Component.onCompleted: {
-        console.log("LaneLines in Canvas initialized!");
-    }
+    // Component.onCompleted: {
+    //     console.log("LaneLines in Canvas initialized!");
+    // }
 
     onPaint: {
         var ctx = getContext("2d");
@@ -67,7 +67,7 @@ Canvas {
         drawLane(rightLanePoints);
 
         ctx.fillStyle = "blue";
-        ctx.font = "20px Arial";
+        ctx.font = app.font;
         ctx.fillText("Canvas Rendered", 10, 30);
     }
 }

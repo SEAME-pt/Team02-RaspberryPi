@@ -75,7 +75,8 @@ class InstrumentCluster : public QObject
     std::optional<zenoh::Subscriber<void>> currentCurrent_subscriber;
     std::optional<zenoh::Subscriber<void>> currentPower_subscriber;
     std::optional<zenoh::Subscriber<void>> currentGear_subscriber;
-    std::optional<zenoh::Subscriber<void>> lanes_subscriber;
+    std::optional<zenoh::Subscriber<void>> leftLane_subscriber;
+    std::optional<zenoh::Subscriber<void>> rightLane_subscriber;
 
   public:
     explicit InstrumentCluster(QObject* parent = nullptr);
@@ -127,7 +128,7 @@ class InstrumentCluster : public QObject
 
   private:
     void setupSubscriptions();
-    void parseLaneData(const std::string& laneData);
+    void parseLaneData(const std::string& laneData, const std::string& laneType);
 
   signals:
     void speedChanged(int speed);

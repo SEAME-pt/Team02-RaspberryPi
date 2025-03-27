@@ -13,3 +13,5 @@ RUN cd /home/$projectDir && \
     -DCMAKE_BUILD_TYPE=Debug \
     -DZENOHCXX_ZENOHC=ON && \
     cmake --build .
+
+CMD ["/bin/bash"]

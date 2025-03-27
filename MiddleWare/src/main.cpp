@@ -16,8 +16,11 @@ using namespace zenoh;
 
 int main(int argc, char** argv)
 {
+    std::vector<uint8_t> laneDataBuffer; 
     struct ifreq ifr;
     struct sockaddr_can addr;
+    std::vector<uint8_t> rightLaneBuffer;
+    std::vector<uint8_t> leftLaneBuffer;
 
     int canSocket = socket(PF_CAN, SOCK_RAW, CAN_RAW);
     if (canSocket < 0)
@@ -87,6 +90,11 @@ int main(int argc, char** argv)
         zenoh::KeyExpr("Vehicle/1/Powertrain/TractionBattery/CurrentPower"));
     auto state_of_charge_pub = session->declare_publisher(
         zenoh::KeyExpr("Vehicle/1/Powertrain/TractionBattery/StateOfCharge"));
+    auto right_lanes_pub = session->declare_publisher(
+        zenoh::KeyExpr("Vehicle/1/RightLaneData"));
+    auto left_lanes_pub = session->declare_publisher(
+        zenoh::KeyExpr("Vehicle/1/LeftLaneData"));
+
 
     while (1)
     {
@@ -148,16 +156,66 @@ int main(int argc, char** argv)
             hazard_pub.put(std::to_string((lights & (1 << 6)) != 0));
             parking_pub.put(std::to_string((lights & (1 << 7)) != 0));
         }
-        else if (frame.can_id == 0x04)
+        if (frame.can_id == 0x100)
         {
-            int gear;
+            if (frame.data[0] == 0)
+            {
+                rightLaneBuffer.clear();
+            }
 
-            memcpy(&gear, frame.data, sizeof(gear));
+            for (int i = 1; i < nbytes; i++)
+            {
+                rightLaneBuffer.push_back(frame.data[i]);
+            }
 
-            // printf("Publishing gear: '%lf\n", gear[0]);
-            currentGear_pub.put(std::to_string(gear));
+            if (rightLaneBuffer.size() >= 12)
+            {
+                float laneValues[3];
+                memcpy(laneValues, rightLaneBuffer.data(), 12);
+
+                std::ostringstream dataStream;
+                for (int i = 0; i < 3; i++)
+                {
+                    dataStream << laneValues[i] << " ";
+                }
+
+                std::string laneDataStr = dataStream.str();
+                right_lanes_pub.put(laneDataStr);
+
+                rightLaneBuffer.clear();
+            }
+        }
+        else if (frame.can_id == 0x101)
+        {
+            if (frame.data[0] == 0)
+            {
+                leftLaneBuffer.clear();
+            }
+
+            for (int i = 1; i < nbytes; i++)
+            {
+                leftLaneBuffer.push_back(frame.data[i]);
+            }
+
+            if (leftLaneBuffer.size() >= 12)
+            {
+                float laneValues[3];
+                memcpy(laneValues, leftLaneBuffer.data(), 12);
+
+                std::ostringstream dataStream;
+                for (int i = 0; i < 3; i++)
+                {
+                    dataStream << laneValues[i] << " ";
+                }
+
+                std::string laneDataStr = dataStream.str();
+                left_lanes_pub.put(laneDataStr);
+
+                leftLaneBuffer.clear();
+            }
         }
         usleep(10);
+
     }
     return 0;
 }

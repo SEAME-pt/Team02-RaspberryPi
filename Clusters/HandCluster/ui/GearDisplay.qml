@@ -14,8 +14,8 @@ Row {
         return instrumentCluster.gear === gearValue ? app.letterSizeLoaded : app.letterSize;
     }
 
-    Text { text: "P"; font.pixelSize: gearSize(127); color: gearColor(127) }
-    Text { text: "R"; font.pixelSize: gearSize(-1); color: gearColor(-1) }
-    Text { text: "N"; font.pixelSize: gearSize(0); color: gearColor(0) }
-    Text { text: "D"; font.pixelSize: gearSize(1); color: gearColor(1) }
+    Text { text: "P"; font.family: Qt.binding(function() { return app.font; }); font.pixelSize: gearSize(127); color: gearColor(127) }
+    Text { text: "R"; font.family: Qt.binding(function() { return app.font; }); font.pixelSize: gearSize(-1); color: gearColor(-1) }
+    Text { text: "N"; font.family: Qt.binding(function() { return app.font; }); font.pixelSize: gearSize(0); color: gearColor(0) }
+    Text { text: "D"; font.family: Qt.binding(function() { return app.font; }); font.pixelSize: gearSize(1); color: gearColor(1) }
 }

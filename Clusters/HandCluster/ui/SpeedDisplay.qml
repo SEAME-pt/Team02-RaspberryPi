@@ -1,33 +1,33 @@
 import QtQuick 2.15
-
 Rectangle {
     anchors.verticalCenter: parent.verticalCenter
-    
     width: 100
     height: 100
     color: "transparent"
+    anchors.left: parent.left
+    anchors.leftMargin: 100
 
     Column {
         anchors.centerIn: parent
-        spacing: 5  // Espaçamento entre os textos
+        spacing: 0
 
         Text {
-            font.family: "Open Sans"
-            text: instrumentCluster.speed
-            font.pixelSize: 110
+            // /text: instrumentCluster.speed
+            text: "20"
+            font.pixelSize: 90
+            font.family: Qt.binding(function() { return app.font; })
             color: "white"
             opacity: 1.0
-            horizontalAlignment: Text.AlignHCenter
+            anchors.horizontalCenter: parent.horizontalCenter
             verticalAlignment: Text.AlignVCenter
         }
 
         Text {
-            font.family: "Open Sans"
+            font.family: Qt.binding(function() { return app.font; })
             text: "DM/S"
             font.pixelSize: app.letterSize
             color: "gray"
-            horizontalAlignment: Text.AlignHCenter
-            verticalAlignment: Text.AlignVCenter
+            anchors.horizontalCenter: parent.horizontalCenter
         }
     }
 }

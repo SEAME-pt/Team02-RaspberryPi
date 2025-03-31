@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/MiddleWareApp.dir/MiddleWareApp_autogen/mocs_compilation.cpp.o CMakeFiles/MiddleWareApp.dir/MiddleWare/src/main.cpp.o -o MiddleWareApp  /usr/local/lib/libzenohc.a -lrt -lpthread -lm -ldl 

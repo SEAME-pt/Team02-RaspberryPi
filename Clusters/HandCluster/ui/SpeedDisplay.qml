@@ -16,6 +16,7 @@ Rectangle {
             text: "20"
             font.pixelSize: 90
             font.family: Qt.binding(function() { return app.font; })
+            // font.family: app.font
             color: "white"
             opacity: 1.0
             anchors.horizontalCenter: parent.horizontalCenter
@@ -24,6 +25,7 @@ Rectangle {
 
         Text {
             font.family: Qt.binding(function() { return app.font; })
+            // font.family: app.font
             text: "DM/S"
             font.pixelSize: app.letterSize
             color: "gray"

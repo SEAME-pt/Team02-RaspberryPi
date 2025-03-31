@@ -68,6 +68,5 @@ Canvas {
 
         ctx.fillStyle = "blue";
         ctx.font = app.font;
-        ctx.fillText("Canvas Rendered", 10, 30);
     }
 }

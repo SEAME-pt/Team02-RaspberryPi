@@ -1,0 +1,4 @@
+set(__QT_DEPLOY_TARGET_HandClusterB_FILE /home/lpicoli-/Documents/Team02-Course/RaspberryPi/deployLocal/HandClusterB)
+set(__QT_DEPLOY_TARGET_HandClusterB_TYPE EXECUTABLE)
+set(__QT_DEPLOY_TARGET_MiddleWareApp_FILE /home/lpicoli-/Documents/Team02-Course/RaspberryPi/deployLocal/MiddleWareApp)
+set(__QT_DEPLOY_TARGET_MiddleWareApp_TYPE EXECUTABLE)

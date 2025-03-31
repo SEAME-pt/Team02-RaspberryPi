@@ -1,0 +1,6 @@
+/home/lpicoli-/Documents/Team02-Course/RaspberryPi/deployLocal/CMakeFiles/HandClusterB.dir
+/home/lpicoli-/Documents/Team02-Course/RaspberryPi/deployLocal/CMakeFiles/MiddleWareApp.dir
+/home/lpicoli-/Documents/Team02-Course/RaspberryPi/deployLocal/CMakeFiles/edit_cache.dir
+/home/lpicoli-/Documents/Team02-Course/RaspberryPi/deployLocal/CMakeFiles/rebuild_cache.dir
+/home/lpicoli-/Documents/Team02-Course/RaspberryPi/deployLocal/CMakeFiles/HandClusterB_autogen.dir
+/home/lpicoli-/Documents/Team02-Course/RaspberryPi/deployLocal/CMakeFiles/MiddleWareApp_autogen.dir

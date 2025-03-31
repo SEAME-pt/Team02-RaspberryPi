@@ -16,6 +16,7 @@ Row {
 
     Text {
         font.family: Qt.binding(function() { return app.font; })
+        // font.family: app.font
         id: timeDisplay
         text: "11:11"
         font.pixelSize:  app.letterSize
@@ -25,6 +26,7 @@ Row {
 
     Text {
         font.family: Qt.binding(function() { return app.font; })
+        // font.family: app.font
         id: amPmDisplay
         text: "AM"
         font.pixelSize: app.letterSize

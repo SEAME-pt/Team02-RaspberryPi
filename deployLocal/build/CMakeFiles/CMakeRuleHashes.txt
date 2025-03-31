@@ -1,0 +1,3 @@
+# Hashes of file build rules.
+47d0123111f9b95339cf89a6078e4e9c CMakeFiles/HandClusterLocalInstance_autogen
+c285dbcfdd26ccb9297b26584f1ad071 qrc_resources.cpp

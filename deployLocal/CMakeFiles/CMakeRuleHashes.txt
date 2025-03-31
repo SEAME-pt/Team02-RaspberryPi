@@ -1,0 +1,4 @@
+# Hashes of file build rules.
+bab6f71e7086a4b0a5212e8c090a53c1 CMakeFiles/HandClusterB_autogen
+754fb07cbd9935d5264d444cb9079a64 CMakeFiles/MiddleWareApp_autogen
+5cfcdae8e384d8cf110c268117c4df57 qrc_resources.cpp

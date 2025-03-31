@@ -13,12 +13,19 @@ using namespace zenoh;
 int main(int argc, char** argv)
 {
     std::string laneData = "leftLane: 300,500 320,400 360,300\nrightLane: 600,500 580,400 600,300";
+    // std::vector<std::string> laneDataSamples = {
+    //     "leftLane: 300,500 320,400 360,300\nrightLane: 600,500 580,400 600,300",
+    //     "leftLane: 310,510 330,410 370,310\nrightLane: 610,510 590,410 610,310",
+    //     "leftLane: 320,520 340,420 380,320\nrightLane: 620,520 600,420 620,320",
+    //     "leftLane: 330,530 350,430 390,330\nrightLane: 630,530 610,430 630,330",
+    //     "leftLane: 340,540 360,440 400,340\nrightLane: 640,540 620,440 640,340"
+    // };
+
     std::vector<std::string> laneDataSamples = {
-        "leftLane: 300,500 320,400 360,300\nrightLane: 600,500 580,400 600,300",
-        "leftLane: 310,510 330,410 370,310\nrightLane: 610,510 590,410 610,310",
-        "leftLane: 320,520 340,420 380,320\nrightLane: 620,520 600,420 620,320",
-        "leftLane: 330,530 350,430 390,330\nrightLane: 630,530 610,430 630,330",
-        "leftLane: 340,540 360,440 400,340\nrightLane: 640,540 620,440 640,340"
+        "300",
+        "510",
+        "600",
+        "430",
     };
 
     int sampleIndex = 0;
@@ -27,7 +34,7 @@ int main(int argc, char** argv)
     auto config = Config::create_default();
     session = std::make_unique<zenoh::Session>(
     zenoh::Session::open(std::move(config)));
-    auto publisher = session->declare_publisher("Vehicle/1/LaneData");
+    auto publisher = session->declare_publisher("Vehicle-1-LaneData");
     
     // while (1)
     // {

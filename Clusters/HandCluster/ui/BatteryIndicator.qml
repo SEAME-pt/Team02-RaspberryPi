@@ -23,6 +23,7 @@ Row {
         text: "80%"
         font.pixelSize: 20
         font.family: Qt.binding(function() { return app.font; })
+        // font.family: app.font
         color: "white"
     }
 
@@ -35,6 +36,7 @@ Row {
         text: "300m"
         font.pixelSize: 20
         font.family: Qt.binding(function() { return app.font; })
+        // font.family: app.font
         color: "white"
     }
 }

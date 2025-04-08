@@ -2,8 +2,11 @@
 
 projectDir=RaspberryPi
 piUserName=team02
-piIpAddressLocal=10.21.221.64
-piIpAddressRemote=10.21.221.64
+# piIpAddressLocal=10.21.221.64
+# piIpAddressRemote=10.21.221.64
+
+piIpAddressLocal=192.168.5.226
+piIpAddressRemote=192.168.5.226
 piPathBin=/opt/vehicle/bin
 piPathEtc=/opt/vehicle/etc/zenoh
 piPass=seameteam2

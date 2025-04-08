@@ -18,11 +18,12 @@ Canvas {
     // Repaint logic
     function shouldRequestPaint() {
         var now = new Date();
-        if (!lastPaintTime || (now - lastPaintTime) >= 100) {
-            lastPaintTime = now;
-            return true;
-        }
-        return false;
+        // if (!lastPaintTime || (now - lastPaintTime) >= 200) {
+        //     lastPaintTime = now;
+        //     return true;
+        // }
+        // return false;
+        return true;
     }
 
     // Generates lane points from coefficients

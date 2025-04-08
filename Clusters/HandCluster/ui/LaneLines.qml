@@ -1,72 +1,87 @@
-
 import QtQuick 2.15
 
 Canvas {
     id: laneCanvas
-    width: parent.width
-    height: parent.height
+    width: 1280
+    height: 400
     anchors.horizontalCenter: parent.horizontalCenter
     anchors.bottom: parent.bottom
     anchors.bottomMargin: 100
     anchors.topMargin: 100
 
-    property var leftLanePoints: instrumentCluster.leftLanePoints
-    property var rightLanePoints: instrumentCluster.rightLanePoints
+    // These now bind directly to the QVariantMaps exposed from C++
+    property var leftLaneCoefs: instrumentCluster.leftLaneCoefs
+    property var rightLaneCoefs: instrumentCluster.rightLaneCoefs
 
-    // onLeftLanePointsChanged: {
-    //     // console.log("Left lane updated:");
-    //     // for (var i = 0; i < leftLanePoints.length; i++) {
-    //     //     console.log("Point " + i + ": (" + leftLanePoints[i].x + ", " + leftLanePoints[i].y + ")");
-    //     // }
-    //     requestPaint();
-    // }
+    property var lastPaintTime: Date
 
-    onRightLanePointsChanged: {
-        // console.log("Right lane updated:");
-        // for (var i = 0; i < rightLanePoints.length; i++) {
-        //     console.log("Point " + i + ": (" + rightLanePoints[i].x + ", " + rightLanePoints[i].y + ")");
-        // }
+    // Repaint logic
+    function shouldRequestPaint() {
+        var now = new Date();
+        if (!lastPaintTime || (now - lastPaintTime) >= 100) {
+            lastPaintTime = now;
+            return true;
+        }
+        return false;
+    }
+
+    // Generates lane points from coefficients
+    function generateLaneFromCoefficients(a, b, c, height) {
+        var lanePoints = [];
+        for (var y = height; y >= height / 3; y -= 5) {
+            var x = a * y * y + b * y + c;
+            lanePoints.push({ "x": x, "y": y });
+        }
+        return lanePoints;
+    }
+
+    // Draws a lane given coefficients
+    function drawLane(a, b, c) {
+        var points = generateLaneFromCoefficients(a, b, c, height);
+        if (points.length < 2) return;
+
+        var ctx = getContext("2d");
+        ctx.beginPath();
+        for (var i = 0; i < points.length; i++) {
+            var point = points[i];
+            if (i === 0) {
+                ctx.moveTo(point.x, point.y);
+            } else {
+                ctx.lineTo(point.x, point.y);
+            }
+        }
+        ctx.stroke();
+    }
+
+    // Left lane updated
+    onLeftLaneCoefsChanged: {
+        // console.log("Left lane updated:", leftLaneCoefs);
         requestPaint();
     }
 
-    // Component.onCompleted: {
-    //     console.log("LaneLines in Canvas initialized!");
-    // }
+    // Right lane updated
+    onRightLaneCoefsChanged: {
+        // console.log("Right lane updated:", rightLaneCoefs);
+        requestPaint();
+    }
 
     onPaint: {
         var ctx = getContext("2d");
         ctx.clearRect(0, 0, width, height);
 
         ctx.lineWidth = 6;
-        ctx.shadowBlur = 20;
-        ctx.shadowColor = "rgba(200, 200, 200, 0.5)";
+        ctx.shadowBlur = 12;
+        ctx.shadowColor = "rgba(0, 255, 0, 0.5)";
+        ctx.globalAlpha = 1.0;
 
-        var gradient = ctx.createLinearGradient(0, height / 2, 0, height);
-        gradient.addColorStop(0, "rgba(255, 255, 255, 0.9)");
-        gradient.addColorStop(1, "rgba(150, 150, 150, 0.2)");
-
-        ctx.strokeStyle = gradient;
-        ctx.globalAlpha = 0.8;
-
-        function drawLane(points) {
-            if (!points || points.length < 2) return;
-            ctx.beginPath();
-            ctx.moveTo(points[0].x, points[0].y);
-
-            for (var i = 1; i < points.length - 1; i++) {
-                var xc = (points[i].x + points[i + 1].x) / 2;
-                var yc = (points[i].y + points[i + 1].y) / 2;
-                ctx.quadraticCurveTo(points[i].x, points[i].y, xc, yc);
-            }
-
-            ctx.lineTo(points[points.length - 1].x, points[points.length - 1].y);
-            ctx.stroke();
+        if (leftLaneCoefs && "a" in leftLaneCoefs) {
+            ctx.strokeStyle = "#ee4426";
+            drawLane(leftLaneCoefs.a, leftLaneCoefs.b, leftLaneCoefs.c);
         }
 
-        drawLane(leftLanePoints);
-        drawLane(rightLanePoints);
-
-        ctx.fillStyle = "blue";
-        ctx.font = app.font;
+        if (rightLaneCoefs && "a" in rightLaneCoefs) {
+            ctx.strokeStyle = "#dde021";
+            drawLane(rightLaneCoefs.a, rightLaneCoefs.b, rightLaneCoefs.c);
+        }
     }
 }

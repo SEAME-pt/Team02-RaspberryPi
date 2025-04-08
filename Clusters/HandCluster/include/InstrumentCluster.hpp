@@ -36,8 +36,8 @@ class InstrumentCluster : public QObject
     Q_PROPERTY(
         int autonomy READ getAutonomy WRITE setAutonomy NOTIFY autonomyChanged)
     Q_PROPERTY(int gear READ getGear WRITE setGear NOTIFY gearChanged)
-    Q_PROPERTY(QVariantList leftLanePoints READ getLeftLanePoints WRITE setLeftLanePoints NOTIFY leftLaneChanged)
-    Q_PROPERTY(QVariantList rightLanePoints READ getRightLanePoints WRITE setRightLanePoints NOTIFY rightLaneChanged)
+    Q_PROPERTY(QVariantMap leftLaneCoefs READ getLeftLaneCoefs WRITE setLeftLaneCoefs NOTIFY leftLaneChanged)
+    Q_PROPERTY(QVariantMap rightLaneCoefs READ getRightLaneCoefs WRITE setRightLaneCoefs NOTIFY rightLaneChanged)
 
 
   private:
@@ -53,10 +53,10 @@ class InstrumentCluster : public QObject
     int percentage;
     int autonomy;
     int gear;  
-    
-    std::vector<QPoint> m_leftLanePoints;
-    std::vector<QPoint> m_rightLanePoints;
 
+    QVariantMap m_leftLaneCoefs;
+    QVariantMap m_rightLaneCoefs;
+    
     std::unique_ptr<zenoh::Session> session;
     std::optional<zenoh::Subscriber<void>> speed_subscriber;
     std::optional<zenoh::Subscriber<void>> beamLow_subscriber;
@@ -120,16 +120,15 @@ class InstrumentCluster : public QObject
     int getGear() const;
     void setGear(int value);
 
-    QVariantList getLeftLanePoints() const;
-    void setLeftLanePoints(const QVariantList& points);
+    QVariantMap getLeftLaneCoefs() const;
+    void setLeftLaneCoefs(const QVariantMap& coefs);
 
-    QVariantList getRightLanePoints() const;
-    void setRightLanePoints(const QVariantList& points);
+    QVariantMap getRightLaneCoefs() const;
+    void setRightLaneCoefs(const QVariantMap& coefs);
 
   private:
     void setupSubscriptions();
     void parseLaneData(const std::string& laneData, const std::string& laneType);
-
   signals:
     void speedChanged(int speed);
     void rightBlinkerChanged(bool state);
@@ -143,8 +142,8 @@ class InstrumentCluster : public QObject
     void percentageChanged(int value);
     void autonomyChanged(int value);
     void gearChanged(int gear);
-    void leftLaneChanged(const QVariantList& leftLanePoints);
-    void rightLaneChanged(const QVariantList& rightLanePoints);
+    void leftLaneChanged(const QVariantMap& leftLaneCoefs);
+    void rightLaneChanged(const QVariantMap& rightLaneCoefs);
     
 };
 

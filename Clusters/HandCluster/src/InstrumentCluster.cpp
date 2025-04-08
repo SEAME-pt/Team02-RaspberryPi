@@ -1,5 +1,8 @@
 #include "../include/InstrumentCluster.hpp"
 #include <QPoint>
+#include <chrono>
+#include <thread>
+
 
 InstrumentCluster::InstrumentCluster(QObject* parent)
     : QObject(parent), m_speed(0), percentage(0), autonomy(0), gear(0)
@@ -27,6 +30,7 @@ InstrumentCluster::~InstrumentCluster()
 
 void InstrumentCluster::setupSubscriptions()
 {
+    std::cout << "Setting up subscriptions..." << std::endl;
     speed_subscriber.emplace(session->declare_subscriber(
         "Vehicle/1/Speed",
         [this](const zenoh::Sample& sample)
@@ -125,49 +129,62 @@ void InstrumentCluster::setupSubscriptions()
             setGear(currentGear);
         },
         zenoh::closures::none));
-    
+        
     leftLane_subscriber.emplace(session->declare_subscriber(
-        "Vehicle/1/leftLaneData",
+        "Vehicle/1/Scene/Lanes/Left",
         [this](const zenoh::Sample& sample) {
+
             std::string laneData = sample.get_payload().as_string();
             std::cout << "Recebido leftLaneData: " << laneData << std::endl;
-            parseLaneData(laneData, "leftLane");
+            // std::cout << "Recebido leftLaneData: " << laneData << std::endl;
+            parseLaneData(laneData, "rightLane"); //deixei trocado porque no middleware esta trocado e nao consigo alterar pela net 
         },
         zenoh::closures::none));
 
     rightLane_subscriber.emplace(session->declare_subscriber(
-        "Vehicle/1/rightLaneData",
+        "Vehicle/1/Scene/Lanes/Right",
         [this](const zenoh::Sample& sample) {
+
             std::string laneData = sample.get_payload().as_string();
             std::cout << "Recebido rightLaneData: " << laneData << std::endl;
-            parseLaneData(laneData, "rightLane");
+            // std::cout << "Recebido rightLaneData: " << laneData << std::endl;
+            parseLaneData(laneData, "leftLane"); //deixei trocado porque no middleware esta trocado e nao consigo alterar pela net 
         },
         zenoh::closures::none));
 }
 
+// QVariantList InstrumentCluster::generateLaneFromCoefficients(float a, float b, float c, int height)
+// {
+//     QVariantList lanePoints;
+
+//     for (int y = height; y >= height / 3; y -= 5)
+//     {
+//         float x = a * y * y + b * y + c;
+
+//         QVariantMap point;
+//         point["x"] = x;
+//         point["y"] = y;
+//         lanePoints.append(point);
+//     }
+//     return lanePoints;
+// }
+
 void InstrumentCluster::parseLaneData(const std::string& laneData, const std::string& laneType)
 {
     std::istringstream stream(laneData);
-    int x, y;
-
-    std::vector<QPoint> lanePoints;
-
-    while (stream >> x >> y) {  
-        lanePoints.push_back(QPoint(x, y));
-    }
-
-    QVariantList laneList;
-    for (const auto& point : lanePoints) {
-        QVariantMap map;
-        map["x"] = point.x();
-        map["y"] = point.y();
-        laneList.append(map);
-    }
+    float a, b, c;
+    stream >> a >> b >> c;
+    
+    QVariantMap coefficients;
+    coefficients["a"] = a;
+    coefficients["b"] = b;
+    coefficients["c"] = c;
 
     if (laneType == "leftLane") {
-        setLeftLanePoints(laneList);
-    } else {
-        setRightLanePoints(laneList);
+        setLeftLaneCoefs(coefficients);  
+    }
+    else if (laneType == "rightLane") {
+        setRightLaneCoefs(coefficients); 
     }
 }
 
@@ -328,79 +345,35 @@ void InstrumentCluster::setGear(int value)
     }
 }
 
-QVariantList InstrumentCluster::getLeftLanePoints() const {
-    QVariantList list;
-    for (const auto& point : m_leftLanePoints) {
-        QVariantMap map;
-        map["x"] = point.x();
-        map["y"] = point.y();
-        list.append(map);
-    }
-    return list;
+QVariantMap InstrumentCluster::getLeftLaneCoefs() const {
+    return m_leftLaneCoefs;
 }
 
-QVariantList InstrumentCluster::getRightLanePoints() const {
-     QVariantList list;
-    for (const auto& point : m_rightLanePoints) {
-        QVariantMap map;
-        map["x"] = point.x();
-        map["y"] = point.y();
-        list.append(map);
-    }
-    return list;
-}
-void InstrumentCluster::setLeftLanePoints(const QVariantList& points) {
-    std::vector<QPoint> pointVec;
-
-    for (const auto& var : points) {
-        QVariantMap map = var.toMap();
-        if (map.contains("x") && map.contains("y")) {
-            int x = map["x"].toInt();
-            int y = map["y"].toInt();
-            pointVec.push_back(QPoint(x, y));
-        }
-    }
-    m_leftLanePoints = pointVec;
-
-    QVariantList leftLaneList;
-    for (const auto& point : m_leftLanePoints) {
-        QVariantMap map;
-        map["x"] = point.x();
-        map["y"] = point.y();
-        std::cout << "Left Lane: " << point.x() << " " << point.y() << std::endl;
-        leftLaneList.append(map);
-    }
-    
-    emit leftLaneChanged(leftLaneList);
+QVariantMap InstrumentCluster::getRightLaneCoefs() const {
+    return m_rightLaneCoefs;
 }
 
-
-void InstrumentCluster::setRightLanePoints(const QVariantList& points) {
-    std::vector<QPoint> pointVec;
-
-    for (const auto& var : points) {
-        QVariantMap map = var.toMap();
-        if (map.contains("x") && map.contains("y")) {
-            int x = map["x"].toInt();
-            int y = map["y"].toInt();
-            pointVec.push_back(QPoint(x, y));
-        }
+void InstrumentCluster::setLeftLaneCoefs(const QVariantMap& coefs) {
+    std::cout << "Coefficients updated: " << std::endl;
+    if (m_leftLaneCoefs != coefs) { 
+        std::cout << "Left lane coefficients updated: " 
+                  << coefs["a"].toFloat() << ", " 
+                  << coefs["b"].toFloat() << ", " 
+                  << coefs["c"].toFloat() << std::endl;
+        m_leftLaneCoefs = coefs;
+        emit leftLaneChanged(coefs);
     }
-    m_rightLanePoints = pointVec;
-
-    QVariantList rightLaneList;
-    for (const auto& point : m_rightLanePoints) {
-        QVariantMap map;
-        map["x"] = point.x();
-        map["y"] = point.y();
-        std::cout << "Right Lane: " << point.x() << " " << point.y() << std::endl;
-        rightLaneList.append(map);
-    }
-    
-    emit rightLaneChanged(rightLaneList);
 }
 
-
-
-
+void InstrumentCluster::setRightLaneCoefs(const QVariantMap& coefs) {
+    std::cout << "Coefficients updated: " << std::endl;
+    if (m_rightLaneCoefs != coefs) {  
+        std::cout << "Right lane coefficients updated: " 
+                  << coefs["a"].toFloat() << ", " 
+                  << coefs["b"].toFloat() << ", " 
+                  << coefs["c"].toFloat() << std::endl;
+        m_rightLaneCoefs = coefs;
+        emit rightLaneChanged(coefs);
+    }
+}
 

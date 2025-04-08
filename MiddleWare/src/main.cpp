@@ -22,6 +22,11 @@ int main(int argc, char** argv)
     std::vector<uint8_t> rightLaneBuffer;
     std::vector<uint8_t> leftLaneBuffer;
 
+    float rightLane[3] = {0.0f};
+    float leftLane[3] = {0.0f};
+    bool rightReceived[3] = {false};
+    bool leftReceived[3] = {false};
+
     int canSocket = socket(PF_CAN, SOCK_RAW, CAN_RAW);
     if (canSocket < 0)
     {
@@ -91,9 +96,9 @@ int main(int argc, char** argv)
     auto state_of_charge_pub = session->declare_publisher(
         zenoh::KeyExpr("Vehicle/1/Powertrain/TractionBattery/StateOfCharge"));
     auto right_lanes_pub = session->declare_publisher(
-        zenoh::KeyExpr("Vehicle/1/RightLaneData"));
+        zenoh::KeyExpr("Vehicle/1/Scene/Lanes/Right"));
     auto left_lanes_pub = session->declare_publisher(
-        zenoh::KeyExpr("Vehicle/1/LeftLaneData"));
+        zenoh::KeyExpr("Vehicle/1/Scene/Lanes/Left"));
 
 
     while (1)
@@ -156,66 +161,53 @@ int main(int argc, char** argv)
             hazard_pub.put(std::to_string((lights & (1 << 6)) != 0));
             parking_pub.put(std::to_string((lights & (1 << 7)) != 0));
         }
-        if (frame.can_id == 0x100)
+        if (frame.can_id == 0x100 || frame.can_id == 0x101)
         {
-            if (frame.data[0] == 0)
-            {
-                rightLaneBuffer.clear();
-            }
+            int index;
+            float value;
 
-            for (int i = 1; i < nbytes; i++)
-            {
-                rightLaneBuffer.push_back(frame.data[i]);
-            }
+            memcpy(&index, &frame.data[0], sizeof(int));
+            memcpy(&value, &frame.data[4], sizeof(float));
 
-            if (rightLaneBuffer.size() >= 12)
-            {
-                float laneValues[3];
-                memcpy(laneValues, rightLaneBuffer.data(), 12);
+            std::cout << "[CAN] "
+                << ((frame.can_id == 0x100) ? "Right" : "Left")
+                << " Lane - Index: " << index
+                << ", Value: " << value << std::endl;
 
-                std::ostringstream dataStream;
-                for (int i = 0; i < 3; i++)
+            if (frame.can_id == 0x100)
+            {
+                leftLane[index] = value;
+                leftReceived[index] = true;
+
+                if (leftReceived[0] && leftReceived[1] && leftReceived[2])
                 {
-                    dataStream << laneValues[i] << " ";
+                    std::ostringstream stream;
+                    for (int i = 0; i < 3; ++i)
+                        stream << leftLane[i] << " ";
+
+                    std::cout << "Publishing left lane: " << stream.str() << std::endl;
+                    left_lanes_pub.put(stream.str());
+                    std::fill(std::begin(leftReceived), std::end(leftReceived), false);
                 }
-
-                std::string laneDataStr = dataStream.str();
-                right_lanes_pub.put(laneDataStr);
-
-                rightLaneBuffer.clear();
             }
-        }
-        else if (frame.can_id == 0x101)
-        {
-            if (frame.data[0] == 0)
+            else
             {
-                leftLaneBuffer.clear();
-            }
+                rightLane[index] = value;
+                rightReceived[index] = true;
 
-            for (int i = 1; i < nbytes; i++)
-            {
-                leftLaneBuffer.push_back(frame.data[i]);
-            }
-
-            if (leftLaneBuffer.size() >= 12)
-            {
-                float laneValues[3];
-                memcpy(laneValues, leftLaneBuffer.data(), 12);
-
-                std::ostringstream dataStream;
-                for (int i = 0; i < 3; i++)
+                if (rightReceived[0] && rightReceived[1] && rightReceived[2])
                 {
-                    dataStream << laneValues[i] << " ";
+                    std::ostringstream stream;
+                    for (int i = 0; i < 3; ++i)
+                        stream << rightLane[i] << " ";
+                    
+                    std::cout << "Publishing right lane: " << stream.str() << std::endl;
+                    right_lanes_pub.put(stream.str());
+                    std::fill(std::begin(rightReceived), std::end(rightReceived), false);
                 }
-
-                std::string laneDataStr = dataStream.str();
-                left_lanes_pub.put(laneDataStr);
-
-                leftLaneBuffer.clear();
             }
         }
         usleep(10);
-
     }
     return 0;
 }

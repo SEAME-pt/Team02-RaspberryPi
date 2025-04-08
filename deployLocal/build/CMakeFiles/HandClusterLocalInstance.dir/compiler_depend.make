@@ -746,7 +746,10 @@ CMakeFiles/HandClusterLocalInstance.dir/home/lpicoli-/Documents/Team02-Course/Ra
   /usr/include/x86_64-linux-gnu/qt5/QtCore/qobject.h \
   /usr/include/x86_64-linux-gnu/qt5/QtCore/QPoint \
   /usr/include/x86_64-linux-gnu/qt5/QtCore/qpoint.h \
-  /usr/include/x86_64-linux-gnu/qt5/QtCore/QVariantList
+  /usr/include/x86_64-linux-gnu/qt5/QtCore/QVariantList \
+  /usr/include/c++/11/thread \
+  /usr/include/c++/11/bits/std_thread.h \
+  /usr/include/c++/11/bits/this_thread_sleep.h
 
 CMakeFiles/HandClusterLocalInstance.dir/home/lpicoli-/Documents/Team02-Course/RaspberryPi/Clusters/HandCluster/src/main.cpp.o: /home/lpicoli-/Documents/Team02-Course/RaspberryPi/Clusters/HandCluster/src/main.cpp \
   /usr/include/stdc-predef.h \
@@ -1431,6 +1434,8 @@ CMakeFiles/HandClusterLocalInstance.dir/qrc_resources.cpp.o: qrc_resources.cpp \
 
 /usr/include/x86_64-linux-gnu/bits/cpu-set.h:
 
+/usr/include/c++/11/thread:
+
 /usr/include/c++/11/ratio:
 
 /usr/include/x86_64-linux-gnu/qt5/QtCore/qarraydata.h:
@@ -1484,6 +1489,8 @@ CMakeFiles/HandClusterLocalInstance.dir/qrc_resources.cpp.o: qrc_resources.cpp \
 /usr/include/x86_64-linux-gnu/qt5/QtCore/qsysinfo.h:
 
 /usr/include/x86_64-linux-gnu/bits/types/locale_t.h:
+
+/usr/include/c++/11/bits/this_thread_sleep.h:
 
 /usr/include/c++/11/bits/locale_facets.tcc:
 
@@ -1752,6 +1759,8 @@ qrc_resources.cpp:
 /usr/include/x86_64-linux-gnu/qt5/QtCore/qvector.h:
 
 /usr/include/x86_64-linux-gnu/qt5/QtCore/qcompilerdetection.h:
+
+/usr/include/c++/11/bits/std_thread.h:
 
 /usr/include/c++/11/bits/cpp_type_traits.h:
 

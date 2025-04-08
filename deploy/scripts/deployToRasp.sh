@@ -3,7 +3,7 @@
 projectDir=RaspberryPi
 piUserName=team02
 piIpAddressLocal=10.21.221.64
-piIpAddressRemote=10.21.221.19
+piIpAddressRemote=10.21.221.64
 piPathBin=/opt/vehicle/bin
 piPathEtc=/opt/vehicle/etc/zenoh
 piPass=seameteam2
@@ -67,12 +67,15 @@ if check_ssh_connection "$piIpAddressRemote" "$piUserName"; then
     echo "Stopping service on remote Raspberry Pi..."
     sshpass -p "$piPass" ssh "$piUserName"@"$piIpAddressRemote" "pkill HandCluster"
     
-    echo "Restarting services on local Raspberry Pi..."
-    sshpass -p "$piPass" ssh "$piUserName"@"$piIpAddressLocal" "sudo systemctl start middleware.service"
     
     sshpass -p "$piPass" ssh "$piUserName"@"$piIpAddressRemote" \
     "echo '$piPass' | sudo -S mkdir -p $piPathBin $piPathEtc && sudo chown -R $piUserName:$piUserName /opt/vehicle"
 
     echo "Send binary to remote rasp over scp"
     sshpass -p "$piPass" scp HandClusterB MiddleWareApp "$piUserName"@"$piIpAddressRemote":"$piPathBin"
+
+    # echo "Restarting services on local Raspberry Pi..."
+    # sshpass -p "$piPass" ssh "$piUserName"@"$piIpAddressLocal" "sudo systemctl start middleware.service"
+
+
 fi

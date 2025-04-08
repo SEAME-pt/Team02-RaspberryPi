@@ -304,4 +304,6 @@ CMakeFiles/HandClusterLocalInstance.dir/home/lpicoli-/Documents/Team02-Course/Ra
  /usr/include/x86_64-linux-gnu/qt5/QtCore/qobject.h \
  /usr/include/x86_64-linux-gnu/qt5/QtCore/QPoint \
  /usr/include/x86_64-linux-gnu/qt5/QtCore/qpoint.h \
- /usr/include/x86_64-linux-gnu/qt5/QtCore/QVariantList
+ /usr/include/x86_64-linux-gnu/qt5/QtCore/QVariantList \
+ /usr/include/c++/11/thread /usr/include/c++/11/bits/std_thread.h \
+ /usr/include/c++/11/bits/this_thread_sleep.h

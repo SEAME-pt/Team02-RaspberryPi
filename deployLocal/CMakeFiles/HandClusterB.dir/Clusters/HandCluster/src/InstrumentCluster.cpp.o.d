@@ -393,4 +393,6 @@ CMakeFiles/HandClusterB.dir/Clusters/HandCluster/src/InstrumentCluster.cpp.o: \
  /usr/local/qt6/include/QtCore/qvariantlist.h \
  /usr/local/qt6/include/QtCore/QList \
  /usr/local/qt6/include/QtCore/qlist.h \
- /usr/local/qt6/include/QtCore/QVariant
+ /usr/local/qt6/include/QtCore/QVariant /usr/include/c++/11/thread \
+ /usr/include/c++/11/bits/std_thread.h \
+ /usr/include/c++/11/bits/this_thread_sleep.h

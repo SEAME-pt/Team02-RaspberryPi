@@ -75,7 +75,7 @@ if check_ssh_connection "$piIpAddressRemote" "$piUserName"; then
 
     echo "Send binary to remote rasp over scp"
 
-    sshpass -p "$piPass" scp HandClusterB MiddleWareApp "$piUserName"@"$piIpAddressLocal":"$piPathBin"
+    sshpass -p "$piPass" scp HandClusterB "$piUserName"@"$piIpAddressLocal":"$piPathBin"
     sshpass -p "$piPass" scp ./$projectDir/ZenohConfig/InstrumentClusterConfig.json ./$projectDir/ZenohConfig/MiddleWareConfig.json "$piUserName"@"$piIpAddressLocal":"$piPathEtc"
     
     # echo "Restarting services on local Raspberry Pi..."

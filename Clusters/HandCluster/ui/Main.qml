@@ -56,29 +56,37 @@ ApplicationWindow {
     Rectangle {
         width: parent.width
         height: parent.height
-        color: "black"
+        color: "#252525"
     }
 
     LaneLines {
         id: laneLines 
         width: parent.width * 2/4   // Ocupa 2/3 da tela
-        height: parent.height * 0.6 // 80% da altura, sem tocar no topo
+        height: parent.height * 0.7// 80% da altura, sem tocar no topo
         // anchors.right: parent.right // Fixa no lado direito
         anchors.bottom: parent.bottom
-        anchors.topMargin: 50       // 
         // leftLanePoints: leftLaneMock
         // rightLanePoints: rightLaneMock
     }
 
+    Image { 
+        id: carImage
+        width: parent.width * 1/4   // Ocupa 1/4 da largura da tela
+        height: parent.height * 0.6 // 70% da altura
+        source: "../assets/images/car.png"
+        anchors.horizontalCenter: parent.horizontalCenter // Centraliza horizontalmente
+        anchors.bottom: parent.bottom // Fixa na parte superior
+        anchors.bottomMargin: -35
+
+    }
     ObjectDetector {
         id: objectDetector
-        width: parent.width * 2/4   // Ocupa 2/3 da tela
-        height: parent.height * 0.8 // 80% da altura, sem tocar no topo
+        width: parent.width // Ajusta a largura para ocupar o espaço do retângulo
+        height: parent.height * 0.6 // Ajusta a altura para ocupar o espaço do retângulo
         anchors.right: parent.right // Fixa no lado direito
         anchors.bottom: parent.bottom
-        anchors.topMargin: 50       // 
+        anchors.topMargin: 50
     }
-    
     SpeedDisplay {}
     GearDisplay {}
     BatteryIndicator {}

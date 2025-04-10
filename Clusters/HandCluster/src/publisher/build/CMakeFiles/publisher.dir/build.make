@@ -83,30 +83,30 @@ CMakeFiles/publisher.dir/publisher_autogen/mocs_compilation.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/publisher.dir/publisher_autogen/mocs_compilation.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/lpicoli-/Documents/Team02-Course/RaspberryPi/Clusters/HandCluster/src/publisher/build/publisher_autogen/mocs_compilation.cpp -o CMakeFiles/publisher.dir/publisher_autogen/mocs_compilation.cpp.s
 
-CMakeFiles/publisher.dir/lanes_publisher.cpp.o: CMakeFiles/publisher.dir/flags.make
-CMakeFiles/publisher.dir/lanes_publisher.cpp.o: ../lanes_publisher.cpp
-CMakeFiles/publisher.dir/lanes_publisher.cpp.o: CMakeFiles/publisher.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/lpicoli-/Documents/Team02-Course/RaspberryPi/Clusters/HandCluster/src/publisher/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/publisher.dir/lanes_publisher.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/publisher.dir/lanes_publisher.cpp.o -MF CMakeFiles/publisher.dir/lanes_publisher.cpp.o.d -o CMakeFiles/publisher.dir/lanes_publisher.cpp.o -c /home/lpicoli-/Documents/Team02-Course/RaspberryPi/Clusters/HandCluster/src/publisher/lanes_publisher.cpp
+CMakeFiles/publisher.dir/object_publisher.cpp.o: CMakeFiles/publisher.dir/flags.make
+CMakeFiles/publisher.dir/object_publisher.cpp.o: ../object_publisher.cpp
+CMakeFiles/publisher.dir/object_publisher.cpp.o: CMakeFiles/publisher.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/lpicoli-/Documents/Team02-Course/RaspberryPi/Clusters/HandCluster/src/publisher/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/publisher.dir/object_publisher.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/publisher.dir/object_publisher.cpp.o -MF CMakeFiles/publisher.dir/object_publisher.cpp.o.d -o CMakeFiles/publisher.dir/object_publisher.cpp.o -c /home/lpicoli-/Documents/Team02-Course/RaspberryPi/Clusters/HandCluster/src/publisher/object_publisher.cpp
 
-CMakeFiles/publisher.dir/lanes_publisher.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/publisher.dir/lanes_publisher.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/lpicoli-/Documents/Team02-Course/RaspberryPi/Clusters/HandCluster/src/publisher/lanes_publisher.cpp > CMakeFiles/publisher.dir/lanes_publisher.cpp.i
+CMakeFiles/publisher.dir/object_publisher.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/publisher.dir/object_publisher.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/lpicoli-/Documents/Team02-Course/RaspberryPi/Clusters/HandCluster/src/publisher/object_publisher.cpp > CMakeFiles/publisher.dir/object_publisher.cpp.i
 
-CMakeFiles/publisher.dir/lanes_publisher.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/publisher.dir/lanes_publisher.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/lpicoli-/Documents/Team02-Course/RaspberryPi/Clusters/HandCluster/src/publisher/lanes_publisher.cpp -o CMakeFiles/publisher.dir/lanes_publisher.cpp.s
+CMakeFiles/publisher.dir/object_publisher.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/publisher.dir/object_publisher.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/lpicoli-/Documents/Team02-Course/RaspberryPi/Clusters/HandCluster/src/publisher/object_publisher.cpp -o CMakeFiles/publisher.dir/object_publisher.cpp.s
 
 # Object files for target publisher
 publisher_OBJECTS = \
 "CMakeFiles/publisher.dir/publisher_autogen/mocs_compilation.cpp.o" \
-"CMakeFiles/publisher.dir/lanes_publisher.cpp.o"
+"CMakeFiles/publisher.dir/object_publisher.cpp.o"
 
 # External object files for target publisher
 publisher_EXTERNAL_OBJECTS =
 
 publisher: CMakeFiles/publisher.dir/publisher_autogen/mocs_compilation.cpp.o
-publisher: CMakeFiles/publisher.dir/lanes_publisher.cpp.o
+publisher: CMakeFiles/publisher.dir/object_publisher.cpp.o
 publisher: CMakeFiles/publisher.dir/build.make
 publisher: /usr/lib/x86_64-linux-gnu/libQt5Quick.so.5.15.3
 publisher: /usr/lib/x86_64-linux-gnu/libQt5QmlModels.so.5.15.3

@@ -1,51 +1,76 @@
 import QtQuick 2.15
 
-Canvas {
-    id: objectCanvas
-    width: 1280
-    height: 400
-    anchors.horizontalCenter: parent.horizontalCenter
-    anchors.bottom: parent.bottom
-    anchors.bottomMargin: 100
-    anchors.topMargin: 100
+// Canvas {
+//     property var detectedObjects: instrumentCluster.detectedObjects
 
-    // Exposed QVariantMap from C++
-    property var detectedObject: instrumentCluster.object
-    property var lastPaintTime: Date
+//     onDetectedObjectsChanged: {
+//         requestPaint();
+//     }
 
-    // Repaint logic (optional, for throttling)
-    function shouldRequestPaint() {
-        var now = new Date();
-        if (!lastPaintTime || (now - lastPaintTime) >= 100) {
-            lastPaintTime = now;
-            return true;
+//     function drawObjects(objects) {
+//         var ctx = getContext("2d");
+
+//         objects.forEach(function(obj) {
+//             ctx.beginPath();
+//             ctx.rect(obj.x, obj.y, obj.width, obj.height);
+
+    
+//             switch (obj.type) { // no futuro serao imagens!! 
+//                 case "car":
+//                     ctx.strokeStyle = "#ff0000"; 
+//                     break;
+//                 case "pedestrian":
+//                     ctx.strokeStyle = "#ffa500";
+//                     break;
+//                 case "traffic_light":
+//                     ctx.strokeStyle = "#00ff00";
+//                     break;
+//                 ctx.strokeStyle = "#ffa500";
+//                 break;
+//                 default:
+//                     ctx.strokeStyle = "#ffffff"; 
+//                     break;
+//             }
+            
+
+//             image.onload = function() {
+//                 ctx.drawImage(image, obj.x, obj.y, obj.width, obj.height);
+//             };
+
+//             ctx.lineWidth = 2;
+//             ctx.stroke();
+
+//             ctx.font = "14px sans-serif";
+//             ctx.fillStyle = ctx.strokeStyle;
+//             ctx.fillText(obj.type, obj.x + 5, obj.y - 5);
+//         });
+//     }
+
+//     onPaint: {
+//         var ctx = getContext("2d");
+//         ctx.clearRect(0, 0, width, height); // limpa o canvas
+
+//         if (detectedObjects && detectedObjects.length > 0) {
+//             drawObjects(detectedObjects);   
+//         }
+//     }
+// }
+
+Repeater {
+    model: instrumentCluster.detectedObjects
+
+    Image {
+        source: {
+            switch (modelData.type) {
+                // case "car": return "images/car.png";
+                // case "pedestrian": return "images/pedestrian.png";
+                case "traffic_light": return  "../assets/images/traffic-light.png";
+                default: return "";
+            }
         }
-        return false;
-    }
-
-    // Trigger repaint when object changes
-    onDetectedObjectChanged: {
-        requestPaint();
-    }
-
-    onPaint: {
-        var ctx = getContext("2d");
-        ctx.clearRect(0, 0, width, height);
-
-        if (detectedObject && "x" in detectedObject) {
-            var obj = detectedObject;
-            var x = obj.x - obj.width / 2;
-            var y = obj.y - obj.height / 2;
-
-            // Draw bounding box
-            ctx.strokeStyle = "#00bfff"; // sky blue
-            ctx.lineWidth = 3;
-            ctx.strokeRect(x, y, obj.width, obj.height);
-
-            // Label the object type
-            ctx.font = "20px sans-serif";
-            ctx.fillStyle = "#00bfff";
-            ctx.fillText(obj.object_type || "Unknown", x + 5, y - 10);
-        }
+        x: modelData.x
+        y: modelData.y
+        width: modelData.width
+        height: modelData.height
     }
 }

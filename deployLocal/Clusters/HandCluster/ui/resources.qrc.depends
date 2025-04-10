@@ -8,6 +8,7 @@
         <file>TimeInfo.qml</file>
         <file>LightInfo.qml</file>
         <file>CircularProgressBar.qml</file>
+        <file>ObjectDetector.qml</file>
     </qresource>
 
     <qresource prefix="/assets/icons">
@@ -28,6 +29,7 @@
         <file alias="cloud.png">../assets/icons/cloud.png</file>
         <file alias="watch.png">../assets/icons/watch.png</file>
         <file alias="raio.png">../assets/icons/raio.png</file>
+
     </qresource>
 
     <qresource prefix="/assets/fonts">
@@ -36,5 +38,6 @@
     
     <qresource prefix="/assets/images">
         <file alias="car.png">../assets/images/car.png</file>
+        <file alias="traffic-light.png">../assets/images/traffic-light.png</file>
     </qresource>
 </RCC>

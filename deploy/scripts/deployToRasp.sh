@@ -2,11 +2,8 @@
 
 projectDir=RaspberryPi
 piUserName=team02
-# piIpAddressLocal=10.21.221.64
-# piIpAddressRemote=10.21.221.64
-
-piIpAddressLocal=192.168.5.226
-piIpAddressRemote=192.168.5.226
+piIpAddressLocal=10.21.221.64
+piIpAddressRemote=10.21.221.64
 piPathBin=/opt/vehicle/bin
 piPathEtc=/opt/vehicle/etc/zenoh
 piPass=seameteam2
@@ -18,8 +15,10 @@ check_ssh_connection() {
     echo "Checking connection to $host..."
     # Test SSH login
     if sshpass -p "$piPass" ssh "$user@$host" exit; then
+        echo "successfull connection to $host..."
         return 0
     fi
+    echo "NO connection to $host..."
     return 1
 }
 
@@ -75,10 +74,10 @@ if check_ssh_connection "$piIpAddressRemote" "$piUserName"; then
     "echo '$piPass' | sudo -S mkdir -p $piPathBin $piPathEtc && sudo chown -R $piUserName:$piUserName /opt/vehicle"
 
     echo "Send binary to remote rasp over scp"
-    sshpass -p "$piPass" scp HandClusterB MiddleWareApp "$piUserName"@"$piIpAddressRemote":"$piPathBin"
 
+    sshpass -p "$piPass" scp HandClusterB MiddleWareApp "$piUserName"@"$piIpAddressLocal":"$piPathBin"
+    sshpass -p "$piPass" scp ./$projectDir/ZenohConfig/InstrumentClusterConfig.json ./$projectDir/ZenohConfig/MiddleWareConfig.json "$piUserName"@"$piIpAddressLocal":"$piPathEtc"
+    
     # echo "Restarting services on local Raspberry Pi..."
     # sshpass -p "$piPass" ssh "$piUserName"@"$piIpAddressLocal" "sudo systemctl start middleware.service"
-
-
 fi

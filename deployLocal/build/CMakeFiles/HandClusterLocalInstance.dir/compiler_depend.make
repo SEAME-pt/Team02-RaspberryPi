@@ -373,7 +373,33 @@ CMakeFiles/HandClusterLocalInstance.dir/HandClusterLocalInstance_autogen/mocs_co
   /usr/include/x86_64-linux-gnu/qt5/QtCore/qobject.h \
   /usr/include/x86_64-linux-gnu/qt5/QtCore/QPoint \
   /usr/include/x86_64-linux-gnu/qt5/QtCore/qpoint.h \
-  /usr/include/x86_64-linux-gnu/qt5/QtCore/QVariantList
+  /usr/include/x86_64-linux-gnu/qt5/QtCore/QVariantList \
+  /usr/include/x86_64-linux-gnu/qt5/QtCore/QJsonDocument \
+  /usr/include/x86_64-linux-gnu/qt5/QtCore/qjsondocument.h \
+  /usr/include/x86_64-linux-gnu/qt5/QtCore/qjsonvalue.h \
+  /usr/include/x86_64-linux-gnu/qt5/QtCore/qshareddata.h \
+  /usr/include/x86_64-linux-gnu/qt5/QtCore/qcborvalue.h \
+  /usr/include/x86_64-linux-gnu/qt5/QtCore/qdatetime.h \
+  /usr/include/x86_64-linux-gnu/qt5/QtCore/qcborcommon.h \
+  /usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h \
+  /usr/include/x86_64-linux-gnu/qt5/QtCore/qtextstream.h \
+  /usr/include/x86_64-linux-gnu/qt5/QtCore/qiodevice.h \
+  /usr/include/x86_64-linux-gnu/qt5/QtCore/qlocale.h \
+  /usr/include/x86_64-linux-gnu/qt5/QtCore/qvariant.h \
+  /usr/include/x86_64-linux-gnu/qt5/QtCore/qset.h \
+  /usr/include/x86_64-linux-gnu/qt5/QtCore/qcontiguouscache.h \
+  /usr/include/x86_64-linux-gnu/qt5/QtCore/qsharedpointer.h \
+  /usr/include/x86_64-linux-gnu/qt5/QtCore/qsharedpointer_impl.h \
+  /usr/include/x86_64-linux-gnu/qt5/QtCore/qregularexpression.h \
+  /usr/include/x86_64-linux-gnu/qt5/QtCore/qurl.h \
+  /usr/include/x86_64-linux-gnu/qt5/QtCore/quuid.h \
+  /usr/include/x86_64-linux-gnu/qt5/QtCore/QJsonParseError \
+  /usr/include/x86_64-linux-gnu/qt5/QtCore/QDebug \
+  /usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h \
+  /usr/include/x86_64-linux-gnu/qt5/QtCore/QJsonArray \
+  /usr/include/x86_64-linux-gnu/qt5/QtCore/qjsonarray.h \
+  /usr/include/x86_64-linux-gnu/qt5/QtCore/QJsonObject \
+  /usr/include/x86_64-linux-gnu/qt5/QtCore/qjsonobject.h
 
 CMakeFiles/HandClusterLocalInstance.dir/home/lpicoli-/Documents/Team02-Course/RaspberryPi/Clusters/HandCluster/src/InstrumentCluster.cpp.o: /home/lpicoli-/Documents/Team02-Course/RaspberryPi/Clusters/HandCluster/src/InstrumentCluster.cpp \
   /usr/include/stdc-predef.h \
@@ -747,6 +773,32 @@ CMakeFiles/HandClusterLocalInstance.dir/home/lpicoli-/Documents/Team02-Course/Ra
   /usr/include/x86_64-linux-gnu/qt5/QtCore/QPoint \
   /usr/include/x86_64-linux-gnu/qt5/QtCore/qpoint.h \
   /usr/include/x86_64-linux-gnu/qt5/QtCore/QVariantList \
+  /usr/include/x86_64-linux-gnu/qt5/QtCore/QJsonDocument \
+  /usr/include/x86_64-linux-gnu/qt5/QtCore/qjsondocument.h \
+  /usr/include/x86_64-linux-gnu/qt5/QtCore/qjsonvalue.h \
+  /usr/include/x86_64-linux-gnu/qt5/QtCore/qshareddata.h \
+  /usr/include/x86_64-linux-gnu/qt5/QtCore/qcborvalue.h \
+  /usr/include/x86_64-linux-gnu/qt5/QtCore/qdatetime.h \
+  /usr/include/x86_64-linux-gnu/qt5/QtCore/qcborcommon.h \
+  /usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h \
+  /usr/include/x86_64-linux-gnu/qt5/QtCore/qtextstream.h \
+  /usr/include/x86_64-linux-gnu/qt5/QtCore/qiodevice.h \
+  /usr/include/x86_64-linux-gnu/qt5/QtCore/qlocale.h \
+  /usr/include/x86_64-linux-gnu/qt5/QtCore/qvariant.h \
+  /usr/include/x86_64-linux-gnu/qt5/QtCore/qset.h \
+  /usr/include/x86_64-linux-gnu/qt5/QtCore/qcontiguouscache.h \
+  /usr/include/x86_64-linux-gnu/qt5/QtCore/qsharedpointer.h \
+  /usr/include/x86_64-linux-gnu/qt5/QtCore/qsharedpointer_impl.h \
+  /usr/include/x86_64-linux-gnu/qt5/QtCore/qregularexpression.h \
+  /usr/include/x86_64-linux-gnu/qt5/QtCore/qurl.h \
+  /usr/include/x86_64-linux-gnu/qt5/QtCore/quuid.h \
+  /usr/include/x86_64-linux-gnu/qt5/QtCore/QJsonParseError \
+  /usr/include/x86_64-linux-gnu/qt5/QtCore/QDebug \
+  /usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h \
+  /usr/include/x86_64-linux-gnu/qt5/QtCore/QJsonArray \
+  /usr/include/x86_64-linux-gnu/qt5/QtCore/qjsonarray.h \
+  /usr/include/x86_64-linux-gnu/qt5/QtCore/QJsonObject \
+  /usr/include/x86_64-linux-gnu/qt5/QtCore/qjsonobject.h \
   /usr/include/c++/11/thread \
   /usr/include/c++/11/bits/std_thread.h \
   /usr/include/c++/11/bits/this_thread_sleep.h
@@ -1170,21 +1222,26 @@ CMakeFiles/HandClusterLocalInstance.dir/home/lpicoli-/Documents/Team02-Course/Ra
   /usr/include/x86_64-linux-gnu/qt5/QtCore/qvariant.h \
   /usr/include/x86_64-linux-gnu/qt5/QtCore/QPoint \
   /usr/include/x86_64-linux-gnu/qt5/QtCore/qpoint.h \
-  /usr/include/x86_64-linux-gnu/qt5/QtCore/QVariantList
+  /usr/include/x86_64-linux-gnu/qt5/QtCore/QVariantList \
+  /usr/include/x86_64-linux-gnu/qt5/QtCore/QJsonDocument \
+  /usr/include/x86_64-linux-gnu/qt5/QtCore/qjsondocument.h \
+  /usr/include/x86_64-linux-gnu/qt5/QtCore/qjsonvalue.h \
+  /usr/include/x86_64-linux-gnu/qt5/QtCore/qcborvalue.h \
+  /usr/include/x86_64-linux-gnu/qt5/QtCore/qdatetime.h \
+  /usr/include/x86_64-linux-gnu/qt5/QtCore/qcborcommon.h \
+  /usr/include/x86_64-linux-gnu/qt5/QtCore/qregularexpression.h \
+  /usr/include/x86_64-linux-gnu/qt5/QtCore/quuid.h \
+  /usr/include/x86_64-linux-gnu/qt5/QtCore/QJsonParseError \
+  /usr/include/x86_64-linux-gnu/qt5/QtCore/QJsonArray \
+  /usr/include/x86_64-linux-gnu/qt5/QtCore/qjsonarray.h \
+  /usr/include/x86_64-linux-gnu/qt5/QtCore/QJsonObject \
+  /usr/include/x86_64-linux-gnu/qt5/QtCore/qjsonobject.h
 
 CMakeFiles/HandClusterLocalInstance.dir/qrc_resources.cpp.o: qrc_resources.cpp \
   /usr/include/stdc-predef.h
 
 
-/usr/include/x86_64-linux-gnu/qt5/QtCore/QDebug:
-
 /usr/include/x86_64-linux-gnu/qt5/QtGui/QFontDatabase:
-
-/usr/include/x86_64-linux-gnu/qt5/QtCore/qset.h:
-
-/usr/include/x86_64-linux-gnu/qt5/QtCore/qtextstream.h:
-
-/usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:
 
 /usr/include/x86_64-linux-gnu/qt5/QtCore/qmetaobject.h:
 
@@ -1194,27 +1251,15 @@ CMakeFiles/HandClusterLocalInstance.dir/qrc_resources.cpp.o: qrc_resources.cpp \
 
 /usr/include/x86_64-linux-gnu/qt5/QtQml/qqmlprivate.h:
 
-/usr/include/x86_64-linux-gnu/qt5/QtCore/qcontiguouscache.h:
-
-/usr/include/x86_64-linux-gnu/qt5/QtQml/qqml.h:
-
 /usr/include/x86_64-linux-gnu/qt5/QtQml/qqmldebug.h:
 
 /usr/include/x86_64-linux-gnu/qt5/QtQml/qtqml-config.h:
 
 /usr/include/x86_64-linux-gnu/qt5/QtQml/qjsvalue.h:
 
-/usr/include/x86_64-linux-gnu/qt5/QtCore/qurl.h:
-
 /usr/include/x86_64-linux-gnu/qt5/QtQml/qqmlengine.h:
 
 /usr/include/x86_64-linux-gnu/qt5/QtQml/QQmlApplicationEngine:
-
-/usr/include/x86_64-linux-gnu/qt5/QtCore/qsize.h:
-
-/usr/include/x86_64-linux-gnu/qt5/QtCore/qshareddata.h:
-
-/usr/include/x86_64-linux-gnu/qt5/QtCore/qlocale.h:
 
 /usr/include/x86_64-linux-gnu/qt5/QtGui/qwindowdefs.h:
 
@@ -1225,6 +1270,38 @@ CMakeFiles/HandClusterLocalInstance.dir/qrc_resources.cpp.o: qrc_resources.cpp \
 /usr/include/x86_64-linux-gnu/qt5/QtGui/qtgui-config.h:
 
 /usr/include/x86_64-linux-gnu/qt5/QtGui/qguiapplication.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qjsonarray.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtCore/QJsonArray:
+
+/usr/include/x86_64-linux-gnu/qt5/QtCore/QDebug:
+
+/usr/include/x86_64-linux-gnu/qt5/QtCore/QJsonParseError:
+
+/usr/include/x86_64-linux-gnu/qt5/QtCore/quuid.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qurl.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qsize.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qregularexpression.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtQml/qqml.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qcontiguouscache.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qset.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qlocale.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qtextstream.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qcborvalue.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qshareddata.h:
 
 /usr/include/x86_64-linux-gnu/qt5/QtCore/QPoint:
 
@@ -1278,6 +1355,8 @@ CMakeFiles/HandClusterLocalInstance.dir/qrc_resources.cpp.o: qrc_resources.cpp \
 
 /usr/include/c++/11/bits/locale_facets_nonio.h:
 
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qcborcommon.h:
+
 /usr/local/include/zenoh/api/timestamp.hxx:
 
 /usr/local/include/zenoh/api/keyexpr.hxx:
@@ -1287,6 +1366,8 @@ CMakeFiles/HandClusterLocalInstance.dir/qrc_resources.cpp.o: qrc_resources.cpp \
 /usr/local/include/zenoh/api/encoding.hxx:
 
 /usr/include/c++/11/variant:
+
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qjsondocument.h:
 
 /usr/include/c++/11/optional:
 
@@ -1327,6 +1408,8 @@ CMakeFiles/HandClusterLocalInstance.dir/qrc_resources.cpp.o: qrc_resources.cpp \
 /usr/include/c++/11/bits/istream.tcc:
 
 /usr/include/x86_64-linux-gnu/qt5/QtQml/qqmlapplicationengine.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qjsonobject.h:
 
 /usr/include/c++/11/bits/ostream.tcc:
 
@@ -1622,6 +1705,8 @@ CMakeFiles/HandClusterLocalInstance.dir/qrc_resources.cpp.o: qrc_resources.cpp \
 
 /usr/include/x86_64-linux-gnu/c++/11/bits/gthr.h:
 
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdatetime.h:
+
 /usr/include/c++/11/bits/functexcept.h:
 
 /usr/include/c++/11/streambuf:
@@ -1632,9 +1717,13 @@ CMakeFiles/HandClusterLocalInstance.dir/qrc_resources.cpp.o: qrc_resources.cpp \
 
 /usr/include/c++/11/new:
 
+/usr/include/x86_64-linux-gnu/qt5/QtCore/QJsonObject:
+
 /usr/include/x86_64-linux-gnu/bits/struct_mutex.h:
 
 /usr/include/c++/11/bits/stl_iterator.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qjsonvalue.h:
 
 /usr/include/c++/11/initializer_list:
 
@@ -1755,6 +1844,8 @@ qrc_resources.cpp:
 /usr/include/c++/11/bits/locale_facets.h:
 
 /usr/include/c++/11/bits/exception.h:
+
+/usr/include/x86_64-linux-gnu/qt5/QtCore/QJsonDocument:
 
 /usr/include/x86_64-linux-gnu/qt5/QtCore/qvector.h:
 

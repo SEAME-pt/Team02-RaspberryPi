@@ -77,6 +77,7 @@ qrc_resources.cpp: ../Clusters/HandCluster/ui/SpeedDisplay.qml
 qrc_resources.cpp: ../Clusters/HandCluster/ui/TimeInfo.qml
 qrc_resources.cpp: ../Clusters/HandCluster/ui/LightInfo.qml
 qrc_resources.cpp: ../Clusters/HandCluster/ui/CircularProgressBar.qml
+qrc_resources.cpp: ../Clusters/HandCluster/ui/ObjectDetector.qml
 qrc_resources.cpp: ../Clusters/HandCluster/assets/icons/back_fog_on.png
 qrc_resources.cpp: ../Clusters/HandCluster/assets/icons/front_fog_on.png
 qrc_resources.cpp: ../Clusters/HandCluster/assets/icons/green-battery.png
@@ -96,6 +97,7 @@ qrc_resources.cpp: ../Clusters/HandCluster/assets/icons/watch.png
 qrc_resources.cpp: ../Clusters/HandCluster/assets/icons/raio.png
 qrc_resources.cpp: ../Clusters/HandCluster/assets/fonts/electrolize.ttf
 qrc_resources.cpp: ../Clusters/HandCluster/assets/images/car.png
+qrc_resources.cpp: ../Clusters/HandCluster/assets/images/traffic-light.png
 qrc_resources.cpp: Clusters/HandCluster/ui/resources.qrc.depends
 qrc_resources.cpp: /usr/local/qt6/libexec/rcc
 qrc_resources.cpp: ../Clusters/HandCluster/ui/resources.qrc

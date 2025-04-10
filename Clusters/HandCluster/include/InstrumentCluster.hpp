@@ -8,6 +8,11 @@
 #include <QVariant>
 #include <QPoint>
 #include <QVariantList> 
+#include <QJsonDocument>
+#include <QJsonParseError>
+#include <QDebug>
+#include <QJsonArray>
+#include <QJsonObject>
 
 using namespace zenoh;
 
@@ -38,6 +43,7 @@ class InstrumentCluster : public QObject
     Q_PROPERTY(int gear READ getGear WRITE setGear NOTIFY gearChanged)
     Q_PROPERTY(QVariantMap leftLaneCoefs READ getLeftLaneCoefs WRITE setLeftLaneCoefs NOTIFY leftLaneChanged)
     Q_PROPERTY(QVariantMap rightLaneCoefs READ getRightLaneCoefs WRITE setRightLaneCoefs NOTIFY rightLaneChanged)
+    Q_PROPERTY(QVariantList detectedObjects READ getDetectedObjects NOTIFY detectedObjectsUpdated)
 
 
   private:
@@ -56,7 +62,8 @@ class InstrumentCluster : public QObject
 
     QVariantMap m_leftLaneCoefs;
     QVariantMap m_rightLaneCoefs;
-    
+    QVariantList m_detectedObjects;
+
     std::unique_ptr<zenoh::Session> session;
     std::optional<zenoh::Subscriber<void>> speed_subscriber;
     std::optional<zenoh::Subscriber<void>> beamLow_subscriber;
@@ -77,12 +84,15 @@ class InstrumentCluster : public QObject
     std::optional<zenoh::Subscriber<void>> currentGear_subscriber;
     std::optional<zenoh::Subscriber<void>> leftLane_subscriber;
     std::optional<zenoh::Subscriber<void>> rightLane_subscriber;
+    std::optional<zenoh::Subscriber<void>> object_subscriber;
 
   public:
     explicit InstrumentCluster(QObject* parent = nullptr);
     explicit InstrumentCluster(const std::string& configFile,
                                QObject* parent = nullptr);
     ~InstrumentCluster();
+
+    QVariantList getDetectedObjects() const;
 
     int getSpeed() const;
     void setSpeed(int speed);
@@ -129,6 +139,7 @@ class InstrumentCluster : public QObject
   private:
     void setupSubscriptions();
     void parseLaneData(const std::string& laneData, const std::string& laneType);
+    void parseObjectData(const std::string& objectData);
   signals:
     void speedChanged(int speed);
     void rightBlinkerChanged(bool state);
@@ -144,7 +155,7 @@ class InstrumentCluster : public QObject
     void gearChanged(int gear);
     void leftLaneChanged(const QVariantMap& leftLaneCoefs);
     void rightLaneChanged(const QVariantMap& rightLaneCoefs);
-    
+    void detectedObjectsUpdated(const QVariantList& objects);
 };
 
 #endif // INSTRUMENTCLUSTER_HPP

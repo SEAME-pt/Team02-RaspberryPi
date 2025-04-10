@@ -162,7 +162,7 @@
 	"SOURCES" : 
 	[
 		[
-			"/home/lpicoli-/Documents/Team02-Course/RaspberryPi/Clusters/HandCluster/src/publisher/lanes_publisher.cpp",
+			"/home/lpicoli-/Documents/Team02-Course/RaspberryPi/Clusters/HandCluster/src/publisher/object_publisher.cpp",
 			"Mu",
 			null
 		]

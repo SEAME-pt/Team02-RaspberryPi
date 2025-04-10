@@ -77,6 +77,7 @@ qrc_resources.cpp: /home/lpicoli-/Documents/Team02-Course/RaspberryPi/Clusters/H
 qrc_resources.cpp: /home/lpicoli-/Documents/Team02-Course/RaspberryPi/Clusters/HandCluster/ui/TimeInfo.qml
 qrc_resources.cpp: /home/lpicoli-/Documents/Team02-Course/RaspberryPi/Clusters/HandCluster/ui/LightInfo.qml
 qrc_resources.cpp: /home/lpicoli-/Documents/Team02-Course/RaspberryPi/Clusters/HandCluster/ui/CircularProgressBar.qml
+qrc_resources.cpp: /home/lpicoli-/Documents/Team02-Course/RaspberryPi/Clusters/HandCluster/ui/ObjectDetector.qml
 qrc_resources.cpp: /home/lpicoli-/Documents/Team02-Course/RaspberryPi/Clusters/HandCluster/assets/icons/back_fog_on.png
 qrc_resources.cpp: /home/lpicoli-/Documents/Team02-Course/RaspberryPi/Clusters/HandCluster/assets/icons/front_fog_on.png
 qrc_resources.cpp: /home/lpicoli-/Documents/Team02-Course/RaspberryPi/Clusters/HandCluster/assets/icons/green-battery.png
@@ -96,6 +97,7 @@ qrc_resources.cpp: /home/lpicoli-/Documents/Team02-Course/RaspberryPi/Clusters/H
 qrc_resources.cpp: /home/lpicoli-/Documents/Team02-Course/RaspberryPi/Clusters/HandCluster/assets/icons/raio.png
 qrc_resources.cpp: /home/lpicoli-/Documents/Team02-Course/RaspberryPi/Clusters/HandCluster/assets/fonts/electrolize.ttf
 qrc_resources.cpp: /home/lpicoli-/Documents/Team02-Course/RaspberryPi/Clusters/HandCluster/assets/images/car.png
+qrc_resources.cpp: /home/lpicoli-/Documents/Team02-Course/RaspberryPi/Clusters/HandCluster/assets/images/traffic-light.png
 qrc_resources.cpp: __/Clusters/HandCluster/ui/resources.qrc.depends
 qrc_resources.cpp: /home/lpicoli-/Documents/Team02-Course/RaspberryPi/Clusters/HandCluster/ui/resources.qrc
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/lpicoli-/Documents/Team02-Course/RaspberryPi/deployLocal/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Generating qrc_resources.cpp"

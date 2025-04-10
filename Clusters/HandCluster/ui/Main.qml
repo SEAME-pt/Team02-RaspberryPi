@@ -7,11 +7,13 @@ ApplicationWindow {
     property int letterSize: 25
     property int letterSizeLoaded: 28
     visible: true
-    // width: 1024
-    // height: 600
-    width: screen.width
-    height: screen.height
+    width: 1280
+    height: 400
 
+    // minimumWidth: 1280
+    // maximumWidth: 1280
+    // minimumHeight: 400
+    // maximumHeight: 400
     property int iconWidth: 35
     property int iconHeight: 35
 
@@ -60,14 +62,23 @@ ApplicationWindow {
     LaneLines {
         id: laneLines 
         width: parent.width * 2/4   // Ocupa 2/3 da tela
-        height: parent.height * 0.8 // 80% da altura, sem tocar no topo
-        anchors.right: parent.right // Fixa no lado direito
+        height: parent.height * 0.6 // 80% da altura, sem tocar no topo
+        // anchors.right: parent.right // Fixa no lado direito
         anchors.bottom: parent.bottom
         anchors.topMargin: 50       // 
         // leftLanePoints: leftLaneMock
         // rightLanePoints: rightLaneMock
     }
 
+    ObjectDetector {
+        id: objectDetector
+        width: parent.width * 2/4   // Ocupa 2/3 da tela
+        height: parent.height * 0.8 // 80% da altura, sem tocar no topo
+        anchors.right: parent.right // Fixa no lado direito
+        anchors.bottom: parent.bottom
+        anchors.topMargin: 50       // 
+    }
+    
     SpeedDisplay {}
     GearDisplay {}
     BatteryIndicator {}

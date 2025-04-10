@@ -22,6 +22,9 @@ int main(int argc, char** argv)
     std::vector<uint8_t> rightLaneBuffer;
     std::vector<uint8_t> leftLaneBuffer;
 
+    std::vector<std::string> objectTypes = { "car", "pedestrian", "cyclist" };
+    std::vector<QJsonObject> objectList;
+
     float rightLane[3] = {0.0f};
     float leftLane[3] = {0.0f};
     bool rightReceived[3] = {false};
@@ -99,7 +102,7 @@ int main(int argc, char** argv)
         zenoh::KeyExpr("Vehicle/1/Scene/Lanes/Right"));
     auto left_lanes_pub = session->declare_publisher(
         zenoh::KeyExpr("Vehicle/1/Scene/Lanes/Left"));
-
+    auto objects_pub = session->declare_publisher("Vehicle/1/Scene/Objects");
 
     while (1)
     {
@@ -170,7 +173,7 @@ int main(int argc, char** argv)
             memcpy(&value, &frame.data[4], sizeof(float));
 
             std::cout << "[CAN] "
-                << ((frame.can_id == 0x100) ? "Right" : "Left")
+                << ((frame.can_id == 0x101) ? "Right" : "Left")
                 << " Lane - Index: " << index
                 << ", Value: " << value << std::endl;
 
@@ -207,6 +210,47 @@ int main(int argc, char** argv)
                 }
             }
         }
+        if(frame.can_id == 0x200){ // estou publicando por tempo e nao a cada objeto que chega 
+            float x, y;
+            uint16_t width, height;
+            uint8_t type;
+
+            memcpy(&x, &frame.data[0], sizeof(float));
+            memcpy(&y, &frame.data[4], sizeof(float));
+            memcpy(&width, &frame.data[8], sizeof(uint16_t));
+            memcpy(&height, &frame.data[10], sizeof(uint16_t));
+            memcpy(&type, &frame.data[12], sizeof(uint8_t));
+
+             std::cout << "[CAN] Object received - x: " << x
+              << ", y: " << y
+              << ", w: " << width
+              << ", h: " << height
+              << ", type: " << (int)type << std::endl;
+
+            QJsonObject obj; 
+            obj["x"] = x;
+            obj["y"] = y;
+            obj["width"] = width;
+            obj["height"] = height;
+            obj["type"] = QString::fromStdString(objectTypes[type]);
+            objectList.push_back(obj);
+
+            auto now = std::chrono::steady_clock::now();
+            auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(now - lastPublishTime);
+
+            if (duration.count() >= 100) {
+                QJsonArray arr;
+                for (const auto& o : objectBuffer)
+                    arr.append(o);
+
+                QJsonDocument doc(arr);
+                std::string jsonString = doc.toJson(QJsonDocument::Compact).toStdString();
+                objects_pub.put(jsonString);
+                
+                objectBuffer.clear();
+                lastPublishTime = now;
+            }
+
         usleep(10);
     }
     return 0;

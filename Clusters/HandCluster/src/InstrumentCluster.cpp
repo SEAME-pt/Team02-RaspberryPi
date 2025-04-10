@@ -137,7 +137,8 @@ void InstrumentCluster::setupSubscriptions()
             std::string laneData = sample.get_payload().as_string();
             std::cout << "Recebido leftLaneData: " << laneData << std::endl;
             // std::cout << "Recebido leftLaneData: " << laneData << std::endl;
-            parseLaneData(laneData, "rightLane"); //deixei trocado porque no middleware esta trocado e nao consigo alterar pela net 
+            
+            parseLaneData(laneData, "leftLane"); //deixei trocado porque no middleware esta trocado e nao consigo alterar pela net 
         },
         zenoh::closures::none));
 
@@ -148,26 +149,58 @@ void InstrumentCluster::setupSubscriptions()
             std::string laneData = sample.get_payload().as_string();
             std::cout << "Recebido rightLaneData: " << laneData << std::endl;
             // std::cout << "Recebido rightLaneData: " << laneData << std::endl;
-            parseLaneData(laneData, "leftLane"); //deixei trocado porque no middleware esta trocado e nao consigo alterar pela net 
+            parseLaneData(laneData, "rightLane");  //deixei trocado porque no middleware esta trocado e nao consigo alterar pela net 
         },
         zenoh::closures::none));
+    object_subscriber.emplace(session->declare_subscriber(
+    "Vehicle/1/Scene/Objects",
+    [this](const zenoh::Sample& sample) {
+
+        std::string objectData = sample.get_payload().as_string();
+        // std::cout << "Recebido objectData: " << objectData << std::endl;
+        parseObjectData(objectData);  
+    },
+    zenoh::closures::none));
+
 }
 
-// QVariantList InstrumentCluster::generateLaneFromCoefficients(float a, float b, float c, int height)
-// {
-//     QVariantList lanePoints;
+void InstrumentCluster::parseObjectData(const std::string& objectData) {
+    QByteArray byteArray = QByteArray::fromStdString(objectData);
+    QJsonParseError parseError;
+    QJsonDocument doc = QJsonDocument::fromJson(byteArray, &parseError);
 
-//     for (int y = height; y >= height / 3; y -= 5)
-//     {
-//         float x = a * y * y + b * y + c;
+    if (parseError.error != QJsonParseError::NoError) {
+        qWarning() << "Erro ao parsear JSON:" << parseError.errorString();
+        return;
+    }
 
-//         QVariantMap point;
-//         point["x"] = x;
-//         point["y"] = y;
-//         lanePoints.append(point);
-//     }
-//     return lanePoints;
-// }
+    if (!doc.isArray()) {
+        qWarning() << "JSON recebido não é um array de objetos";
+        return;
+    }
+
+    QJsonArray array = doc.array();
+    QVariantList detectedObjectsList;
+
+    for (const QJsonValue& value : array) {
+        if (!value.isObject()) continue;
+        QJsonObject obj = value.toObject();
+
+        QVariantMap map;
+        map["x"] = obj["x"].toDouble();
+        map["y"] = obj["y"].toDouble();
+        map["width"] = obj["width"].toDouble();
+        map["height"] = obj["height"].toDouble();
+        map["type"] = obj["type"].toString();
+
+        detectedObjectsList.append(map);
+    }
+
+    // Aqui você emite o sinal para o QML
+    m_detectedObjects = detectedObjectsList;
+    std::cout << "Detected objects updated: " << detectedObjectsList.size() << std::endl;
+    emit detectedObjectsUpdated(detectedObjectsList);
+}
 
 void InstrumentCluster::parseLaneData(const std::string& laneData, const std::string& laneType)
 {
@@ -186,6 +219,10 @@ void InstrumentCluster::parseLaneData(const std::string& laneData, const std::st
     else if (laneType == "rightLane") {
         setRightLaneCoefs(coefficients); 
     }
+}
+
+QVariantList InstrumentCluster::getDetectedObjects() const {
+    return m_detectedObjects;
 }
 
 

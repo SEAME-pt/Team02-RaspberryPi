@@ -52,7 +52,7 @@ int main(int argc, char* argv[])
         },
         Qt::QueuedConnection
     );
-
+    
     int result = app.exec();
     delete instrumentCluster;
     return result;

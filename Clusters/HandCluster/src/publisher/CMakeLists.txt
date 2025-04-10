@@ -13,7 +13,7 @@ set(CMAKE_CXX_STANDARD 17)
 
 # Add source files for the project
 set(SOURCE_FILES
-    lanes_publisher.cpp
+    object_publisher.cpp
 )
 
 # Add the executable target

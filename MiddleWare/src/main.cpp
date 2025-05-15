@@ -1,10 +1,12 @@
 #include <stdio.h>
 #include <iostream>
 #include <string.h>
+#include <string>
 #include <sys/socket.h>
 #include <linux/can.h>
 #include <linux/can/raw.h>
 #include <net/if.h>
+#include <memory>
 #include <sys/ioctl.h>
 #include <unistd.h>
 #include <arpa/inet.h>
@@ -14,8 +16,19 @@ using namespace zenoh;
 
 int main(int argc, char** argv)
 {
+    std::vector<uint8_t> laneDataBuffer; 
     struct ifreq ifr;
     struct sockaddr_can addr;
+    std::vector<uint8_t> rightLaneBuffer;
+    std::vector<uint8_t> leftLaneBuffer;
+
+    // std::vector<std::string> objectTypes = { "car", "pedestrian", "cyclist" };
+    // std::vector<QJsonObject> objectList;
+
+    float rightLane[3] = {0.0f};
+    float leftLane[3] = {0.0f};
+    bool rightReceived[3] = {false};
+    bool leftReceived[3] = {false};
 
     int canSocket = socket(PF_CAN, SOCK_RAW, CAN_RAW);
     if (canSocket < 0)
@@ -39,19 +52,58 @@ int main(int argc, char** argv)
     std::cout << "CAN socket bound to can0 interface successfully."
               << std::endl;
 
-    auto config = Config::create_default();
+    std::unique_ptr<zenoh::Session> session;
     if (argc == 2)
     {
-        config = Config::from_file(argv[1]);
+        auto config = Config::from_file(argv[1]);
+        session     = std::make_unique<zenoh::Session>(
+            zenoh::Session::open(std::move(config)));
     }
-    auto session = Session::open(std::move(config));
+    else
+    {
+        auto config = Config::create_default();
+        session     = std::make_unique<zenoh::Session>(
+            zenoh::Session::open(std::move(config)));
+    }
 
-    auto pubSpeed =
-        session.declare_publisher(KeyExpr("seame/car/1/speedSensor"));
-    auto pubBattery =
-        session.declare_publisher(KeyExpr("seame/car/1/batterySensor"));
-    auto pubLights = session.declare_publisher(KeyExpr("seame/car/1/lights"));
-    auto pubGear   = session.declare_publisher(KeyExpr("seame/car/1/gear"));
+    auto speed_pub =
+        session->declare_publisher(zenoh::KeyExpr("Vehicle/1/Speed"));
+    auto beamLow_pub = session->declare_publisher(
+        zenoh::KeyExpr("Vehicle/1/Body/Lights/Beam/Low"));
+    auto beamHigh_pub = session->declare_publisher(
+        zenoh::KeyExpr("Vehicle/1/Body/Lights/Beam/High"));
+    auto running_pub = session->declare_publisher(
+        zenoh::KeyExpr("Vehicle/1/Body/Lights/Running"));
+    auto parking_pub = session->declare_publisher(
+        zenoh::KeyExpr("Vehicle/1/Body/Lights/Parking"));
+    auto fogRear_pub = session->declare_publisher(
+        zenoh::KeyExpr("Vehicle/1/Body/Lights/Fog/Rear"));
+    auto fogFront_pub = session->declare_publisher(
+        zenoh::KeyExpr("Vehicle/1/Body/Lights/Fog/Front"));
+    auto brake_pub = session->declare_publisher(
+        zenoh::KeyExpr("Vehicle/1/Body/Lights/Brake"));
+    auto hazard_pub = session->declare_publisher(
+        zenoh::KeyExpr("Vehicle/1/Body/Lights/Hazard"));
+    auto directionIndicatorLeft_pub = session->declare_publisher(
+        zenoh::KeyExpr("Vehicle/1/Body/Lights/DirectionIndicator/Left"));
+    auto directionIndicatorRight_pub = session->declare_publisher(
+        zenoh::KeyExpr("Vehicle/1/Body/Lights/DirectionIndicator/Right"));
+    auto currentGear_pub = session->declare_publisher(
+        zenoh::KeyExpr("Vehicle/1/Powertrain/Transmission/CurrentGear"));
+    auto current_voltage_pub = session->declare_publisher(
+        zenoh::KeyExpr("Vehicle/1/Powertrain/TractionBattery/CurentVoltage"));
+    auto current_current_pub = session->declare_publisher(
+        zenoh::KeyExpr("Vehicle/1/Powertrain/TractionBattery/CurrentCurrent"));
+    auto current_power_pub = session->declare_publisher(
+        zenoh::KeyExpr("Vehicle/1/Powertrain/TractionBattery/CurrentPower"));
+    auto state_of_charge_pub = session->declare_publisher(
+        zenoh::KeyExpr("Vehicle/1/Powertrain/TractionBattery/StateOfCharge"));
+    auto right_lanes_pub = session->declare_publisher(
+        zenoh::KeyExpr("Vehicle/1/Scene/Lanes/Right"));
+    auto left_lanes_pub = session->declare_publisher(
+        zenoh::KeyExpr("Vehicle/1/Scene/Lanes/Left"));
+    auto warning_pub = session->declare_publisher(
+        zenoh::KeyExpr("Vehicle/1/Scene/Warning"));
 
     while (1)
     {
@@ -73,8 +125,7 @@ int main(int argc, char** argv)
             speed                 = wheelDiame * 3.14 * speed * 10 / 60;
             std::string speed_str = std::to_string(speed);
 
-            // printf("Publishing speed: '%d'\n", speed);
-            pubSpeed.put(speed_str.c_str());
+            speed_pub.put(speed_str.c_str());
         }
         else if (frame.can_id == 0x02)
         {
@@ -87,7 +138,7 @@ int main(int argc, char** argv)
             std::string battery_str = std::to_string(battery);
 
             // printf("Publishing battery: '%lf\n", battery);
-            pubBattery.put(battery_str.c_str());
+            state_of_charge_pub.put(battery_str.c_str());
         }
         else if (frame.can_id == 0x03)
         {
@@ -102,19 +153,73 @@ int main(int argc, char** argv)
             }
             printf("\n");
 
-            // printf("Publishing lights: '%lf\n", lights[0]);
-            std::string light_str(1, lights);
-            pubLights.put(light_str);
+            directionIndicatorRight_pub.put(
+                std::to_string((lights & (1 << 0)) != 0));
+            directionIndicatorLeft_pub.put(
+                std::to_string((lights & (1 << 1)) != 0));
+            beamLow_pub.put(std::to_string((lights & (1 << 2)) != 0));
+            beamHigh_pub.put(std::to_string((lights & (1 << 3)) != 0));
+            fogFront_pub.put(std::to_string((lights & (1 << 4)) != 0));
+            fogRear_pub.put(std::to_string((lights & (1 << 5)) != 0));
+            hazard_pub.put(std::to_string((lights & (1 << 6)) != 0));
+            parking_pub.put(std::to_string((lights & (1 << 7)) != 0));
         }
-        else if (frame.can_id == 0x04)
+        if (frame.can_id == 0x100 || frame.can_id == 0x101)
         {
-            char gear;
+            int index;
+            float value;
 
-            memcpy(&gear, frame.data, sizeof(char));
+            memcpy(&index, &frame.data[0], sizeof(int));
+            memcpy(&value, &frame.data[4], sizeof(float));
 
-            // printf("Publishing gear: '%lf\n", gear[0]);
-            std::string gear_str(1, gear);
-            pubGear.put(std::to_string(gear_str));
+            std::cout << "[CAN] "
+                << ((frame.can_id == 0x101) ? "Right" : "Left")
+                << " Lane - Index: " << index
+                << ", Value: " << value << std::endl;
+
+            if (frame.can_id == 0x100)
+            {
+                leftLane[index] = value;
+                leftReceived[index] = true;
+
+                if (leftReceived[0] && leftReceived[1] && leftReceived[2])
+                {
+                    std::ostringstream stream;
+                    for (int i = 0; i < 3; ++i)
+                        stream << leftLane[i] << " ";
+
+                    std::cout << "Publishing left lane: " << stream.str() << std::endl;
+                    left_lanes_pub.put(stream.str());
+                    std::fill(std::begin(leftReceived), std::end(leftReceived), false);
+                }
+            }
+            else
+            {
+                rightLane[index] = value;
+                rightReceived[index] = true;
+
+                if (rightReceived[0] && rightReceived[1] && rightReceived[2])
+                {
+                    std::ostringstream stream;
+                    for (int i = 0; i < 3; ++i)
+                        stream << rightLane[i] << " ";
+                    
+                    std::cout << "Publishing right lane: " << stream.str() << std::endl;
+                    right_lanes_pub.put(stream.str());
+                    std::fill(std::begin(rightReceived), std::end(rightReceived), false);
+                }
+            }
+        }
+        else if (frame.can_id == 0x200)
+        {
+            uint8_t warning_code;
+            memcpy(&warning_code, frame.data, sizeof(uint8_t));
+
+            std::cout << "Received warning code: " << static_cast<int>(warning_code) << std::endl;
+
+            std::string warning_code_str = std::to_string(static_cast<int>(warning_code));
+            std::cout << "Publishing warning code: " << warning_code_str << std::endl;
+            warning_pub.put(warning_code_str);
         }
         usleep(10);
     }

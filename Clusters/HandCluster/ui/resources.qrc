@@ -1,0 +1,49 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Main.qml</file>
+        <file>BatteryIndicator.qml</file>
+        <file>GearDisplay.qml</file>
+        <file>LaneLines.qml</file>
+        <file>SpeedDisplay.qml</file>
+        <file>TimeInfo.qml</file>
+        <file>LightInfo.qml</file>
+        <file>CircularProgressBar.qml</file>
+        <file>ObjectDetector.qml</file>
+        <file>NotificationBlock.qml</file>
+    </qresource>
+
+    <qresource prefix="/assets/icons">
+        <file alias="back_fog_on.png">../assets/icons/back_fog_on.png</file>
+        <file alias="front_fog_on.png">../assets/icons/front_fog_on.png</file>
+        <file alias="green-battery.png">../assets/icons/green-battery.png</file>
+        <file alias="high_beam_on.png">../assets/icons/high_beam_on.png</file>
+        <file alias="low_beam_on.png">../assets/icons/low_beam_on.png</file>
+        <file alias="parking_lights_on.png">../assets/icons/parking_lights_on.png</file>
+        <file alias="turn_left_on.png">../assets/icons/turn_left_on.png</file>
+        <file alias="turn_right_on.png">../assets/icons/turn_right_on.png</file>
+        <file alias="seame-logo.png">../assets/icons/seame-logo.png</file>
+        <file alias="battery-1.png">../assets/icons/battery-1.png</file>
+        <file alias="battery-2.png">../assets/icons/battery-2.png</file>
+        <file alias="battery-3.png">../assets/icons/battery-3.png</file>
+        <file alias="battery-4.png">../assets/icons/battery-4.png</file>
+        <file alias="battery-5.png">../assets/icons/battery-5.png</file>
+        <file alias="cloud.png">../assets/icons/cloud.png</file>
+        <file alias="watch.png">../assets/icons/watch.png</file>
+        <file alias="raio.png">../assets/icons/raio.png</file>
+        <file alias="warning.png">../assets/icons/warning.png</file>
+        <file alias="assist-navigate-driving-off.png">../assets/icons/assist-navigate-driving-off.png</file>
+        <file alias="assist-navigate-driving-on.png">../assets/icons/assist-navigate-driving-on.png</file>
+        <file alias="assist-steer-off.png">../assets/icons/assist-steer-off.png</file>
+        <file alias="assist-steer-on.png">../assets/icons/assist-steer-on.png</file>
+        <file alias="system-failure.png">../assets/icons/system-failure.png</file>
+    </qresource>
+
+    <qresource prefix="/assets/fonts">
+        <file alias="electrolize.ttf">../assets/fonts/electrolize.ttf</file>
+    </qresource>
+    
+    <qresource prefix="/assets/images">
+        <file alias="car.png">../assets/images/car.png</file>
+        <file alias="traffic-light.png">../assets/images/traffic-light.png</file>
+    </qresource>
+</RCC>

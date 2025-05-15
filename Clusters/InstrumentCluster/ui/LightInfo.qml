@@ -1,7 +1,7 @@
 import QtQuick 2.15
 
 Row {
-    spacing: 20
+    spacing: 10
 
     Rectangle {
         width: app.iconWidth

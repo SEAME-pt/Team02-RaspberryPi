@@ -16,8 +16,19 @@ using namespace zenoh;
 
 int main(int argc, char** argv)
 {
+    std::vector<uint8_t> laneDataBuffer; 
     struct ifreq ifr;
     struct sockaddr_can addr;
+    std::vector<uint8_t> rightLaneBuffer;
+    std::vector<uint8_t> leftLaneBuffer;
+
+    // std::vector<std::string> objectTypes = { "car", "pedestrian", "cyclist" };
+    // std::vector<QJsonObject> objectList;
+
+    float rightLane[3] = {0.0f};
+    float leftLane[3] = {0.0f};
+    bool rightReceived[3] = {false};
+    bool leftReceived[3] = {false};
 
     int canSocket = socket(PF_CAN, SOCK_RAW, CAN_RAW);
     if (canSocket < 0)
@@ -87,6 +98,12 @@ int main(int argc, char** argv)
         zenoh::KeyExpr("Vehicle/1/Powertrain/TractionBattery/CurrentPower"));
     auto state_of_charge_pub = session->declare_publisher(
         zenoh::KeyExpr("Vehicle/1/Powertrain/TractionBattery/StateOfCharge"));
+    auto right_lanes_pub = session->declare_publisher(
+        zenoh::KeyExpr("Vehicle/1/Scene/Lanes/Right"));
+    auto left_lanes_pub = session->declare_publisher(
+        zenoh::KeyExpr("Vehicle/1/Scene/Lanes/Left"));
+    auto warning_pub = session->declare_publisher(
+        zenoh::KeyExpr("Vehicle/1/Scene/Warning"));
 
     while (1)
     {
@@ -108,7 +125,6 @@ int main(int argc, char** argv)
             speed                 = wheelDiame * 3.14 * speed * 10 / 60;
             std::string speed_str = std::to_string(speed);
 
-            // printf("Publishing speed: '%d'\n", speed);
             speed_pub.put(speed_str.c_str());
         }
         else if (frame.can_id == 0x02)
@@ -148,14 +164,62 @@ int main(int argc, char** argv)
             hazard_pub.put(std::to_string((lights & (1 << 6)) != 0));
             parking_pub.put(std::to_string((lights & (1 << 7)) != 0));
         }
-        else if (frame.can_id == 0x04)
+        if (frame.can_id == 0x100 || frame.can_id == 0x101)
         {
-            int gear;
+            int index;
+            float value;
 
-            memcpy(&gear, frame.data, sizeof(gear));
+            memcpy(&index, &frame.data[0], sizeof(int));
+            memcpy(&value, &frame.data[4], sizeof(float));
 
-            // printf("Publishing gear: '%lf\n", gear[0]);
-            currentGear_pub.put(std::to_string(gear));
+            std::cout << "[CAN] "
+                << ((frame.can_id == 0x101) ? "Right" : "Left")
+                << " Lane - Index: " << index
+                << ", Value: " << value << std::endl;
+
+            if (frame.can_id == 0x100)
+            {
+                leftLane[index] = value;
+                leftReceived[index] = true;
+
+                if (leftReceived[0] && leftReceived[1] && leftReceived[2])
+                {
+                    std::ostringstream stream;
+                    for (int i = 0; i < 3; ++i)
+                        stream << leftLane[i] << " ";
+
+                    std::cout << "Publishing left lane: " << stream.str() << std::endl;
+                    left_lanes_pub.put(stream.str());
+                    std::fill(std::begin(leftReceived), std::end(leftReceived), false);
+                }
+            }
+            else
+            {
+                rightLane[index] = value;
+                rightReceived[index] = true;
+
+                if (rightReceived[0] && rightReceived[1] && rightReceived[2])
+                {
+                    std::ostringstream stream;
+                    for (int i = 0; i < 3; ++i)
+                        stream << rightLane[i] << " ";
+                    
+                    std::cout << "Publishing right lane: " << stream.str() << std::endl;
+                    right_lanes_pub.put(stream.str());
+                    std::fill(std::begin(rightReceived), std::end(rightReceived), false);
+                }
+            }
+        }
+        else if (frame.can_id == 0x200)
+        {
+            uint8_t warning_code;
+            memcpy(&warning_code, frame.data, sizeof(uint8_t));
+
+            std::cout << "Received warning code: " << static_cast<int>(warning_code) << std::endl;
+
+            std::string warning_code_str = std::to_string(static_cast<int>(warning_code));
+            std::cout << "Publishing warning code: " << warning_code_str << std::endl;
+            warning_pub.put(warning_code_str);
         }
         usleep(10);
     }

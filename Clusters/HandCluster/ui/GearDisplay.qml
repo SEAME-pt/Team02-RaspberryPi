@@ -1,0 +1,30 @@
+import QtQuick 2.15
+
+Row {
+    anchors.right: parent.right
+    anchors.verticalCenter: parent.verticalCenter
+    anchors.rightMargin: 30
+    spacing: 16
+
+    function gearColor(gearValue) {
+        return instrumentCluster.gear === gearValue ? "blue" : "white";
+    }
+
+    function gearSize(gearValue) {
+        return instrumentCluster.gear === gearValue ? app.letterSizeLoaded : app.letterSize;
+    }
+
+    Column {
+        spacing: 8
+
+        Text { text: "P"; font.family: Qt.binding(function() { return app.font; }); font.pixelSize: gearSize(127); color: gearColor(127) }
+        Text { text: "R"; font.family: Qt.binding(function() { return app.font; }); font.pixelSize: gearSize(-1); color: gearColor(-1) }
+        Text { text: "N"; font.family: Qt.binding(function() { return app.font; }); font.pixelSize: gearSize(0); color: gearColor(0) }
+        Text { text: "D"; font.family: Qt.binding(function() { return app.font; }); font.pixelSize: gearSize(1); color: gearColor(1) }
+    }
+
+    // Text { text: "P"; font.family: app.font; font.pixelSize: gearSize(127); color: gearColor(127) }
+    // Text { text: "R"; font.family: app.font; font.pixelSize: gearSize(-1); color: gearColor(-1) }
+    // Text { text: "N"; font.family: app.font; font.pixelSize: gearSize(0); color: gearColor(0) }
+    // Text { text: "D"; font.family: app.font; font.pixelSize: gearSize(1); color: gearColor(1) }
+}

@@ -13,8 +13,8 @@ ApplicationWindow {
     property int letterSize: 25
     property int letterSizeLoaded: 35
     property int gearOffset: -5
-    property int iconWidth: 40
-    property int iconHeight: 40
+    property int iconWidth: 20
+    property int iconHeight: 20
     property bool carClusterVisible: true
     property bool showSplash: true
 
@@ -99,11 +99,11 @@ ApplicationWindow {
 
         }
 
-        GearShiftInfo {
-            anchors.bottom: parent.bottom
-            anchors.horizontalCenter: parent.horizontalCenter
-            anchors.bottomMargin: 15
-        }
+        // GearShiftInfo {
+        //     anchors.bottom: parent.bottom
+        //     anchors.horizontalCenter: parent.horizontalCenter
+        //     anchors.bottomMargin: 15
+        // }
 
         LightInfo {
             anchors.top: parent.top

@@ -1,19 +1,25 @@
 import QtQuick 2.15
 
 Row {
-    spacing: 20
+    spacing: 5
+    anchors.top: parent.top
+    anchors.left: parent.left
+    anchors.topMargin: 20
+    anchors.leftMargin: 80
+
 
     Rectangle {
         width: app.iconWidth
         height: app.iconHeight
-        color: "transparent" // Keeps the placeholder invisible
+        color: "transparent"
         Image {
             id: lowBeamSignal
             anchors.centerIn: parent
             width: parent.width
             height: parent.height
-            source: "qrc:/assets/icons/low_beam_on.png"
-            visible: instrumentCluster.lowBeam
+            source: "../assets/icons/low_beam_on.png"
+            // visible: instrumentCluster.lowBeam
+            visible: true
         }
     }
 
@@ -26,8 +32,9 @@ Row {
             anchors.centerIn: parent
             width: parent.width
             height: parent.height
-            source: "qrc:/assets/icons/high_beam_on.png"
-            visible: instrumentCluster.highBeam
+            source: "../assets/icons/high_beam_on.png"
+            //visible: instrumentCluster.highBeam
+            visible: true
         }
     }
 
@@ -40,8 +47,9 @@ Row {
             anchors.centerIn: parent
              width: parent.width
             height: parent.height
-            source: "qrc:/assets/icons/front_fog_on.png"
-            visible: instrumentCluster.frontFogLight
+            source: "../assets/icons/front_fog_on.png"
+            // visible: instrumentCluster.frontFogLight
+            visible: true
         }
     }
 
@@ -52,10 +60,11 @@ Row {
         Image {
             id: parkingLightsSignal
             anchors.centerIn: parent
-             width: parent.width
+            width: parent.width
             height: parent.height
-            source: "qrc:/assets/icons/parking_lights_on.png"
-            visible: instrumentCluster.parkingLight
+            source: "../assets/icons/parking_lights_on.png"
+            // visible: instrumentCluster.parkingLight
+            visible: true
         }
     }
 
@@ -66,10 +75,47 @@ Row {
         Image {
             id: backFogSignal
             anchors.centerIn: parent
-             width: parent.width
+            width: parent.width
             height: parent.height
-            source: "qrc:/assets/icons/back_fog_on.png"
-            visible: instrumentCluster.rearFogLight
+            source: "../assets/icons/high_beam_on.png"
+            // visible: instrumentCluster.rearFogLight
+            visible: true
+        }
+    }
+
+    Rectangle {
+        color: "transparent" 
+        width: app.iconWidth * 13
+        height: app.iconHeight
+    }
+
+    Rectangle {
+        width: app.iconWidth + 3
+        height: app.iconHeight + 3
+        color: "transparent"
+        Image {
+            id: assistDrivingSignal
+            anchors.centerIn: parent
+            width: parent.width
+            height: parent.height
+            source: "../assets/icons/assist-navigate-driving-on.png"
+            // visible: instrumentCluster.rearFogLight
+            visible: true
+        }
+    }
+    
+    Rectangle {
+        width: app.iconWidth + 3
+        height: app.iconHeight + 3
+        color: "transparent"
+        Image {
+            id: assistSteerSignal
+            anchors.centerIn: parent
+            width: parent.width
+            height: parent.height
+            source: "../assets/icons/assist-steer-on.png"
+            // visible: instrumentCluster.rearFogLight
+            visible: true
         }
     }
 }

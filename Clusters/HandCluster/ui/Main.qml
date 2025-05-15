@@ -1,306 +1,104 @@
-import QtQuick
 import QtQuick 2.15
 import QtQuick.Window 2.2
 import QtQuick.Controls 2.4
 
 ApplicationWindow {
     id: app
+    property int letterSize: 25
+    property int letterSizeLoaded: 28
     visible: true
-    width: 1024
-    height: 600
-    flags: Qt.Window | Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint
-    visibility: Window.FullScreen  // Add this line
+    width: 1280
+    height: 400
 
-    property int letterSize: 27
-    property int letterSizeGear: 25
-    property int letterSizeLoaded: 30
-    property int gearOffset: -2
-    property int iconWidth: 45
-    property int iconHeight: 45
-    property bool carClusterVisible: true
-    property bool showSplash: true
+    // minimumWidth: 1280
+    // maximumWidth: 1280
+    // minimumHeight: 400
+    // maximumHeight: 400
+    property int iconWidth: 35
+    property int iconHeight: 35
 
-    font.family: "Roboto"
-    font.pixelSize: 30
-    font.bold: false
+    // Defina a primeira fonte
+    property string fontPath1: "file:///usr/share/fonts/electrolize.ttf"
+    property string fontPath2: "../assets/fonts/electrolize.ttf"
+    property bool fontExists: false
 
+    // FontLoader que será alterado conforme a existência do arquivo
+    FontLoader {
+        id: customFont
+        source: fontExists ? fontPath2 : fontPath1
+    }
+
+    // Combina a lógica de verificação da fonte e a atualização de layout em uma única função
+    Component.onCompleted: {
+        var file = Qt.openUrlExternally(fontPath1);
+        if (file !== "") {
+            fontExists = true;
+        } else {
+            fontExists = false;
+        }
+
+        // Verifica o status da fonte
+        console.log("Font Status:", customFont.status)
+        if (customFont.status === FontLoader.Ready) {
+            console.log("Fonte carregada com sucesso:", customFont.name)
+            app.font = customFont.name
+            forceLayoutUpdate();
+        } else {
+            console.log("Erro ao carregar a fonte:", customFont.status)
+        }
+    }
+
+    function forceLayoutUpdate() {
+        app.width = app.width + 1;
+        app.width = app.width - 1;
+    }
 
     Rectangle {
-        anchors.fill: parent  // Faz o retângulo preencher todo o ApplicationWindow
-        color: "lightgray"  // Cor de fundo
-
-        Image {
-            source: "qrc:/assets/images/car-detection.png"  // Caminho do arquivo .jpeg
-            anchors.centerIn: parent  // Centraliza a imagem dentro do retângulo
-            //fillMode: Image.PreserveAspectFit  // Garante que a imagem seja redimensionada proporcionalmente
-            anchors.fill: parent  // Faz a imagem ocupar todo o espaço disponível no retângulo
-        }
-    }
-
-    Row {
-        anchors.verticalCenter: parent.verticalCenter
-        anchors.left: parent.left
-        anchors.leftMargin: 50
-        spacing: 10
-
-        //TurnSignalLeft {}
-        Column {
-            spacing: 0
-
-            Rectangle {
-                width: 100
-                height: 100
-                color: "transparent"
-
-                Text {
-                    anchors.centerIn: parent
-                    font.family: "Open Sans"
-                    text: instrumentCluster.speed
-                    font.pixelSize: 110
-                    color: "white"
-                    opacity: 1.0
-                    horizontalAlignment: Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
-                }
-            }
-
-            Text {
-                anchors.horizontalCenter: parent.horizontalCenter
-                font.family: "Open Sans"
-                text: "DM/S"
-                font.pixelSize: app.letterSize - 4
-                color: "gray"
-                anchors.bottomMargin: 5
-            }
-
-        }
-        //TurnSignalRight {}
-    }
-
-
-    Row {
-        anchors.top: parent.top
         width: parent.width
-        anchors.left: parent.left
-        anchors.leftMargin: 20
-        anchors.topMargin: 10
-        height: 50
-        spacing: 30
-        padding: 10
-
-        Column {
-
-            Row {
-                spacing: 5
-
-                Text {
-                    font.family: "Open Sans"
-                    text: "22°"
-                    font.pixelSize: app.letterSize
-                    color: "white"
-                }
-                Text {
-                    font.family: "Open Sans"
-                    text: "C"
-                    font.pixelSize: app.letterSize
-                    color: "gray"
-                }
-            }
-        }
-
-        Column {
-            Row {
-                spacing: 5
-                Text {
-                    font.family: "Open Sans"
-                    id: timeDisplay
-                    text: "11:11"
-                    font.pixelSize:  app.letterSize
-                    color: "white"
-                    opacity: 0.0
-                }
-
-                Text {
-                    font.family: "Open Sans"
-                    id: amPmDisplay
-                    text: "AM"
-                    font.pixelSize: app.letterSize
-                    color: "gray"
-                    opacity: 0.0
-                }
-
-                Timer {
-                    id: clockTimer
-                    interval: 1000 // Atualiza a cada 1 segundo
-                    running: true
-                    repeat: true
-                    onTriggered: {
-                        timeDisplay.text = timeHelper.getCurrentTime();
-                        timeDisplay.opacity = 1.0
-
-                        amPmDisplay.text = timeHelper.getCurrentAmPm();
-                        amPmDisplay.opacity = 1.0
-                    }
-                }
-
-                QtObject {
-                    id: timeHelper
-
-                    function getCurrentTime() {
-                        const currentDate = new Date();
-                        let hours = currentDate.getHours();
-                        let minutes = currentDate.getMinutes();
-
-                        hours = hours % 12 || 12;
-                        minutes = minutes < 10 ? "0" + minutes : minutes
-
-                        return hours + ":" + minutes;
-                    }
-
-                    function getCurrentAmPm() {
-                        const currentDate = new Date();
-                        return currentDate.getHours() >= 12 ? "PM" : "AM";
-                    }
-                }
-            }
-        }
-
+        height: parent.height
+        color: "#252525"
     }
 
-    Column {
-        anchors.right: parent.right
-        anchors.verticalCenter: parent.verticalCenter
-        anchors.rightMargin: 15
-        spacing: 7
-
-        Rectangle {
-                width: app.iconWidth
-                height: app.iconHeight
-                color: "transparent" // Keeps the placeholder invisible
-                Image {
-                    id: lowBeamSignal
-                    anchors.centerIn: parent
-                    width: parent.width
-                    height: parent.height
-                    source: "qrc:/assets/icons/low_beam_on.png"
-                    visible: instrumentCluster.lowBeam
-                }
-            }
-
-            Rectangle {
-                width: app.iconWidth
-                height: app.iconHeight
-                color: "transparent"
-                Image {
-                    id: highBeamSignal
-                    anchors.centerIn: parent
-                    width: parent.width
-                    height: parent.height
-                    source: "qrc:/assets/icons/high_beam_on.png"
-                    visible: instrumentCluster.highBeam
-                }
-            }
-
-            Rectangle {
-                width: app.iconWidth
-                height: app.iconHeight
-                color: "transparent"
-                Image {
-                    id: frontFogSignal
-                    anchors.centerIn: parent
-                     width: parent.width
-                    height: parent.height
-                    source: "qrc:/assets/icons/front_fog_on.png"
-                    visible: instrumentCluster.frontFogLight
-                }
-            }
-
-            Rectangle {
-                width: app.iconWidth
-                height: app.iconHeight
-                color: "transparent"
-                Image {
-                    id: parkingLightsSignal
-                    anchors.centerIn: parent
-                     width: parent.width
-                    height: parent.height
-                    source: "qrc:/assets/icons/parking_lights_on.png"
-                    visible: instrumentCluster.parkingLight
-                }
-            }
-
-            Rectangle {
-                width: app.iconWidth
-                height: app.iconHeight
-                color: "transparent"
-                Image {
-                    id: backFogSignal
-                    anchors.centerIn: parent
-                     width: parent.width
-                    height: parent.height
-                    source: "qrc:/assets/icons/back_fog_on.png"
-                    visible: instrumentCluster.rearFogLight
-                }
-            }
+    LaneLines {
+        id: laneLines 
+        width: parent.width * 2/4   // Ocupa 2/3 da tela
+        height: parent.height * 0.7// 80% da altura, sem tocar no topo
+        // anchors.right: parent.right // Fixa no lado direito
+        anchors.bottom: parent.bottom
+        // leftLanePoints: leftLaneMock
+        // rightLanePoints: rightLaneMock
     }
 
-    Row {
-            anchors.horizontalCenter: parent.horizontalCenter
-            anchors.bottom: parent.bottom
-            anchors.bottomMargin: 15
-            spacing: 16
-            Text {
-                font.family: "Open Sans"
-                text: "P"
-                font.pixelSize: instrumentCluster.gear == 127 ? app.letterSizeLoaded : app.letterSize
-                color: instrumentCluster.gear == 127 ? "blue" : "white"
-                y: instrumentCluster.gear == 127 ? gearOffset : 0
-            }
-            Text {
-                font.family: "Open Sans"
-                text: "R"
-                font.pixelSize: instrumentCluster.gear == -1 ? app.letterSizeLoaded : app.letterSize
-                color: instrumentCluster.gear == -1 ? "blue" : "white"
-                y: instrumentCluster.gear == -1 ? gearOffset : 0
-            }
-            Text {
-                font.family: "Open Sans"
-                text: "N"
-                font.pixelSize: instrumentCluster.gear == 0 ? app.letterSizeLoaded : app.letterSize
-                color: instrumentCluster.gear == 0 ? "blue" : "white"
-                y: instrumentCluster.gear == 0 ? gearOffset : 0
-            }
-            Text {
-                font.family: "Open Sans"
-                text: "D"
-                font.pixelSize: instrumentCluster.gear == 1 ? app.letterSizeLoaded : app.letterSize
-                color: instrumentCluster.gear == 1 ? "blue" : "white"
-                y: instrumentCluster.gear == 1 ? gearOffset : 0
-            }
-        }
-
-    Row {
-            
-        anchors.right: parent.right
-        anchors.rightMargin: 140
-        anchors.verticalCenterOffset: -110
-        anchors.verticalCenter: parent.verticalCenter
-        spacing: 15
-        CircularProgressBar {
-            id: batteryPercentage
-            lineWidth: 10
-            value: instrumentCluster.percentage / 100
-            size: 115
-            secondaryColor: "#ffffff"
-            primaryColor: instrumentCluster.percentage < 20 ? "#ff0000" : "#2fc71b"
-
-            Text {
-                text: parseInt(batteryPercentage.value * 100) + "%"
-                anchors.centerIn: parent
-                font.pixelSize: 22
-                color: "#ffffff"
-            }
-        }
+    ObjectDetector {
+        id: objectDetector
+        width: parent.width * 2/4  // Ajusta a largura para ocupar o espaço do retângulo
+        height: parent.height * 0.9// Ajusta a altura para ocupar o espaço do retângulo
+        anchors.right: parent.right // Fixa no lado direito
+        anchors.bottom: parent.bottom
+        anchors.topMargin: 50
     }
+
+    // Image { 
+    //     id: carImage
+    //     width: parent.width * 1/4   // Ocupa 1/4 da largura da tela
+    //     height: parent.height * 0.6 // 70% da altura
+    //     source: "../assets/images/car.png"
+    //     anchors.horizontalCenter: parent.horizontalCenter // Centraliza horizontalmente
+    //     anchors.bottom: parent.bottom // Fixa na parte superior
+    //     anchors.bottomMargin: -35
+    // }
+
+    SpeedDisplay {}
+    GearDisplay {}
+    BatteryIndicator {}
+
+    TimeInfo {
+        id: timeInfo
+    }
+    
+    NotificationBlock {
+        warningCode: instrumentCluster.warningCode
+    }
+
+    LightInfo {}
 }
-

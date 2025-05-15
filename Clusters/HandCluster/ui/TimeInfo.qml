@@ -1,24 +1,22 @@
 import QtQuick 2.15
 
 Row {
+
+    anchors.rightMargin: 30
+    anchors.horizontalCenter: parent.horizontalCenter
     spacing: 5
-    Image {
-        id: clockIcon
-        source: "qrc:/assets/icons/watch.png"
-        width: app.iconWidth - 7
-        height: app.iconHeight - 7
-        visible: true
-        fillMode: Image.PreserveAspectFit
-    }
+    anchors.top: parent.top
+    anchors.topMargin: 25
 
     Rectangle {
-        width: 7 // Adjust the width to set the desired space
+        width: 7
         height: 1
         color: "transparent"
     }
 
     Text {
-        font.family: "Open Sans"
+        font.family: Qt.binding(function() { return app.font; })
+        // font.family: app.font
         id: timeDisplay
         text: "11:11"
         font.pixelSize:  app.letterSize
@@ -27,7 +25,8 @@ Row {
     }
 
     Text {
-        font.family: "Open Sans"
+        font.family: Qt.binding(function() { return app.font; })
+        // font.family: app.font
         id: amPmDisplay
         text: "AM"
         font.pixelSize: app.letterSize

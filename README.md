@@ -113,6 +113,22 @@ A demonstration of the running application can be seen in the GIF below:
 [DEMONSTRATION GIF WILL BE ATTACHED] -->
 ---
 
+## Testing
+
+We use **LCOV** for test coverage analysis to ensure the reliability and quality of the codebase. Follow the steps below to run the tests:
+
+1. Navigate to the `RaspberryPi/tests` directory:
+  ```bash
+  cd RaspberryPi/tests
+  ```
+
+2. After the tests are executed, a coverage report will be generated. Run the test script:
+  ```bash
+  ./test.sh
+  ```
+
+Make sure all tests pass and the coverage meets the project's standards before submitting any changes. 
+
 ## The Team 🤝
 > Together, we've collaborated to bring this project to life, combining our knowledge, skills, and experience every step of the way. It has been a great journey of learning and growing as a team.
 

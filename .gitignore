@@ -72,3 +72,10 @@ CMakeLists.txt.user*
 *.dll
 *.exe
 
+# Build folders
+tests/build/
+deploy/build/
+deploy/.qt/
+deploy/deployLocal/build/
+
+

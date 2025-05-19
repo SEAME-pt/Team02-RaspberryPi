@@ -161,12 +161,20 @@ void InstrumentCluster::setupSubscriptions()
             parseObjectData(objectData);  
         },
         zenoh::closures::none));
-    warningCode_subscriber.emplace(session->declare_subscriber(
-        "Vehicle/1/Scene/Warning",
+    obstacleWarning_subscriber.emplace(session->declare_subscriber(
+        "Vehicle/1/ADAS/ObstacleDetection/Warning",
         [this](const zenoh::Sample& sample) {
-            std::string warningCode = sample.get_payload().as_string();
-            std::cout << "Recebido warningCode: " << warningCode << std::endl;
-            setWarningCode(std::stoi(warningCode));
+            setWarningCode(1);
+        },
+        zenoh::closures::none));
+    laneDeparture_subscriber.emplace(session->declare_subscriber(
+        "Vehicle/1/ADAS/LaneDeparture/Detected",
+        [this](const zenoh::Sample& sample) {
+            bool isDeparting = std::stoi(sample.get_payload().as_string());
+            if (isDeparting) {
+                setWarningCode(2);
+            }
+            setLaneDeparture(isDeparting);
         },
         zenoh::closures::none));
 }
@@ -259,10 +267,20 @@ int InstrumentCluster::getWarningCode() const {
 void InstrumentCluster::setWarningCode(int code) {
     if (this->warningCode != code) {
         this->warningCode = code; 
-        emit warningCodeChanged(code);
     }
+    emit warningCodeChanged(code);
 }
 
+bool InstrumentCluster::getLaneDeparture() const {
+    return this->laneDeparture;
+}
+
+void InstrumentCluster::setLaneDeparture(bool state) {
+    if (this->laneDeparture != state) {
+        this->laneDeparture = state;
+        emit laneDepartureChanged(state);
+    }
+}
 
 bool InstrumentCluster::getRightBlinker() const
 {

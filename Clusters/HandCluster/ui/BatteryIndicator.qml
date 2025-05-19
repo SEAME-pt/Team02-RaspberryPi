@@ -21,10 +21,10 @@ Row {
     }
 
     Text {
-        text: "80%"
+        text: instrumentCluster.percentage + "%"
         font.pixelSize: 20
-        font.family: Qt.binding(function() { return app.font; })
-        // font.family: app.font
+        // font.family: Qt.binding(function() { return app.font; })
+        font.family: app.font
         color: "white"
     }
 
@@ -34,10 +34,10 @@ Row {
     }
 
     Text {
-        text: "300m"
+        text: instrumentCluster.autonomy + "m"
         font.pixelSize: 20
-        font.family: Qt.binding(function() { return app.font; })
-        // font.family: app.font
+        // font.family: Qt.binding(function() { return app.font; })
+        font.family: app.font
         color: "white"
     }
 }

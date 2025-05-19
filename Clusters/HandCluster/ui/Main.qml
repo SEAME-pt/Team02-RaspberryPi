@@ -61,9 +61,9 @@ ApplicationWindow {
 
     LaneLines {
         id: laneLines 
-        width: parent.width * 2/4   // Ocupa 2/3 da tela
-        height: parent.height * 0.7// 80% da altura, sem tocar no topo
-        // anchors.right: parent.right // Fixa no lado direito
+        width: parent.width * 2/4
+        height: parent.height * 0.7
+        // anchors.right: parent.right
         anchors.bottom: parent.bottom
         // leftLanePoints: leftLaneMock
         // rightLanePoints: rightLaneMock
@@ -71,22 +71,22 @@ ApplicationWindow {
 
     ObjectDetector {
         id: objectDetector
-        width: parent.width * 2/4  // Ajusta a largura para ocupar o espaço do retângulo
-        height: parent.height * 0.9// Ajusta a altura para ocupar o espaço do retângulo
-        anchors.right: parent.right // Fixa no lado direito
+        width: parent.width * 2/4
+        height: parent.height * 0.9
+        anchors.right: parent.right
         anchors.bottom: parent.bottom
         anchors.topMargin: 50
     }
 
-    // Image { 
-    //     id: carImage
-    //     width: parent.width * 1/4   // Ocupa 1/4 da largura da tela
-    //     height: parent.height * 0.6 // 70% da altura
-    //     source: "../assets/images/car.png"
-    //     anchors.horizontalCenter: parent.horizontalCenter // Centraliza horizontalmente
-    //     anchors.bottom: parent.bottom // Fixa na parte superior
-    //     anchors.bottomMargin: -35
-    // }
+    Image { 
+        id: carImage
+        width: parent.width * 1/4
+        height: parent.height * 0.6
+        source: "../assets/images/car.png"
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.bottom: parent.bottom 
+        anchors.bottomMargin: -35
+    }
 
     SpeedDisplay {}
     GearDisplay {}

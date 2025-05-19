@@ -36,6 +36,7 @@
         <file alias="assist-steer-off.png">../assets/icons/assist-steer-off.png</file>
         <file alias="assist-steer-on.png">../assets/icons/assist-steer-on.png</file>
         <file alias="system-failure.png">../assets/icons/system-failure.png</file>
+        <file alias="lane-departure.png">../assets/icons/lane-departure.png</file>
     </qresource>
 
     <qresource prefix="/assets/fonts">

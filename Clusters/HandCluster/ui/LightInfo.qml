@@ -18,8 +18,8 @@ Row {
             width: parent.width
             height: parent.height
             source: "../assets/icons/low_beam_on.png"
-            // visible: instrumentCluster.lowBeam
-            visible: true
+            visible: instrumentCluster.lowBeam
+            // visible: true
         }
     }
 
@@ -33,8 +33,8 @@ Row {
             width: parent.width
             height: parent.height
             source: "../assets/icons/high_beam_on.png"
-            //visible: instrumentCluster.highBeam
-            visible: true
+            visible: instrumentCluster.highBeam
+            // visible: true
         }
     }
 
@@ -48,8 +48,8 @@ Row {
              width: parent.width
             height: parent.height
             source: "../assets/icons/front_fog_on.png"
-            // visible: instrumentCluster.frontFogLight
-            visible: true
+            visible: instrumentCluster.frontFogLight
+            // visible: true
         }
     }
 
@@ -63,8 +63,8 @@ Row {
             width: parent.width
             height: parent.height
             source: "../assets/icons/parking_lights_on.png"
-            // visible: instrumentCluster.parkingLight
-            visible: true
+            visible: instrumentCluster.parkingLight
+            // visible: true
         }
     }
 
@@ -78,8 +78,8 @@ Row {
             width: parent.width
             height: parent.height
             source: "../assets/icons/high_beam_on.png"
-            // visible: instrumentCluster.rearFogLight
-            visible: true
+            visible: instrumentCluster.rearFogLight
+            // visible: true
         }
     }
 
@@ -98,7 +98,7 @@ Row {
             anchors.centerIn: parent
             width: parent.width
             height: parent.height
-            source: "../assets/icons/assist-navigate-driving-on.png"
+            source: "../assets/icons/assist-navigate-driving-off.png"
             // visible: instrumentCluster.rearFogLight
             visible: true
         }
@@ -113,9 +113,23 @@ Row {
             anchors.centerIn: parent
             width: parent.width
             height: parent.height
-            source: "../assets/icons/assist-steer-on.png"
-            // visible: instrumentCluster.rearFogLight
+            source: "../assets/icons/assist-steer-off.png"
+            // visible: instrumentCluster.assistSteerSignal
             visible: true
+        }
+    }
+    Rectangle {
+        width: app.iconWidth + 3
+        height: app.iconHeight + 3
+        color: "transparent"
+        Image {
+            id: laneDepartureSignal
+            anchors.centerIn: parent
+            width: parent.width
+            height: parent.height
+            source: "../assets/icons/lane-departure.png"
+            visible: instrumentCluster.laneDeparture
+            // visible: true
         }
     }
 }

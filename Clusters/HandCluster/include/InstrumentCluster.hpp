@@ -45,6 +45,7 @@ class InstrumentCluster : public QObject
     Q_PROPERTY(QVariantMap rightLaneCoefs READ getRightLaneCoefs WRITE setRightLaneCoefs NOTIFY rightLaneChanged)
     Q_PROPERTY(QVariantList detectedObjects READ getDetectedObjects NOTIFY detectedObjectsUpdated)
     Q_PROPERTY(int warningCode READ getWarningCode WRITE setWarningCode NOTIFY warningCodeChanged)
+    Q_PROPERTY(bool laneDeparture READ getLaneDeparture WRITE setLaneDeparture NOTIFY laneDepartureChanged)
 
 
   private:
@@ -57,6 +58,7 @@ class InstrumentCluster : public QObject
     bool rearFogLight{false};
     bool hazardLight{false};
     bool parkingLight{false};
+    bool laneDeparture{false};
     int percentage;
     int autonomy;
     int gear;  
@@ -89,7 +91,8 @@ class InstrumentCluster : public QObject
     std::optional<zenoh::Subscriber<void>> leftLane_subscriber;
     std::optional<zenoh::Subscriber<void>> rightLane_subscriber;
     std::optional<zenoh::Subscriber<void>> object_subscriber;
-    std::optional<zenoh::Subscriber<void>> warningCode_subscriber;
+    std::optional<zenoh::Subscriber<void>> laneDeparture_subscriber;
+    std::optional<zenoh::Subscriber<void>> obstacleWarning_subscriber;
 
   public:
     explicit InstrumentCluster(QObject* parent = nullptr);
@@ -147,6 +150,9 @@ class InstrumentCluster : public QObject
     QVariantMap getRightLaneCoefs() const;
     void setRightLaneCoefs(const QVariantMap& coefs);
 
+    void setLaneDeparture(bool state);
+    bool getLaneDeparture() const;
+
     void parseLaneData(const std::string& laneData, const std::string& laneType);
     void parseObjectData(const std::string& objectData);
     // std::function<void(const zenoh::Sample&)> getSpeedCallback();
@@ -170,6 +176,7 @@ class InstrumentCluster : public QObject
     void detectedObjectsUpdated(const QVariantList& objects);
     void warningCodeChanged(int code);
     void onSpeedSample(const zenoh::Sample& sample);
+    void laneDepartureChanged(bool state);
     #ifdef UNIT_TEST
       std::function<void(const zenoh::Sample&)> getSpeedCallback();
     #endif

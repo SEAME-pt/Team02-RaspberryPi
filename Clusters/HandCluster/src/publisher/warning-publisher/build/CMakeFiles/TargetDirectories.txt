@@ -1,4 +1,4 @@
-/home/lpicoli-/Documents/Team02-Course/RaspberryPi/Clusters/HandCluster/src/publisher/warning-publisher/build/CMakeFiles/publisher.dir
-/home/lpicoli-/Documents/Team02-Course/RaspberryPi/Clusters/HandCluster/src/publisher/warning-publisher/build/CMakeFiles/edit_cache.dir
-/home/lpicoli-/Documents/Team02-Course/RaspberryPi/Clusters/HandCluster/src/publisher/warning-publisher/build/CMakeFiles/rebuild_cache.dir
-/home/lpicoli-/Documents/Team02-Course/RaspberryPi/Clusters/HandCluster/src/publisher/warning-publisher/build/CMakeFiles/publisher_autogen.dir
+/home/lpicoli-/Documents/mayTeam2/RaspberryPi/Clusters/HandCluster/src/publisher/warning-publisher/build/CMakeFiles/publisher.dir
+/home/lpicoli-/Documents/mayTeam2/RaspberryPi/Clusters/HandCluster/src/publisher/warning-publisher/build/CMakeFiles/edit_cache.dir
+/home/lpicoli-/Documents/mayTeam2/RaspberryPi/Clusters/HandCluster/src/publisher/warning-publisher/build/CMakeFiles/rebuild_cache.dir
+/home/lpicoli-/Documents/mayTeam2/RaspberryPi/Clusters/HandCluster/src/publisher/warning-publisher/build/CMakeFiles/publisher_autogen.dir

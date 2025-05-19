@@ -27,14 +27,14 @@ int main() {
     auto session = std::make_shared<zenoh::Session>(
         zenoh::Session::open(std::move(config)));
 
-    auto warning_pub = session->declare_publisher("Vehicle/1/Scene/Warning");
+    auto warning_pub = session->declare_publisher("Vehicle/1/ObstacleDetection/IsWarning");
 
     while (true) {
 
         // Publish
         std::cout << "Publishing warning code..." << std::endl;
-        // Generate a random warning code between 1 and 5 (never 0)
-        int warningCode = (std::rand() % 4) + 1; // Random number between 1 and 5
+        // Always publish warning code 1
+        int warningCode = 1;
         std::cout << "Warning code: " << warningCode << std::endl;
 
         // Convert the warning code to a string and publish it

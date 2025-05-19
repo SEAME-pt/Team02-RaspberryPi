@@ -12,11 +12,11 @@ Rectangle {
         spacing: 0
 
         Text {
-            // /text: instrumentCluster.speed
-            text: "20"
+            text: instrumentCluster.speed
+            //text: "20"
             font.pixelSize: 90
-            font.family: Qt.binding(function() { return app.font; })
-            // font.family: app.font
+            // font.family: Qt.binding(function() { return app.font; })
+            font.family: app.font
             color: "white"
             opacity: 1.0
             anchors.horizontalCenter: parent.horizontalCenter
@@ -24,8 +24,8 @@ Rectangle {
         }
 
         Text {
-            font.family: Qt.binding(function() { return app.font; })
-            // font.family: app.font
+            // font.family: Qt.binding(function() { return app.font; })
+            font.family: app.font
             text: "DM/S"
             font.pixelSize: app.letterSize
             color: "gray"

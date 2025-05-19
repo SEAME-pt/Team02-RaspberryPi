@@ -102,8 +102,10 @@ int main(int argc, char** argv)
         zenoh::KeyExpr("Vehicle/1/Scene/Lanes/Right"));
     auto left_lanes_pub = session->declare_publisher(
         zenoh::KeyExpr("Vehicle/1/Scene/Lanes/Left"));
-    auto warning_pub = session->declare_publisher(
-        zenoh::KeyExpr("Vehicle/1/Scene/Warning"));
+    auto obstacleWarning_pub = session->declare_publisher(
+        zenoh::KeyExpr("Vehicle/1/ADAS/ObstacleDetection/Warning"));
+    auto laneDeparture_pub = session->declare_publisher(
+        zenoh::KeyExpr("Vehicle/1/ADAS/LaneDeparture/Detected"));
 
     while (1)
     {
@@ -211,16 +213,12 @@ int main(int argc, char** argv)
             }
         }
         else if (frame.can_id == 0x200)
-        {
-            uint8_t warning_code;
-            memcpy(&warning_code, frame.data, sizeof(uint8_t));
-
-            std::cout << "Received warning code: " << static_cast<int>(warning_code) << std::endl;
-
-            std::string warning_code_str = std::to_string(static_cast<int>(warning_code));
-            std::cout << "Publishing warning code: " << warning_code_str << std::endl;
-            warning_pub.put(warning_code_str);
-        }
+            obstacleWarning_pub.put("1");
+        else if (frame.can_id == 0x301)
+            laneDeparture_pub.put("1");
+        else if (frame.can_id == 0x302)
+            laneDeparture_pub.put("0");
+        
         usleep(10);
     }
     return 0;

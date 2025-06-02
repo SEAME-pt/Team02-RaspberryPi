@@ -98,8 +98,7 @@ Row {
             anchors.centerIn: parent
             width: parent.width
             height: parent.height
-            source: "../assets/icons/assist-navigate-driving-off.png"
-            // visible: instrumentCluster.rearFogLight
+            source: instrumentCluster.autonomyLevel == 5 ? "../assets/icons/assist-navigate-driving-on.png" : "../assets/icons/assist-navigate-driving-off.png"
             visible: true
         }
     }
@@ -113,8 +112,7 @@ Row {
             anchors.centerIn: parent
             width: parent.width
             height: parent.height
-            source: "../assets/icons/assist-steer-off.png"
-            // visible: instrumentCluster.assistSteerSignal
+            source: instrumentCluster.autonomyLevel == 1 ? "../assets/icons/assist-steer-on.png" :  "../assets/icons/assist-steer-off.png"
             visible: true
         }
     }

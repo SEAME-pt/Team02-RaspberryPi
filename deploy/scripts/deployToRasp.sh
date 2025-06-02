@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Load environment variables from RaspberryPi/.env
-source "$(dirname "$0")/../.env"
+source "$(dirname "$0")/../../.env"
 
 architecture=$(uname -m)
 

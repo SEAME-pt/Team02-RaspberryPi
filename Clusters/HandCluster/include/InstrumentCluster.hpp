@@ -46,7 +46,7 @@ class InstrumentCluster : public QObject
     Q_PROPERTY(QVariantList detectedObjects READ getDetectedObjects NOTIFY detectedObjectsUpdated)
     Q_PROPERTY(int warningCode READ getWarningCode WRITE setWarningCode NOTIFY warningCodeChanged)
     Q_PROPERTY(bool laneDeparture READ getLaneDeparture WRITE setLaneDeparture NOTIFY laneDepartureChanged)
-
+    Q_PROPERTY(int autonomyLevel READ getAutonomyLevel WRITE setAutonomyLevel NOTIFY autonomyLevelChanged)
 
   private:
     int m_speed;
@@ -63,6 +63,7 @@ class InstrumentCluster : public QObject
     int autonomy;
     int gear;  
     int warningCode;
+    int autonomyLevel;
 
     QVariantMap m_leftLaneCoefs;
     QVariantMap m_rightLaneCoefs;
@@ -93,7 +94,10 @@ class InstrumentCluster : public QObject
     std::optional<zenoh::Subscriber<void>> object_subscriber;
     std::optional<zenoh::Subscriber<void>> laneDeparture_subscriber;
     std::optional<zenoh::Subscriber<void>> obstacleWarning_subscriber;
-
+    std::optional<zenoh::Subscriber<void>> sae0_subscriber;
+    std::optional<zenoh::Subscriber<void>> sae1_subscriber;
+    std::optional<zenoh::Subscriber<void>> sae5_subscriber;
+    
   public:
     explicit InstrumentCluster(QObject* parent = nullptr);
     explicit InstrumentCluster(const std::string& configFile,
@@ -157,6 +161,9 @@ class InstrumentCluster : public QObject
     void parseObjectData(const std::string& objectData);
     // std::function<void(const zenoh::Sample&)> getSpeedCallback();
     void setupSubscriptions();
+
+    int getAutonomyLevel() const;
+    void setAutonomyLevel(int level);
    
   signals:
     void speedChanged(int speed);
@@ -177,6 +184,7 @@ class InstrumentCluster : public QObject
     void warningCodeChanged(int code);
     void onSpeedSample(const zenoh::Sample& sample);
     void laneDepartureChanged(bool state);
+    void autonomyLevelChanged(int level);
     #ifdef UNIT_TEST
       std::function<void(const zenoh::Sample&)> getSpeedCallback();
     #endif

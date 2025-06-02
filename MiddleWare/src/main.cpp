@@ -106,6 +106,12 @@ int main(int argc, char** argv)
         zenoh::KeyExpr("Vehicle/1/ADAS/ObstacleDetection/Warning"));
     auto laneDeparture_pub = session->declare_publisher(
         zenoh::KeyExpr("Vehicle/1/ADAS/LaneDeparture/Detected"));
+    auto sae0_pub = session->declare_publisher(
+        zenoh::KeyExpr("Vehicle/1/ADAS/ActiveAutonomyLevel/SAE_0"));
+    auto sae1_pub = session->declare_publisher(
+        zenoh::KeyExpr("Vehicle/1/ADAS/ActiveAutonomyLevel/SAE_1"));
+    auto sae5_pub = session->declare_publisher(
+        zenoh::KeyExpr("Vehicle/1/ADAS/ActiveAutonomyLevel/SAE_5"));   
 
     while (1)
     {
@@ -218,7 +224,12 @@ int main(int argc, char** argv)
             laneDeparture_pub.put("1");
         else if (frame.can_id == 0x302)
             laneDeparture_pub.put("0");
-        
+        else if (frame.can_id == 0x400)
+            sae0_pub.put("0");
+        else if (frame.can_id == 0x401)
+            sae1_pub.put("1");
+        else if (frame.can_id == 0x405)
+            sae5_pub.put("5");
         usleep(10);
     }
     return 0;

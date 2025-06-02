@@ -164,6 +164,7 @@ void InstrumentCluster::setupSubscriptions()
     obstacleWarning_subscriber.emplace(session->declare_subscriber(
         "Vehicle/1/ADAS/ObstacleDetection/Warning",
         [this](const zenoh::Sample& sample) {
+            std::cout << "Recebido obstacleWarning: " << sample.get_payload().as_string() << std::endl;
             setWarningCode(1);
         },
         zenoh::closures::none));
@@ -175,6 +176,27 @@ void InstrumentCluster::setupSubscriptions()
                 setWarningCode(2);
             }
             setLaneDeparture(isDeparting);
+        },
+        zenoh::closures::none));
+    sae0_subscriber.emplace(session->declare_subscriber(
+        "Vehicle/1/ADAS/ActiveAutonomyLevel/SAE_0",
+        [this](const zenoh::Sample& sample) {
+                std::cout << "Recebido SAE 0" << std::endl;
+                setAutonomyLevel(0);
+        },
+        zenoh::closures::none));   
+    sae1_subscriber.emplace(session->declare_subscriber(
+        "Vehicle/1/ADAS/ActiveAutonomyLevel/SAE_1",
+        [this](const zenoh::Sample& sample) {
+                std::cout << "Recebido SAE 1" << std::endl;
+                setAutonomyLevel(1);
+        },
+        zenoh::closures::none));
+    sae5_subscriber.emplace(session->declare_subscriber(
+        "Vehicle/1/ADAS/ActiveAutonomyLevel/SAE_5",
+        [this](const zenoh::Sample& sample) {
+                std::cout << "Recebido SAE 5" << std::endl;
+                setAutonomyLevel(5);
         },
         zenoh::closures::none));
 }
@@ -431,6 +453,18 @@ QVariantMap InstrumentCluster::getLeftLaneCoefs() const {
 
 QVariantMap InstrumentCluster::getRightLaneCoefs() const {
     return m_rightLaneCoefs;
+}
+
+int InstrumentCluster::getAutonomyLevel() const {
+    return autonomyLevel;
+}
+
+void InstrumentCluster::setAutonomyLevel(int level) {
+    if (autonomyLevel != level) {
+        autonomyLevel = level;
+        std::cout << "Autonomy level updated: " << autonomyLevel << std::endl;
+        emit autonomyLevelChanged(level);
+    }
 }
 
 void InstrumentCluster::setLeftLaneCoefs(const QVariantMap& coefs) {

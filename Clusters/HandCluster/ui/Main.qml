@@ -4,8 +4,8 @@ import QtQuick.Controls 2.4
 
 ApplicationWindow {
     id: app
-    property int letterSize: 25
-    property int letterSizeLoaded: 28
+    property int letterSize: 28
+    property int letterSizeLoaded: 30
     visible: true
     width: 1280
     height: 400
@@ -14,8 +14,8 @@ ApplicationWindow {
     // maximumWidth: 1280
     // minimumHeight: 400
     // maximumHeight: 400
-    property int iconWidth: 35
-    property int iconHeight: 35
+    property int iconWidth: 40
+    property int iconHeight: 40
 
     // Defina a primeira fonte
     property string fontPath1: "file:///usr/share/fonts/electrolize.ttf"

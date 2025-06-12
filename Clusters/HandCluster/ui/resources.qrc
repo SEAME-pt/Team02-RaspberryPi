@@ -38,10 +38,6 @@
         <file alias="system-failure.png">../assets/icons/system-failure.png</file>
         <file alias="lane-departure.png">../assets/icons/lane-departure.png</file>
     </qresource>
-
-    <qresource prefix="/assets/fonts">
-        <file alias="electrolize.ttf">../assets/fonts/electrolize.ttf</file>
-    </qresource>
     
     <qresource prefix="/assets/images">
         <file alias="car.png">../assets/images/car.png</file>

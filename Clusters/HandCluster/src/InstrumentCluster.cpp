@@ -7,6 +7,7 @@
 InstrumentCluster::InstrumentCluster(QObject* parent)
     : QObject(parent), m_speed(0), percentage(0), autonomy(0), gear(0)
 {
+    std::cout << "Using default configuration." << std::endl;
     auto config = zenoh::Config::create_default();
     session     = std::make_unique<zenoh::Session>(
         zenoh::Session::open(std::move(config)));
@@ -17,8 +18,8 @@ InstrumentCluster::InstrumentCluster(const std::string& configFile,
                                      QObject* parent)
     : QObject(parent), m_speed(0), percentage(0), autonomy(0), gear(0)
 {
-    
-    auto config = zenoh::Config::create_default();
+    std::cout << "Using configuration file: " << configFile << std::endl;
+    auto config = zenoh::Config::from_file(configFile);
     session = std::make_unique<zenoh::Session>(zenoh::Session::open(std::move(config)));
     this->setupSubscriptions();
 }

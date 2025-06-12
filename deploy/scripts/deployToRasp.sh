@@ -49,6 +49,8 @@ docker cp tmpapp:/home/$PROJECT_DIR/MiddleWareApp ./MiddleWareApp
     sshpass -p "$PI_PASSWORD" scp InstrumentClusterApp MiddleWareApp "$PI_USERNAME@$PI_IP_ADDRESS:$PI_PATH_BIN"
     sshpass -p "$PI_PASSWORD" scp ./$PROJECT_DIR/ZenohConfig/InstrumentClusterConfig.json ./$PROJECT_DIR/ZenohConfig/MiddleWareConfig.json "$PI_USERNAME@$PI_IP_ADDRESS:$PI_PATH_ETC"
 
+    echo "Sending font files to Raspberry Pi over SCP to $PI_PATH_FONTS"
+    sshpass -p "$PI_PASSWORD" scp -r ./RaspberryPi/deploy/fonts "$PI_USERNAME@$PI_IP_ADDRESS:$PI_PATH_FONTS"
     echo "Restarting middleware service..."
     sshpass -p "$PI_PASSWORD" ssh "$PI_USERNAME@$PI_IP_ADDRESS" "sudo systemctl start middleware.service"
 # fi

@@ -1,12 +1,12 @@
 import QtQuick 2.15
 
 Row {
-
     anchors.rightMargin: 30
     anchors.horizontalCenter: parent.horizontalCenter
     spacing: 5
     anchors.top: parent.top
     anchors.topMargin: 25
+    property string fontFamily: "default"
 
     Rectangle {
         width: 7
@@ -15,8 +15,7 @@ Row {
     }
 
     Text {
-        // font.family: Qt.binding(function() { return app.font; })
-        font.family: app.font
+        font.family: fontFamily
         id: timeDisplay
         text: "11:11"
         font.pixelSize:  app.letterSize
@@ -25,8 +24,7 @@ Row {
     }
 
     Text {
-        // font.family: Qt.binding(function() { return app.font; })
-        font.family: app.font
+        font.family: fontFamily
         id: amPmDisplay
         text: "AM"
         font.pixelSize: app.letterSize
@@ -36,7 +34,7 @@ Row {
 
     Timer {
         id: clockTimer
-        interval: 1000 // Atualiza a cada 1 segundo
+        interval: 1000
         running: true
         repeat: true
         onTriggered: {

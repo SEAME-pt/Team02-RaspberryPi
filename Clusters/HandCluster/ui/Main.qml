@@ -4,40 +4,25 @@ import QtQuick.Controls 2.4
 
 ApplicationWindow {
     id: app
-    property int letterSize: 28
-    property int letterSizeLoaded: 30
+    property int letterSize: 40
+    property int letterSizeLoaded: 45
     visible: true
-    width: 1280
-    height: 400
+    width: Screen.width
+    height:  Screen.height
+    // flags: Qt.FramelessWindowHint
 
-    // minimumWidth: 1280
-    // maximumWidth: 1280
-    // minimumHeight: 400
-    // maximumHeight: 400
-    property int iconWidth: 40
-    property int iconHeight: 40
+    property int iconWidth: 65
+    property int iconHeight: 65
 
-    // Defina a primeira fonte
-    property string fontPath1: "file:///usr/share/fonts/electrolize.ttf"
-    property string fontPath2: "../assets/fonts/electrolize.ttf"
+    property string fontPath1: Qt.resolvedUrl("file:/opt/vehicle/etc/fonts/electrolize.ttf")
     property bool fontExists: false
 
-    // FontLoader que será alterado conforme a existência do arquivo
     FontLoader {
         id: customFont
-        source: fontExists ? fontPath2 : fontPath1
+        source: fontPath1
     }
 
-    // Combina a lógica de verificação da fonte e a atualização de layout em uma única função
     Component.onCompleted: {
-        var file = Qt.openUrlExternally(fontPath1);
-        if (file !== "") {
-            fontExists = true;
-        } else {
-            fontExists = false;
-        }
-
-        // Verifica o status da fonte
         console.log("Font Status:", customFont.status)
         if (customFont.status === FontLoader.Ready) {
             console.log("Fonte carregada com sucesso:", customFont.name)
@@ -88,16 +73,26 @@ ApplicationWindow {
         anchors.bottomMargin: -35
     }
 
-    SpeedDisplay {}
-    GearDisplay {}
-    BatteryIndicator {}
+    SpeedDisplay {
+        fontFamily: customFont.status === FontLoader.Ready ? customFont.name : "default"
+    }
+
+    GearDisplay {
+        fontFamily: customFont.status === FontLoader.Ready ? customFont.name : "default"
+    }
+
+    BatteryIndicator {
+        fontFamily: customFont.status === FontLoader.Ready ? customFont.name : "default"
+    }
 
     TimeInfo {
         id: timeInfo
+        fontFamily: customFont.status === FontLoader.Ready ? customFont.name : "default"
     }
     
     NotificationBlock {
         warningCode: instrumentCluster.warningCode
+        fontFamily: customFont.status === FontLoader.Ready ? customFont.name : "default"
     }
 
     LightInfo {}

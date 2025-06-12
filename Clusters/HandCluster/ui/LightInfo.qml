@@ -19,7 +19,6 @@ Row {
             height: parent.height
             source: "../assets/icons/low_beam_on.png"
             visible: instrumentCluster.lowBeam
-            // visible: true
         }
     }
 
@@ -77,7 +76,7 @@ Row {
             anchors.centerIn: parent
             width: parent.width
             height: parent.height
-            source: "../assets/icons/high_beam_on.png"
+            source: "../assets/icons/back_fog_on.png"
             visible: instrumentCluster.rearFogLight
             // visible: true
         }
@@ -94,26 +93,13 @@ Row {
         height: app.iconHeight + 3
         color: "transparent"
         Image {
-            id: assistDrivingSignal
+            id: autonomySignal
             anchors.centerIn: parent
             width: parent.width
             height: parent.height
-            source: instrumentCluster.autonomyLevel == 5 ? "../assets/icons/assist-navigate-driving-on.png" : "../assets/icons/assist-navigate-driving-off.png"
-            visible: true
-        }
-    }
-    
-    Rectangle {
-        width: app.iconWidth + 3
-        height: app.iconHeight + 3
-        color: "transparent"
-        Image {
-            id: assistSteerSignal
-            anchors.centerIn: parent
-            width: parent.width
-            height: parent.height
-            source: instrumentCluster.autonomyLevel == 1 ? "../assets/icons/assist-steer-on.png" :  "../assets/icons/assist-steer-off.png"
-            visible: true
+            source: instrumentCluster.autonomyLevel == 1 ? "../assets/icons/assist-steer-on.png" :
+                    (instrumentCluster.autonomyLevel == 5 ? "../assets/icons/assist-navigate-driving-on.png" : "")
+            visible: instrumentCluster.autonomyLevel == 1 || instrumentCluster.autonomyLevel == 5
         }
     }
     Rectangle {

@@ -11,6 +11,7 @@ Rectangle {
     anchors.horizontalCenter: parent.horizontalCenter
     y: -height
     visible: false
+    property string fontFamily: "default"
 
     property int warningCode: 0
 
@@ -95,6 +96,7 @@ Rectangle {
             text: messageText
             color: "white"
             font.pixelSize: 18
+            font.family: fontFamily
             verticalAlignment: Text.AlignVCenter
         }
     }

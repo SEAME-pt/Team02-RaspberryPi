@@ -48,22 +48,33 @@ int main(int argc, char** argv)
         close(canSocket);
         exit(1);
     }
-
+    std::cerr << "Attempting to open Zenoh session..." << std::endl;
     std::cout << "CAN socket bound to can0 interface successfully."
               << std::endl;
 
     std::unique_ptr<zenoh::Session> session;
-    if (argc == 2)
+    try
     {
-        auto config = Config::from_file(argv[1]);
-        session     = std::make_unique<zenoh::Session>(
-            zenoh::Session::open(std::move(config)));
+        if (argc == 2)
+        {
+            std::cout << "Using configuration file: " << argv[1] << std::endl;
+            auto config = Config::from_file(argv[1]);
+            session     = std::make_unique<zenoh::Session>(
+                zenoh::Session::open(std::move(config)));
+        }
+        else
+        {
+            std::cout << "Using default configuration." << std::endl;
+            auto config = Config::create_default();
+            session     = std::make_unique<zenoh::Session>(
+                zenoh::Session::open(std::move(config)));
+        }
     }
-    else
+    catch (const zenoh::ZException& e)
     {
-        auto config = Config::create_default();
-        session     = std::make_unique<zenoh::Session>(
-            zenoh::Session::open(std::move(config)));
+        std::cerr << "Failed to open Zenoh session: " << e.what() << std::endl;
+        close(canSocket);
+        exit(1);
     }
 
     auto speed_pub =

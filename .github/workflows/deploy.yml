@@ -10,6 +10,8 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    env:
+      PROJECT_DIR: RaspberryPi
 
     steps:
       - name: Checkout repository
@@ -28,10 +30,11 @@ jobs:
       - name: Build Docker image for ARM64
         run: |
           docker buildx build \
-            -f ./RaspberryPi/deploy/dockerfiles/DockerfileDeployRasp \
+            -f ./deploy/dockerfiles/DockerfileDeployRasp \
             --platform linux/arm64 --load \
-            --build-arg projectDir=$PWD/$PROJECT_DIR \
+            --build-arg projectDir=$PROJECT_DIR \
             -t final-app .
+        working-directory: ./RaspberryPi
 
       - name: Extract built binaries
         run: |

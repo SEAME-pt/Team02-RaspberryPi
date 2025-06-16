@@ -3,7 +3,7 @@ name: Build and Deploy for Raspberry Pi
 on:
   push:
     branches:
-      - 76-task-deploy-workflow-for-raspberry-pi-repo
+      - 76-task-deploy-workflow-for-raspberry-pi-repo # Or your main branch, e.g., 'main' or 'master'
     tags:
       - 'v*'
 
@@ -11,7 +11,7 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     env:
-      PROJECT_DIR: RaspberryPi
+      PROJECT_DIR: RaspberryPi # Define PROJECT_DIR here
 
     steps:
       - name: Checkout repository
@@ -30,11 +30,10 @@ jobs:
       - name: Build Docker image for ARM64
         run: |
           docker buildx build \
-            -f ./deploy/dockerfiles/DockerfileDeployRasp \
+            -f deploy/dockerfiles/DockerfileDeployRasp \ # Corrected path
             --platform linux/arm64 --load \
             --build-arg projectDir=$PROJECT_DIR \
             -t final-app .
-        working-directory: ./RaspberryPi
 
       - name: Extract built binaries
         run: |
@@ -44,13 +43,15 @@ jobs:
 
           docker create --name tmpapp final-app
 
+          # Assuming your Dockerfile puts the apps under /home/RaspberryPi/ within the container
           docker cp tmpapp:/home/$PROJECT_DIR/InstrumentClusterApp ./artifacts/bin/
           docker cp tmpapp:/home/$PROJECT_DIR/MiddleWareApp ./artifacts/bin/
 
-          cp ./$PROJECT_DIR/ZenohConfig/InstrumentClusterConfig.json ./artifacts/config/
-          cp ./$PROJECT_DIR/ZenohConfig/MiddleWareConfig.json ./artifacts/config/
+          # These paths should be relative to the root of the checked out repo
+          cp ./ZenohConfig/InstrumentClusterConfig.json ./artifacts/config/
+          cp ./ZenohConfig/MiddleWareConfig.json ./artifacts/config/
 
-          cp -r ./RaspberryPi/deploy/fonts/* ./artifacts/fonts/
+          cp -r ./deploy/fonts/* ./artifacts/fonts/
 
           git archive --format=zip HEAD -o ./artifacts/source-code.zip
 

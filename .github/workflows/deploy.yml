@@ -1,0 +1,98 @@
+name: Build and Deploy for Raspberry Pi
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - 'v*'
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: false
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+        with:
+          platforms: linux/arm64
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker image for ARM64
+        run: |
+          docker buildx build \
+            -f ./RaspberryPi/deploy/dockerfiles/DockerfileDeployRasp \
+            --platform linux/arm64 --load \
+            --build-arg projectDir=$PWD/$PROJECT_DIR \
+            -t final-app .
+
+      - name: Extract built binaries
+        run: |
+          mkdir -p artifacts/bin
+          mkdir -p artifacts/config
+          mkdir -p artifacts/fonts
+
+          docker create --name tmpapp final-app
+
+          docker cp tmpapp:/home/$PROJECT_DIR/InstrumentClusterApp ./artifacts/bin/
+          docker cp tmpapp:/home/$PROJECT_DIR/MiddleWareApp ./artifacts/bin/
+
+          cp ./$PROJECT_DIR/ZenohConfig/InstrumentClusterConfig.json ./artifacts/config/
+          cp ./$PROJECT_DIR/ZenohConfig/MiddleWareConfig.json ./artifacts/config/
+
+          cp -r ./RaspberryPi/deploy/fonts/* ./artifacts/fonts/
+
+          git archive --format=zip HEAD -o ./artifacts/source-code.zip
+
+          cd artifacts
+          zip -r ../release-package.zip *
+          cd ..
+
+          docker rm tmpapp
+
+      - name: Get latest tag and increment
+        id: tag
+        run: |
+          git fetch --tags --force
+          git fetch origin
+          latest_tag=$(git tag --sort=-v:refname | head -n 1)
+          if [ -z "$latest_tag" ]; then
+            latest_tag="v1.0.0"
+          fi
+          major=$(echo $latest_tag | cut -d. -f1 | tr -d 'v')
+          minor=$(echo $latest_tag | cut -d. -f2)
+          patch=$(echo $latest_tag | cut -d. -f3)
+          new_tag="v$major.$minor.$((patch + 1))"
+          echo "new_tag=$new_tag" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ steps.tag.outputs.new_tag }}
+          name: Release ${{ steps.tag.outputs.new_tag }}
+          body: |
+            ## Raspberry Pi Release
+
+            **Includes:**
+            - Compiled apps (`InstrumentClusterApp`, `MiddleWareApp`)
+            - Zenoh config files
+            - Fonts
+            - Full source code zip
+
+            **Instructions:**
+            - Copy `InstrumentClusterApp` and `MiddleWareApp` to `$PI_PATH_BIN`
+            - Copy configs to `$PI_PATH_ETC`
+            - Copy fonts to `$PI_PATH_FONTS`
+          files: |
+            release-package.zip
+            artifacts/source-code.zip
+            artifacts/bin/*
+        env:
+          GITHUB_TOKEN:  ${{ secrets.PAT_LUIS }}

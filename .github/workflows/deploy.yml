@@ -30,7 +30,7 @@ jobs:
       - name: Build Docker image for ARM64
         run: |
           docker buildx build \
-            -f deploy/dockerfiles/DockerfileDeployRasp \ # Corrected path
+            -f deploy/dockerfiles/DockerfileDeployRasp \ 
             --platform linux/arm64 --load \
             --build-arg projectDir=$PROJECT_DIR \
             -t final-app .

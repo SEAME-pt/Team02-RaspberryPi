@@ -47,7 +47,7 @@ jobs:
           cd artifacts
           zip -r ../release-package.zip *
           cd ..
-          docker rm tmpapp
+          docker rm tmpapp   
       - name: Get latest tag and increment
         id: tag
         run: |
@@ -84,3 +84,4 @@ jobs:
             artifacts/bin/*
         env:
           GITHUB_TOKEN:  ${{ secrets.PAT_LUIS }}
+

@@ -32,7 +32,7 @@ jobs:
           docker buildx build \
             -f deploy/dockerfiles/DockerfileDeployRasp \
             --platform linux/arm64 --load \
-            --build-arg projectDir=$PROJECT_DIR \
+            --build-arg projectDir=/ \
             -t final-app .
 
       - name: Extract built binaries
@@ -44,12 +44,12 @@ jobs:
           docker create --name tmpapp final-app
 
           # Assuming your Dockerfile puts the apps under /home/RaspberryPi/ within the container
-          docker cp tmpapp:/home/$PROJECT_DIR/InstrumentClusterApp ./artifacts/bin/
-          docker cp tmpapp:/home/$PROJECT_DIR/MiddleWareApp ./artifacts/bin/
+          docker cp tmpapp:/home//InstrumentClusterApp ./artifacts/bin/
+          docker cp tmpapp:/home//MiddleWareApp ./artifacts/bin/
 
           # These paths should be relative to the root of the checked out repo
-          cp ./ZenohConfig/InstrumentClusterConfig.json ./artifacts/config/
-          cp ./ZenohConfig/MiddleWareConfig.json ./artifacts/config/
+          cp .//ZenohConfig/InstrumentClusterConfig.json ./artifacts/config/
+          cp .//ZenohConfig/MiddleWareConfig.json ./artifacts/config/
 
           cp -r ./deploy/fonts/* ./artifacts/fonts/
 

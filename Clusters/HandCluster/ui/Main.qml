@@ -4,40 +4,25 @@ import QtQuick.Controls 2.4
 
 ApplicationWindow {
     id: app
-    property int letterSize: 25
-    property int letterSizeLoaded: 28
+    property int letterSize: 40
+    property int letterSizeLoaded: 45
     visible: true
-    width: 1280
-    height: 400
+    width: Screen.width
+    height:  Screen.height
+    // flags: Qt.FramelessWindowHint
 
-    // minimumWidth: 1280
-    // maximumWidth: 1280
-    // minimumHeight: 400
-    // maximumHeight: 400
-    property int iconWidth: 35
-    property int iconHeight: 35
+    property int iconWidth: 65
+    property int iconHeight: 65
 
-    // Defina a primeira fonte
-    property string fontPath1: "file:///usr/share/fonts/electrolize.ttf"
-    property string fontPath2: "../assets/fonts/electrolize.ttf"
+    property string fontPath1: Qt.resolvedUrl("file:/opt/vehicle/etc/fonts/electrolize.ttf")
     property bool fontExists: false
 
-    // FontLoader que será alterado conforme a existência do arquivo
     FontLoader {
         id: customFont
-        source: fontExists ? fontPath2 : fontPath1
+        source: fontPath1
     }
 
-    // Combina a lógica de verificação da fonte e a atualização de layout em uma única função
     Component.onCompleted: {
-        var file = Qt.openUrlExternally(fontPath1);
-        if (file !== "") {
-            fontExists = true;
-        } else {
-            fontExists = false;
-        }
-
-        // Verifica o status da fonte
         console.log("Font Status:", customFont.status)
         if (customFont.status === FontLoader.Ready) {
             console.log("Fonte carregada com sucesso:", customFont.name)
@@ -61,9 +46,9 @@ ApplicationWindow {
 
     LaneLines {
         id: laneLines 
-        width: parent.width * 2/4   // Ocupa 2/3 da tela
-        height: parent.height * 0.7// 80% da altura, sem tocar no topo
-        // anchors.right: parent.right // Fixa no lado direito
+        width: parent.width * 2/4
+        height: parent.height * 0.7
+        // anchors.right: parent.right
         anchors.bottom: parent.bottom
         // leftLanePoints: leftLaneMock
         // rightLanePoints: rightLaneMock
@@ -71,33 +56,43 @@ ApplicationWindow {
 
     ObjectDetector {
         id: objectDetector
-        width: parent.width * 2/4  // Ajusta a largura para ocupar o espaço do retângulo
-        height: parent.height * 0.9// Ajusta a altura para ocupar o espaço do retângulo
-        anchors.right: parent.right // Fixa no lado direito
+        width: parent.width * 2/4
+        height: parent.height * 0.9
+        anchors.right: parent.right
         anchors.bottom: parent.bottom
         anchors.topMargin: 50
     }
 
-    // Image { 
-    //     id: carImage
-    //     width: parent.width * 1/4   // Ocupa 1/4 da largura da tela
-    //     height: parent.height * 0.6 // 70% da altura
-    //     source: "../assets/images/car.png"
-    //     anchors.horizontalCenter: parent.horizontalCenter // Centraliza horizontalmente
-    //     anchors.bottom: parent.bottom // Fixa na parte superior
-    //     anchors.bottomMargin: -35
-    // }
+    Image { 
+        id: carImage
+        width: parent.width * 1/4
+        height: parent.height * 0.6
+        source: "../assets/images/car.png"
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.bottom: parent.bottom 
+        anchors.bottomMargin: -35
+    }
 
-    SpeedDisplay {}
-    GearDisplay {}
-    BatteryIndicator {}
+    SpeedDisplay {
+        fontFamily: customFont.status === FontLoader.Ready ? customFont.name : "default"
+    }
+
+    GearDisplay {
+        fontFamily: customFont.status === FontLoader.Ready ? customFont.name : "default"
+    }
+
+    BatteryIndicator {
+        fontFamily: customFont.status === FontLoader.Ready ? customFont.name : "default"
+    }
 
     TimeInfo {
         id: timeInfo
+        fontFamily: customFont.status === FontLoader.Ready ? customFont.name : "default"
     }
     
     NotificationBlock {
         warningCode: instrumentCluster.warningCode
+        fontFamily: customFont.status === FontLoader.Ready ? customFont.name : "default"
     }
 
     LightInfo {}

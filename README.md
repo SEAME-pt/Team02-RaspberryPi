@@ -18,7 +18,6 @@
 1. [About The Project](#about-the-project)
    - [Built With](#built-with)
 2. [Usage](#usage)
-3. [Roadmap](#roadmap)
 4. [Contributing](#contributing)
 5. [License](#license)
 6. [Contact](#contact)
@@ -77,21 +76,58 @@ This section lists the major frameworks, libraries, and tools used in this proje
 ### Usage
 Once the application is up and running, the instrument cluster will display `real-time speed data` and the `vehicle's battery status` on an LCD screen. The data is continuously updated as it is received **via the CAN bus**.
 
-[**step by step usage will be attached**]
+This project can be deployed and tested in two main environments:
 
+### ✅ Option 1: Deploy on Raspberry Pi LCD
+
+To deploy the interface on a Raspberry Pi with an attached LCD display:
+
+1. Make sure you're in the **root directory** of the repository.
+2. Update the `.env` file located in the root directory:
+  - Change the `PI_IP_ADDRESS` to the IP address of your Raspberry Pi.
+  - Update the `CREDENTIALS` with the username (`PI_USERNAME`) and password (`PI_PASSWORD`) for your Raspberry Pi.
+
+2. Run the deployment script from the root repository:
+
+  ```bash
+  ./RaspberryPi/deploy/scripts/deployToRasp.sh
+  ```
+
+4. Restart the application to apply the changes. The executables will be placed in `PI_PATH_BIN` in your Raspberry Pi, make sure to change that if necessary. 
+
+### ✅ Option 2: Simulate on a Local Machine
+
+For testing purposes, you can simulate the application on your local machine:
+
+1. Install the required dependencies as listed in the `requirements.txt` file.
+2. Run the application locally using:
+
+  ```bash
+  ./RaspberryPi/deploy/deployLocal/deployLocal.sh
+  ```
+
+3. Ensure the CAN bus data is being simulated or fed into the application for testing.
+<!-- 
 A demonstration of the running application can be seen in the GIF below:
 
-[DEMONSTRATION GIF WILL BE ATTACHED]
+[DEMONSTRATION GIF WILL BE ATTACHED] -->
 ---
 
-## Roadmap
+## Testing
 
-- **v1.0:** Initial release with basic speedometer functionality.
-- **v1.1:** Add PiRacer battery level display.
-- **v2.0:** Implement advanced features like trip data, RPM counter, and GPS integration.
-- **v3.0:** Testing and validation on various real-world driving conditions.
+We use **LCOV** for test coverage analysis to ensure the reliability and quality of the codebase. Follow the steps below to run the tests:
 
----
+1. Navigate to the `RaspberryPi/tests` directory:
+  ```bash
+  cd RaspberryPi/tests
+  ```
+
+2. After the tests are executed, a coverage report will be generated. Run the test script:
+  ```bash
+  ./test.sh
+  ```
+
+Make sure all tests pass and the coverage meets the project's standards before submitting any changes. 
 
 ## The Team 🤝
 > Together, we've collaborated to bring this project to life, combining our knowledge, skills, and experience every step of the way. It has been a great journey of learning and growing as a team.

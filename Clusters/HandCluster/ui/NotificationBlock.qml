@@ -11,28 +11,23 @@ Rectangle {
     anchors.horizontalCenter: parent.horizontalCenter
     y: -height
     visible: false
+    property string fontFamily: "default"
 
-    property int warningCode: instrumentCluster.warningCode
+    property int warningCode: 0
+
     property string iconSource: ""
     property string messageText: ""
 
     function updateNotification() {
         switch (warningCode) {
-        case 1:
-            iconSource = "../assets/icons/warning.png"
-            messageText = "Emergency braking activated!";
-            break;
-        case 2:
-            iconSource = "../assets/icons/warning.png"
-            messageText = "Autopilot unavailable for current drive";
-            break;
-        case 3:
-            iconSource = "../assets/icons/warning.png"
-            messageText = "Lane departure detected!";
-            break;
-        default:
-            iconSource = "";
-            messageText = "";
+            case 1:
+                iconSource = "../assets/icons/warning.png"
+                messageText = "Emergency braking activated!";
+                break;
+            case 2:
+                iconSource = "../assets/icons/warning.png"
+                messageText = "Lane departure detected!";
+                break;
         }
 
         if (iconSource !== "") {
@@ -53,8 +48,12 @@ Rectangle {
     Component.onCompleted: updateNotification()
 
     Connections {
-        target: notificationBlock
-        onWarningCodeChanged: updateNotification()
+        target: instrumentCluster
+
+        onWarningCodeChanged: {
+            notificationBlock.warningCode = instrumentCluster.warningCode;
+            notificationBlock.updateNotification();
+        }
     }
 
     // Animations
@@ -75,7 +74,7 @@ Rectangle {
 
     Timer {
         id: hideTimer
-        interval: 4000 // milliseconds to stay on screen
+        interval: 4000
         running: false
         repeat: false
         onTriggered: hideNotification()
@@ -97,6 +96,7 @@ Rectangle {
             text: messageText
             color: "white"
             font.pixelSize: 18
+            font.family: fontFamily
             verticalAlignment: Text.AlignVCenter
         }
     }

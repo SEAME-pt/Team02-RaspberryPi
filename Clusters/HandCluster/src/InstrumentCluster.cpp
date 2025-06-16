@@ -7,6 +7,7 @@
 InstrumentCluster::InstrumentCluster(QObject* parent)
     : QObject(parent), m_speed(0), percentage(0), autonomy(0), gear(0)
 {
+    std::cout << "Using default configuration." << std::endl;
     auto config = zenoh::Config::create_default();
     session     = std::make_unique<zenoh::Session>(
         zenoh::Session::open(std::move(config)));
@@ -17,8 +18,8 @@ InstrumentCluster::InstrumentCluster(const std::string& configFile,
                                      QObject* parent)
     : QObject(parent), m_speed(0), percentage(0), autonomy(0), gear(0)
 {
-    
-    auto config = zenoh::Config::create_default();
+    std::cout << "Using configuration file: " << configFile << std::endl;
+    auto config = zenoh::Config::from_file(configFile);
     session = std::make_unique<zenoh::Session>(zenoh::Session::open(std::move(config)));
     this->setupSubscriptions();
 }
@@ -161,12 +162,42 @@ void InstrumentCluster::setupSubscriptions()
             parseObjectData(objectData);  
         },
         zenoh::closures::none));
-    warningCode_subscriber.emplace(session->declare_subscriber(
-        "Vehicle/1/Scene/Warning",
+    obstacleWarning_subscriber.emplace(session->declare_subscriber(
+        "Vehicle/1/ADAS/ObstacleDetection/Warning",
         [this](const zenoh::Sample& sample) {
-            std::string warningCode = sample.get_payload().as_string();
-            std::cout << "Recebido warningCode: " << warningCode << std::endl;
-            setWarningCode(std::stoi(warningCode));
+            std::cout << "Recebido obstacleWarning: " << sample.get_payload().as_string() << std::endl;
+            setWarningCode(1);
+        },
+        zenoh::closures::none));
+    laneDeparture_subscriber.emplace(session->declare_subscriber(
+        "Vehicle/1/ADAS/LaneDeparture/Detected",
+        [this](const zenoh::Sample& sample) {
+            bool isDeparting = std::stoi(sample.get_payload().as_string());
+            if (isDeparting) {
+                setWarningCode(2);
+            }
+            setLaneDeparture(isDeparting);
+        },
+        zenoh::closures::none));
+    sae0_subscriber.emplace(session->declare_subscriber(
+        "Vehicle/1/ADAS/ActiveAutonomyLevel/SAE_0",
+        [this](const zenoh::Sample& sample) {
+                std::cout << "Recebido SAE 0" << std::endl;
+                setAutonomyLevel(0);
+        },
+        zenoh::closures::none));   
+    sae1_subscriber.emplace(session->declare_subscriber(
+        "Vehicle/1/ADAS/ActiveAutonomyLevel/SAE_1",
+        [this](const zenoh::Sample& sample) {
+                std::cout << "Recebido SAE 1" << std::endl;
+                setAutonomyLevel(1);
+        },
+        zenoh::closures::none));
+    sae5_subscriber.emplace(session->declare_subscriber(
+        "Vehicle/1/ADAS/ActiveAutonomyLevel/SAE_5",
+        [this](const zenoh::Sample& sample) {
+                std::cout << "Recebido SAE 5" << std::endl;
+                setAutonomyLevel(5);
         },
         zenoh::closures::none));
 }
@@ -259,10 +290,20 @@ int InstrumentCluster::getWarningCode() const {
 void InstrumentCluster::setWarningCode(int code) {
     if (this->warningCode != code) {
         this->warningCode = code; 
-        emit warningCodeChanged(code);
     }
+    emit warningCodeChanged(code);
 }
 
+bool InstrumentCluster::getLaneDeparture() const {
+    return this->laneDeparture;
+}
+
+void InstrumentCluster::setLaneDeparture(bool state) {
+    if (this->laneDeparture != state) {
+        this->laneDeparture = state;
+        emit laneDepartureChanged(state);
+    }
+}
 
 bool InstrumentCluster::getRightBlinker() const
 {
@@ -413,6 +454,18 @@ QVariantMap InstrumentCluster::getLeftLaneCoefs() const {
 
 QVariantMap InstrumentCluster::getRightLaneCoefs() const {
     return m_rightLaneCoefs;
+}
+
+int InstrumentCluster::getAutonomyLevel() const {
+    return autonomyLevel;
+}
+
+void InstrumentCluster::setAutonomyLevel(int level) {
+    if (autonomyLevel != level) {
+        autonomyLevel = level;
+        std::cout << "Autonomy level updated: " << autonomyLevel << std::endl;
+        emit autonomyLevelChanged(level);
+    }
 }
 
 void InstrumentCluster::setLeftLaneCoefs(const QVariantMap& coefs) {

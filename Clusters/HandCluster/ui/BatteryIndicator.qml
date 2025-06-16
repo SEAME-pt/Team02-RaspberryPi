@@ -1,43 +1,31 @@
 import QtQuick 2.15
 Row {
     anchors.top: parent.top
-    anchors.topMargin: 20
+    anchors.topMargin: 25
     anchors.right: parent.right
-    anchors.rightMargin: 80
+    anchors.rightMargin: 150
     spacing: 10
-
+    property string fontFamily: "default"
     
     Rectangle {
-        width: 20
-        height: 30
+        width: 45
+        height: 45
         color: "transparent"
 
         Image {
             source: "../assets/icons/raio.png"
-            width: 20
-            height: 20
+            width: 35
+            height: 35
             anchors.centerIn: parent
         }
     }
 
     Text {
-        text: "80%"
-        font.pixelSize: 20
-        font.family: Qt.binding(function() { return app.font; })
-        // font.family: app.font
+        text: instrumentCluster.percentage + "%"
+        font.pixelSize: 35
+        // font.family: Qt.binding(function() { return app.font; })
+        font.family: fontFamily
         color: "white"
     }
 
-    Item {
-        width: 10
-        height: 1
-    }
-
-    Text {
-        text: "300m"
-        font.pixelSize: 20
-        font.family: Qt.binding(function() { return app.font; })
-        // font.family: app.font
-        color: "white"
-    }
 }

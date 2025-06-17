@@ -11,6 +11,10 @@
 #include <unistd.h>
 #include <arpa/inet.h>
 #include "zenoh.hxx"
+#include <cstdint>
+#include <cstring>
+#include <arpa/inet.h>  // For ntohl
+#include <cmath>        // For M_PI
 
 using namespace zenoh;
 
@@ -122,7 +126,17 @@ int main(int argc, char** argv)
     auto sae1_pub = session->declare_publisher(
         zenoh::KeyExpr("Vehicle/1/ADAS/ActiveAutonomyLevel/SAE_1"));
     auto sae5_pub = session->declare_publisher(
-        zenoh::KeyExpr("Vehicle/1/ADAS/ActiveAutonomyLevel/SAE_5"));   
+        zenoh::KeyExpr("Vehicle/1/ADAS/ActiveAutonomyLevel/SAE_5"));
+    auto speedLimit_pub = session->declare_publisher(
+        zenoh::KeyExpr("Vehicle/1/Environment/RoadSigns/SpeedLimit"));
+    auto stopSign_pub = session->declare_publisher(
+        zenoh::KeyExpr("Vehicle/1/Environment/RoadSigns/Stop"));
+    auto yieldSign_pub = session->declare_publisher(
+        zenoh::KeyExpr("Vehicle/1/Environment/RoadSigns/Yield"));
+    auto pedestrianZone_pub = session->declare_publisher(
+        zenoh::KeyExpr("Vehicle/1/Environment/RoadSigns/PedestrianZone"));
+
+
 
     while (1)
     {
@@ -134,17 +148,23 @@ int main(int argc, char** argv)
             std::cerr << "Error reading CAN frame!" << std::endl;
             continue;
         }
-        if (frame.can_id == 0x01)
+        if (frame.can_id == 0x01 && frame.can_dlc >= 4)
         {
-            int speed;
-            double wheelDiame = 0.067;
+            int32_t rpm;
+            double wheelDiameter = 0.067;
 
-            memcpy(&speed, frame.data, sizeof(int));
-            speed                 = ntohl(speed);
-            speed                 = wheelDiame * 3.14 * speed * 10 / 60;
-            std::string speed_str = std::to_string(speed);
+            memcpy(&rpm, frame.data, sizeof(int32_t));
+            rpm = ntohl(rpm);
 
-            speed_pub.put(speed_str.c_str());
+            if (rpm >= -1000 && rpm <= 1000)
+            {
+                double wheel_circumference = wheelDiameter * M_PI;
+                double speed_kmh = rpm * wheel_circumference * 60.0 / 1000.0;
+
+                std::string speed_str = std::to_string(speed_kmh);
+                std::cout << "Publishing speed: " << speed_str << " km/h" << std::endl;
+                speed_pub.put(speed_str.c_str());
+            }
         }
         else if (frame.can_id == 0x02)
         {
@@ -156,7 +176,7 @@ int main(int argc, char** argv)
             battery          = std::min(100.0f, std::max(0.0f, percentage));
             std::string battery_str = std::to_string(battery);
 
-            // printf("Publishing battery: '%lf\n", battery);
+            std::cout << "Publishing battery state of charge: " << battery_str << "%" << std::endl;
             state_of_charge_pub.put(battery_str.c_str());
         }
         else if (frame.can_id == 0x03)
@@ -182,6 +202,15 @@ int main(int argc, char** argv)
             fogRear_pub.put(std::to_string((lights & (1 << 5)) != 0));
             hazard_pub.put(std::to_string((lights & (1 << 6)) != 0));
             parking_pub.put(std::to_string((lights & (1 << 7)) != 0));
+        }
+        else if (frame.can_id == 0x04)
+        {
+            int gear;
+
+            memcpy(&gear, frame.data, sizeof(gear));
+
+            std::cout << "Can received gear: " << gear << std::endl;
+            currentGear_pub.put(std::to_string(gear));
         }
         if (frame.can_id == 0x100 || frame.can_id == 0x101)
         {
@@ -241,6 +270,31 @@ int main(int argc, char** argv)
             sae1_pub.put("1");
         else if (frame.can_id == 0x405)
             sae5_pub.put("5");
+        else if (frame.can_id == 0x500)
+        {
+            int speedLimit;
+
+            memcpy(&speedLimit, frame.data, sizeof(int));
+            speedLimit = ntohl(speedLimit);
+
+            std::cout << "Publishing speed limit: " << speedLimit << " km/h" << std::endl;
+            speedLimit_pub.put(std::to_string(speedLimit).c_str());
+        }
+        else if (frame.can_id == 0x501)
+        {
+            std::cout << "Publishing stop sign detected." << std::endl;
+            stopSign_pub.put("1");
+        }
+        else if (frame.can_id == 0x502)
+        {
+            std::cout << "Publishing yield sign detected." << std::endl;
+            yieldSign_pub.put("1");
+        }
+        else if (frame.can_id == 0x503)
+        {
+            std::cout << "Publishing pedestrian zone sign detected." << std::endl;
+            pedestrianZone_pub.put("1");
+        }
         usleep(10);
     }
     return 0;

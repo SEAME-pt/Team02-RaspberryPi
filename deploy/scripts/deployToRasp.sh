@@ -43,7 +43,20 @@ docker cp tmpapp:/home/$PROJECT_DIR/MiddleWareApp ./MiddleWareApp
 
 # if check_ssh_connection "$PI_IP_ADDRESS" "$PI_USERNAME"; then
     echo "Stopping services on Raspberry Pi..."
-    sshpass -p "$PI_PASSWORD" ssh "$PI_USERNAME@$PI_IP_ADDRESS" "sudo systemctl stop middleware.service && pkill InstrumentClusterApp"
+    sshpass -p "$PI_PASSWORD" ssh "$PI_USERNAME@$PI_IP_ADDRESS" '
+        echo "Stopping services..."
+        sudo systemctl stop middleware.service
+        sudo systemctl stop instrumentcluster.service
+
+        echo "Waiting for processes to fully terminate..."
+        while pgrep InstrumentClusterApp >/dev/null || pgrep MiddleWareApp >/dev/null; do
+            sleep 0.5
+        done
+
+        echo "All processes have stopped."
+        '
+    
+
 
     echo "Sending binaries to Raspberry Pi over SCP..."
     sshpass -p "$PI_PASSWORD" scp InstrumentClusterApp MiddleWareApp "$PI_USERNAME@$PI_IP_ADDRESS:$PI_PATH_BIN"
@@ -51,6 +64,11 @@ docker cp tmpapp:/home/$PROJECT_DIR/MiddleWareApp ./MiddleWareApp
 
     echo "Sending font files to Raspberry Pi over SCP to $PI_PATH_FONTS"
     sshpass -p "$PI_PASSWORD" scp -r ./RaspberryPi/deploy/fonts "$PI_USERNAME@$PI_IP_ADDRESS:$PI_PATH_FONTS"
-    echo "Restarting middleware service..."
-    sshpass -p "$PI_PASSWORD" ssh "$PI_USERNAME@$PI_IP_ADDRESS" "sudo systemctl start middleware.service"
+    
+    echo "Restarting services on Raspberry Pi..."
+    sshpass -p "$PI_PASSWORD" ssh "$PI_USERNAME@$PI_IP_ADDRESS" '
+        sudo systemctl start middleware.service
+        sudo systemctl start instrumentcluster.service
+    '
+
 # fi

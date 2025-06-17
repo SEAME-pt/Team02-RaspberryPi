@@ -6,10 +6,12 @@ ApplicationWindow {
     id: app
     property int letterSize: 40
     property int letterSizeLoaded: 45
-    visible: true
-    width: Screen.width
-    height:  Screen.height
-    // flags: Qt.FramelessWindowHint
+    width: 1280
+    height: 400
+    flags: Qt.Window | Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint
+    // visibility: Window.FullScreen
+    visibility: Window.Windowed
+
 
     property int iconWidth: 65
     property int iconHeight: 65
@@ -96,4 +98,8 @@ ApplicationWindow {
     }
 
     LightInfo {}
+
+    SignDetector {
+
+    }
 }

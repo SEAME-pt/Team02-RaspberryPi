@@ -127,6 +127,7 @@ void InstrumentCluster::setupSubscriptions()
         [this](const zenoh::Sample& sample)
         {
             int currentGear = std::stoi(sample.get_payload().as_string());
+            std::cout << "Current Gear: " << currentGear << std::endl;
             setGear(currentGear);
         },
         zenoh::closures::none));
@@ -137,9 +138,7 @@ void InstrumentCluster::setupSubscriptions()
 
             std::string laneData = sample.get_payload().as_string();
             std::cout << "Recebido leftLaneData: " << laneData << std::endl;
-            // std::cout << "Recebido leftLaneData: " << laneData << std::endl;
-            
-            parseLaneData(laneData, "leftLane"); //deixei trocado porque no middleware esta trocado e nao consigo alterar pela net 
+            parseLaneData(laneData, "leftLane");
         },
         zenoh::closures::none));
 
@@ -149,8 +148,7 @@ void InstrumentCluster::setupSubscriptions()
 
             std::string laneData = sample.get_payload().as_string();
             std::cout << "Recebido rightLaneData: " << laneData << std::endl;
-            // std::cout << "Recebido rightLaneData: " << laneData << std::endl;
-            parseLaneData(laneData, "rightLane");  //deixei trocado porque no middleware esta trocado e nao consigo alterar pela net 
+            parseLaneData(laneData, "rightLane");
         },
         zenoh::closures::none));
     object_subscriber.emplace(session->declare_subscriber(
@@ -158,7 +156,6 @@ void InstrumentCluster::setupSubscriptions()
         [this](const zenoh::Sample& sample) {
 
             std::string objectData = sample.get_payload().as_string();
-            // std::cout << "Recebido objectData: " << objectData << std::endl;
             parseObjectData(objectData);  
         },
         zenoh::closures::none));
@@ -198,6 +195,56 @@ void InstrumentCluster::setupSubscriptions()
         [this](const zenoh::Sample& sample) {
                 std::cout << "Recebido SAE 5" << std::endl;
                 setAutonomyLevel(5);
+        },
+        zenoh::closures::none));
+    speedLimit_subscriber.emplace(session->declare_subscriber(
+        "Vehicle/1/Environment/RoadSigns/SpeedLimit",
+        [this](const zenoh::Sample& sample) {
+            int speedLimit = std::stoi(sample.get_payload().as_string());
+            std::cout << "Speed Limit Received: " << speedLimit << " km/h" << std::endl;
+            if(speedLimit == 20)
+                setSignDetected(0);
+            else if(speedLimit == 30)
+                setSignDetected(1);
+            else if(speedLimit == 40)
+                setSignDetected(2);
+            if(speedLimit == 50)
+                setSignDetected(3);
+            else if(speedLimit == 60)
+                setSignDetected(4);
+            else if(speedLimit == 70)
+                setSignDetected(5);
+            else if(speedLimit == 80)
+                setSignDetected(6);
+            else if(speedLimit == 90)
+                setSignDetected(7);
+            else if(speedLimit == 100)
+                setSignDetected(8);
+            else if(speedLimit == 120)
+                setSignDetected(9);
+            else
+                setSignDetected(0);
+        },
+        zenoh::closures::none));
+    stopSign_subscriber.emplace(session->declare_subscriber(
+        "Vehicle/1/Environment/RoadSigns/Stop",
+        [this](const zenoh::Sample& sample) {
+            std::cout << "Recebido Stop Sign" << std::endl;
+            setSignDetected(11);
+        },
+        zenoh::closures::none));
+    yieldSign_subscriber.emplace(session->declare_subscriber(
+        "Vehicle/1/Environment/RoadSigns/Yield",
+        [this](const zenoh::Sample& sample) {
+            std::cout << "Recebido Yield Sign" << std::endl;
+            setSignDetected(12);
+        },
+        zenoh::closures::none));
+    pedestrianZone_subscriber.emplace(session->declare_subscriber(
+        "Vehicle/1/Environment/RoadSigns/PedestrianZone",
+        [this](const zenoh::Sample& sample) {
+            std::cout << "Recebido Pedestrian Zone Sign" << std::endl;
+            setSignDetected(13);
         },
         zenoh::closures::none));
 }
@@ -432,6 +479,21 @@ void InstrumentCluster::setAutonomy(int value)
     {
         autonomy = value;
         emit autonomyChanged(value);
+    }
+}
+
+int InstrumentCluster::getSignDetected() const
+{
+    return signDetected;
+}
+
+void InstrumentCluster::setSignDetected(int value)
+{
+    if (signDetected != value)
+    {
+        signDetected = value;
+        std::cout << "Sign detected updated: " << signDetected << std::endl;
+        emit signDetectedChanged(value);
     }
 }
 

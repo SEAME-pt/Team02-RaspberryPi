@@ -10,6 +10,7 @@
         <file>CircularProgressBar.qml</file>
         <file>ObjectDetector.qml</file>
         <file>NotificationBlock.qml</file>
+        <file>SignDetector.qml</file>
     </qresource>
 
     <qresource prefix="/assets/icons">
@@ -37,6 +38,12 @@
         <file alias="assist-steer-on.png">../assets/icons/assist-steer-on.png</file>
         <file alias="system-failure.png">../assets/icons/system-failure.png</file>
         <file alias="lane-departure.png">../assets/icons/lane-departure.png</file>
+        <file alias="50.png">../assets/icons/50.png</file>
+        <file alias="80.png">../assets/icons/80.png</file>
+        <file alias="stop.png">../assets/icons/stop.png</file>
+        <file alias="yield.png">../assets/icons/yield.png</file>
+        <file alias="pedestrian.png">../assets/icons/pedestrian.png</file>
+        <file alias="warning-sign.png">../assets/icons/warning-sign.png</file>
     </qresource>
     
     <qresource prefix="/assets/images">

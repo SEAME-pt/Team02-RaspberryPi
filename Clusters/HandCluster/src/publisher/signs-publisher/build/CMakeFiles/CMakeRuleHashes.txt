@@ -1,0 +1,2 @@
+# Hashes of file build rules.
+dae7a505c1134a04f471393ae3065c77 CMakeFiles/publisher_autogen

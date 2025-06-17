@@ -67,7 +67,7 @@ Rectangle {
 
         Text {
             font.family: fontFamily
-            text: "DM/S"
+            text: "KM/H"
             font.pixelSize: app.letterSize
             color: "gray"
             anchors.horizontalCenter: parent.horizontalCenter

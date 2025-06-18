@@ -282,17 +282,17 @@ int main(int argc, char** argv)
         }
         else if (frame.can_id == 0x501)
         {
-            std::cout << "Publishing stop sign detected." << std::endl;
+            std::cout << "Publishing stop sign detected. (11)" << std::endl;
             stopSign_pub.put("1");
         }
         else if (frame.can_id == 0x502)
         {
-            std::cout << "Publishing yield sign detected." << std::endl;
+            std::cout << "Publishing yield sign detected (12)." << std::endl;
             yieldSign_pub.put("1");
         }
         else if (frame.can_id == 0x503)
         {
-            std::cout << "Publishing pedestrian zone sign detected." << std::endl;
+            std::cout << "Publishing pedestrian zone sign detected. (13)" << std::endl;
             pedestrianZone_pub.put("1");
         }
         usleep(10);

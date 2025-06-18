@@ -8,17 +8,18 @@ on:
       - 'v*'
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
+    env:
+      PROJECT_DIR: RaspberryPi
+      DOCKER_BUILDKIT: 1
+      BUILDX_LOG_LEVEL: debug
 
     steps:
-      - name: Free up disk space
-        run: |
-          sudo rm -rf /usr/share/dotnet
-          sudo rm -rf /opt/ghc
-          sudo rm -rf /usr/local/share/boost
-          sudo rm -rf /usr/lib/jvm
-          sudo docker system prune -af
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: false
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -30,10 +31,6 @@ jobs:
         with:
           driver: docker-container
           buildkitd-flags: --allow-insecure-entitlement network.host
-
-      - name: Checkout code
-        uses: actions/checkout@v4
-
 
       - name: Build and export binaries to local directory
         run: |

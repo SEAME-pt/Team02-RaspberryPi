@@ -32,25 +32,24 @@ jobs:
           driver: docker-container
           buildkitd-flags: --allow-insecure-entitlement network.host
 
-      - name: Build Docker image for ARM64
+      - name: Build and export binaries to local directory
         run: |
+          rm -rf out/
           docker buildx build \
-            -f deploy/dockerfiles/DockerfileDeployRasp \
             --platform linux/arm64 \
-            --output type=docker \
+            -f deploy/dockerfiles/DockerfileDeployRasp \
+            --output type=local,dest=out \
             --build-arg projectDir=/ \
-            -t final-app .
+            .
 
-      - name: Extract built binaries
+      - name: Prepare artifacts
         run: |
           mkdir -p artifacts/bin
           mkdir -p artifacts/config
           mkdir -p artifacts/fonts
 
-          docker create --name tmpapp final-app
-
-          docker cp tmpapp:/home/InstrumentClusterApp ./artifacts/bin/
-          docker cp tmpapp:/home/MiddleWareApp ./artifacts/bin/
+          cp out/home/InstrumentClusterApp ./artifacts/bin/
+          cp out/home/MiddleWareApp ./artifacts/bin/
 
           cp ./ZenohConfig/InstrumentClusterConfig.json ./artifacts/config/
           cp ./ZenohConfig/MiddleWareConfig.json ./artifacts/config/
@@ -62,8 +61,6 @@ jobs:
           cd artifacts
           zip -r ../release-package.zip *
           cd ..
-
-          docker rm tmpapp
 
       - name: Get latest tag and increment
         id: tag

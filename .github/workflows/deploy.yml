@@ -8,18 +8,17 @@ on:
       - 'v*'
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
-    env:
-      PROJECT_DIR: RaspberryPi
-      DOCKER_BUILDKIT: 1
-      BUILDX_LOG_LEVEL: debug
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          submodules: false
+      - name: Free up disk space
+        run: |
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /opt/ghc
+          sudo rm -rf /usr/local/share/boost
+          sudo rm -rf /usr/lib/jvm
+          sudo docker system prune -af
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2

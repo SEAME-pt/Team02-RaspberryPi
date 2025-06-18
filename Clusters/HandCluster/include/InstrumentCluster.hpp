@@ -65,7 +65,7 @@ class InstrumentCluster : public QObject
     int gear;  
     int warningCode;
     int autonomyLevel;
-    int signDetected;
+    int signDetected = 0;
 
     QVariantMap m_leftLaneCoefs;
     QVariantMap m_rightLaneCoefs;

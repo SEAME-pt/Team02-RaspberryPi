@@ -3,7 +3,7 @@ name: Build and Deploy for Raspberry Pi
 on:
   push:
     branches:
-      - 76-task-deploy-workflow-for-raspberry-pi-repo # Or your main branch, e.g., 'main' or 'master'
+      - 76-task-deploy-workflow-for-raspberry-pi-repo
     tags:
       - 'v*'
 
@@ -11,7 +11,9 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     env:
-      PROJECT_DIR: RaspberryPi # Define PROJECT_DIR here
+      PROJECT_DIR: RaspberryPi
+      DOCKER_BUILDKIT: 1
+      BUILDX_LOG_LEVEL: debug
 
     steps:
       - name: Checkout repository
@@ -26,12 +28,16 @@ jobs:
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
+        with:
+          driver: docker-container
+          buildkitd-flags: --allow-insecure-entitlement network.host
 
       - name: Build Docker image for ARM64
         run: |
           docker buildx build \
             -f deploy/dockerfiles/DockerfileDeployRasp \
-            --platform linux/arm64 --output type=local,dest=out \
+            --platform linux/arm64 \
+            --output type=docker \
             --build-arg projectDir=/ \
             -t final-app .
 
@@ -43,13 +49,11 @@ jobs:
 
           docker create --name tmpapp final-app
 
-          # Assuming your Dockerfile puts the apps under /home/RaspberryPi/ within the container
-          docker cp tmpapp:/home//InstrumentClusterApp ./artifacts/bin/
-          docker cp tmpapp:/home//MiddleWareApp ./artifacts/bin/
+          docker cp tmpapp:/home/InstrumentClusterApp ./artifacts/bin/
+          docker cp tmpapp:/home/MiddleWareApp ./artifacts/bin/
 
-          # These paths should be relative to the root of the checked out repo
-          cp .//ZenohConfig/InstrumentClusterConfig.json ./artifacts/config/
-          cp .//ZenohConfig/MiddleWareConfig.json ./artifacts/config/
+          cp ./ZenohConfig/InstrumentClusterConfig.json ./artifacts/config/
+          cp ./ZenohConfig/MiddleWareConfig.json ./artifacts/config/
 
           cp -r ./deploy/fonts/* ./artifacts/fonts/
 
@@ -99,4 +103,4 @@ jobs:
             artifacts/source-code.zip
             artifacts/bin/*
         env:
-          GITHUB_TOKEN:  ${{ secrets.PAT_LUIS }}
+          GITHUB_TOKEN: ${{ secrets.PAT_LUIS }}

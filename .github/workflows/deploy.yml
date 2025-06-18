@@ -31,6 +31,10 @@ jobs:
           driver: docker-container
           buildkitd-flags: --allow-insecure-entitlement network.host
 
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+
       - name: Build and export binaries to local directory
         run: |
           rm -rf out/

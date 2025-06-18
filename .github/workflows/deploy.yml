@@ -31,7 +31,7 @@ jobs:
         run: |
           docker buildx build \
             -f deploy/dockerfiles/DockerfileDeployRasp \
-            --platform linux/arm64 --load \
+            --platform linux/arm64 --output type=local,dest=out \
             --build-arg projectDir=/ \
             -t final-app .
 

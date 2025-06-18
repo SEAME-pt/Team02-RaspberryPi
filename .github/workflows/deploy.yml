@@ -8,18 +8,20 @@ on:
       - 'v*'
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
-    env:
-      PROJECT_DIR: RaspberryPi
-      DOCKER_BUILDKIT: 1
-      BUILDX_LOG_LEVEL: debug
 
     steps:
-      - name: Checkout repository
+      - name: Free up disk space
+        run: |
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /opt/ghc
+          sudo rm -rf /usr/local/share/boost
+          sudo rm -rf /usr/lib/jvm
+          sudo docker system prune -af
+
+      - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          submodules: false
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -32,28 +34,32 @@ jobs:
           driver: docker-container
           buildkitd-flags: --allow-insecure-entitlement network.host
 
-      - name: Build and export binaries to local directory
+      - name: Build Docker image
         run: |
-          rm -rf out/
           docker buildx build \
             --platform linux/arm64 \
             -f deploy/dockerfiles/DockerfileDeployRasp \
-            --output type=local,dest=out \
             --build-arg projectDir=/ \
-            .
+            --load \
+            -t rasp-app .
+
+      - name: Extract binaries from Docker image
+        run: |
+          docker create --name tmpapp rasp-app
+
+          mkdir -p artifacts/bin
+          docker cp tmpapp:/home/InstrumentClusterApp ./artifacts/bin/
+          docker cp tmpapp:/home/MiddleWareApp ./artifacts/bin/
+
+          docker rm tmpapp
 
       - name: Prepare artifacts
         run: |
-          mkdir -p artifacts/bin
           mkdir -p artifacts/config
           mkdir -p artifacts/fonts
 
-          cp out/home/InstrumentClusterApp ./artifacts/bin/
-          cp out/home/MiddleWareApp ./artifacts/bin/
-
           cp ./ZenohConfig/InstrumentClusterConfig.json ./artifacts/config/
           cp ./ZenohConfig/MiddleWareConfig.json ./artifacts/config/
-
           cp -r ./deploy/fonts/* ./artifacts/fonts/
 
           git archive --format=zip HEAD -o ./artifacts/source-code.zip
@@ -101,4 +107,3 @@ jobs:
             artifacts/bin/*
         env:
           GITHUB_TOKEN: ${{ secrets.PAT_LUIS }}
-

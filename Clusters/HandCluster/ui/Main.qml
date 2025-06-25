@@ -8,8 +8,9 @@ ApplicationWindow {
     property int letterSizeLoaded: 45
     width: 1280
     height: 400
-    flags: Qt.Window | Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint
-    // visibility: Window.FullScreen
+    // flags: Qt.Window | Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint
+    flags: Qt.Window | Qt.WindowStaysOnTopHint
+
     visibility: Window.Windowed
 
 

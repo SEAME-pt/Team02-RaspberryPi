@@ -38,6 +38,7 @@ int main() {
     auto stopSign_pub = session->declare_publisher("Vehicle/1/Environment/RoadSigns/Stop");
     auto yieldSign_pub = session->declare_publisher("Vehicle/1/Environment/RoadSigns/Yield");
     auto pedestrianZone_pub = session->declare_publisher("Vehicle/1/Environment/RoadSigns/PedestrianZone");
+    auto trafficLight_pub = session->declare_publisher("Vehicle/1/Environment/RoadSigns/TrafficLight");
 
     // Speed limit options
     std::vector<int> speedLimits = {50, 80};
@@ -46,7 +47,7 @@ int main() {
     while (true) {
         int choice = std::rand() % 10;
 
-        if (choice < 7) {
+        if (choice == 6) {
             int speed = speedLimits[std::rand() % speedLimits.size()];
             std::cout << "Publishing Speed Limit: " << speed << " km/h" << std::endl;
             speedLimit_pub.put(std::to_string(speed));
@@ -56,9 +57,21 @@ int main() {
         } else if (choice == 8) {
             std::cout << "Publishing Yield Sign" << std::endl;
             yieldSign_pub.put("true");
-        } else {
+        } else if (choice == 9) {
             std::cout << "Publishing Pedestrian Zone" << std::endl;
             pedestrianZone_pub.put("true");
+        } else {
+            int trafficLightChoice = std::rand() % 3;
+            if (trafficLightChoice == 0) {
+                std::cout << "Publishing Traffic Light: yellow" << std::endl;
+                trafficLight_pub.put("yellow");
+            } else if (trafficLightChoice == 1) {
+                std::cout << "Publishing Traffic Light: green" << std::endl;
+                trafficLight_pub.put("green");
+            } else {
+                std::cout << "Publishing Traffic Light: red" << std::endl;
+                trafficLight_pub.put("red");
+            }
         }
 
         std::this_thread::sleep_for(std::chrono::seconds(3));

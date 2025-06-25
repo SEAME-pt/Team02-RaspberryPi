@@ -103,6 +103,7 @@ class InstrumentCluster : public QObject
     std::optional<zenoh::Subscriber<void>> stopSign_subscriber;
     std::optional<zenoh::Subscriber<void>> yieldSign_subscriber;
     std::optional<zenoh::Subscriber<void>> pedestrianZone_subscriber;
+    std::optional<zenoh::Subscriber<void>> trafficLight_subscriber;
     
   public:
     explicit InstrumentCluster(QObject* parent = nullptr);

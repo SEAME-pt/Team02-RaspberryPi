@@ -44,6 +44,9 @@
         <file alias="yield.png">../assets/icons/yield.png</file>
         <file alias="pedestrian.png">../assets/icons/pedestrian.png</file>
         <file alias="warning-sign.png">../assets/icons/warning-sign.png</file>
+        <file alias="traffic-light-yellow.png">../assets/icons/traffic-light-yellow.png</file>
+        <file alias="traffic-light-green.png">../assets/icons/traffic-light-green.png</file>
+        <file alias="traffic-light-red.png">../assets/icons/traffic-light-red.png</file>
     </qresource>
     
     <qresource prefix="/assets/images">

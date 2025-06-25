@@ -41,6 +41,10 @@ Item {
                     case 11: return "../assets/icons/stop.png";
                     case 12: return "../assets/icons/yield.png";
                     case 13: return "../assets/icons/pedestrian.png";
+                    case 14: return "../assets/icons/traffic-light-yellow.png";
+                    case 15: return "../assets/icons/traffic-light-green.png";
+                    case 16: return "../assets/icons/traffic-light-red.png";
+
                     default: return "";
                 }
             }
@@ -59,6 +63,13 @@ Item {
                 }
 
                 if (!exists) {
+                    for (let i = signModel.count - 1; i >= 0; i--) {
+                        const item = signModel.get(i);
+                        if (item.source.includes("traffic-light")) {
+                            signModel.remove(i);
+                        }
+                    }
+
                     if (signModel.count >= 3) {
                         signModel.remove(0);
                     }
@@ -96,8 +107,8 @@ Item {
                 Repeater {
                     model: signModel
                     delegate: Image {
-                        width: 60
-                        height: 60
+                        width: 65
+                        height: 65
                         fillMode: Image.PreserveAspectFit
                         source: model.source + "?" + Date.now()
 
@@ -110,7 +121,7 @@ Item {
 
                         y: {
                             if (index === 0) return 0
-                            if (index === 1 || index === 2) return 70
+                            if (index === 1 || index === 2) return 85 // vertical spacing
                             return 0
                         }
 

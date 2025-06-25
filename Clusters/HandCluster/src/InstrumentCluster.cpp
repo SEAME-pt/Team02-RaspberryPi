@@ -247,6 +247,22 @@ void InstrumentCluster::setupSubscriptions()
             setSignDetected(13);
         },
         zenoh::closures::none));
+    trafficLight_subscriber.emplace(session->declare_subscriber(
+        "Vehicle/1/Environment/RoadSigns/TrafficLight",
+        [this](const zenoh::Sample& sample) {
+            std::string trafficLight = sample.get_payload().as_string();
+            if (trafficLight == "yellow") {
+                std::cout << "Recebido Traffic Sign: yellow" << std::endl;
+                setSignDetected(14);
+            } else if (trafficLight == "green") {
+                std::cout << "Recebido Traffic Sign: green" << std::endl;
+                setSignDetected(15);
+            } else if (trafficLight == "red") {
+                std::cout << "Recebido Traffic Sign: red" << std::endl;
+                setSignDetected(16);
+            }
+        },
+        zenoh::closures::none));
 }
 
 void InstrumentCluster::parseObjectData(const std::string& objectData) {

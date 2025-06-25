@@ -55,22 +55,3 @@ Canvas {
         }
     }
 }
-
-// Repeater {
-//     model: instrumentCluster.detectedObjects
-
-//     Image {
-//         source: {
-//             switch (modelData.type) {
-//                 // case "car": return "images/car.png";
-//                 // case "pedestrian": return "images/pedestrian.png";
-//                 case "traffic_light": return  "../assets/images/car.png";
-//                 default: return "";
-//             }
-//         }
-//         x: modelData.x
-//         y: modelData.y
-//         width: modelData.width
-//         height: modelData.height
-//     }
-// }

@@ -135,8 +135,8 @@ int main(int argc, char** argv)
         zenoh::KeyExpr("Vehicle/1/Environment/RoadSigns/Yield"));
     auto pedestrianZone_pub = session->declare_publisher(
         zenoh::KeyExpr("Vehicle/1/Environment/RoadSigns/PedestrianZone"));
-
-
+    auto trafficLight_pub = session->declare_publisher( 
+        zenoh::KeyExpr("Vehicle/1/Environment/RoadSigns/TrafficLight"));
 
     while (1)
     {
@@ -294,6 +294,21 @@ int main(int argc, char** argv)
         {
             std::cout << "Publishing pedestrian zone sign detected. (13)" << std::endl;
             pedestrianZone_pub.put("1");
+        }
+        else if (frame.can_id == 0x600)
+        {
+            std::cout << "Publishing traffic sign detected: yellow (14)" << std::endl;
+            trafficLight_pub.put("yellow");
+        }
+        else if (frame.can_id == 0x601)
+        {
+            std::cout << "Publishing traffic sign detected: green (15)" << std::endl;
+            trafficLight_pub.put("green");
+        }
+        else if (frame.can_id == 0x602)
+        {
+            std::cout << "Publishing traffic sign detected: red (16)" << std::endl;
+            trafficLight_pub.put("red");
         }
         usleep(10);
     }

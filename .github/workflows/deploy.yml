@@ -10,18 +10,42 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    # Optional: Increase timeout if the build is very long, although space is the main issue
+    timeout-minutes: 60 
 
     steps:
-      - name: Free up disk space
+      - name: Initial disk space check
         run: |
-          sudo rm -rf /usr/share/dotnet
-          sudo rm -rf /opt/ghc
-          sudo rm -rf /usr/local/share/boost
-          sudo rm -rf /usr/lib/jvm
-          sudo docker system prune -af
+          echo "--- Disk space BEFORE any cleanup ---"
+          df -h
+          echo "--- Docker images BEFORE any cleanup ---"
+          docker images || true # Use || true to prevent job failure if no images
+
+      - name: Free up disk space on runner
+        run: |
+          echo "--- Starting disk space cleanup ---"
+          sudo rm -rf /usr/share/dotnet || true
+          sudo rm -rf /opt/ghc || true
+          sudo rm -rf /usr/local/share/boost || true
+          sudo rm -rf /usr/lib/jvm || true
+          sudo docker system prune -af || true # Force prune all dangling images/containers/volumes
+          echo "--- Disk space AFTER cleanup ---"
+          df -h
+          echo "--- Docker images AFTER cleanup ---"
+          docker images || true
 
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          # If your repository has submodules that are not needed for the Rasp build, set this to false.
+          # Otherwise, keep it default or set to true if they are crucial.
+          submodules: true 
+
+      - name: Check project directory size before Docker build context
+        run: |
+          echo "--- Size of the repository being copied to Docker context ---"
+          du -sh .
+          echo "Ensure you have a .dockerignore file to exclude unnecessary files!"
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -34,17 +58,35 @@ jobs:
           driver: docker-container
           buildkitd-flags: --allow-insecure-entitlement network.host
 
+      - name: Disk space check before Docker build
+        run: |
+          echo "--- Disk space BEFORE Docker buildx build ---"
+          df -h
+          echo "--- Docker images BEFORE Docker buildx build ---"
+          docker images || true
+
       - name: Build Docker image
         run: |
+          echo "--- Starting Docker build for rasp-app ---"
           docker buildx build \
             --platform linux/arm64 \
             -f deploy/dockerfiles/DockerfileDeployRasp \
             --build-arg projectDir=/ \
             --load \
             -t rasp-app .
+          echo "--- Docker build for rasp-app completed ---"
+
+      - name: Disk space check after Docker image build
+        run: |
+          echo "--- Disk space AFTER Docker buildx build (and --load) ---"
+          df -h
+          echo "--- Docker images AFTER Docker buildx build ---"
+          docker images
+          echo "If 'rasp-app' image is very large, consider multi-stage Dockerfile builds."
 
       - name: Extract binaries from Docker image
         run: |
+          echo "--- Starting binary extraction ---"
           docker create --name tmpapp rasp-app
 
           mkdir -p artifacts/bin
@@ -52,9 +94,11 @@ jobs:
           docker cp tmpapp:/home/MiddleWareApp ./artifacts/bin/
 
           docker rm tmpapp
+          echo "--- Binary extraction completed ---"
 
       - name: Prepare artifacts
         run: |
+          echo "--- Preparing artifacts ---"
           mkdir -p artifacts/config
           mkdir -p artifacts/fonts
 
@@ -62,11 +106,26 @@ jobs:
           cp ./ZenohConfig/MiddleWareConfig.json ./artifacts/config/
           cp -r ./deploy/fonts/* ./artifacts/fonts/
 
+          # Be aware of the size of your repository for this step!
+          # If the source code is huge, this zip can consume a lot of temp space.
           git archive --format=zip HEAD -o ./artifacts/source-code.zip
+
+          echo "--- Disk space BEFORE zipping release-package.zip ---"
+          df -h
+          echo "--- Size of artifacts directory before final zip ---"
+          du -sh artifacts/
 
           cd artifacts
           zip -r ../release-package.zip *
           cd ..
+          echo "--- Release package zipped ---"
+
+      - name: Disk space check after all artifacts prepared
+        run: |
+          echo "--- Disk space AFTER all artifacts prepared (including zips) ---"
+          df -h
+          echo "--- Size of release-package.zip and source-code.zip ---"
+          ls -lh release-package.zip artifacts/source-code.zip
 
       - name: Get latest tag and increment
         id: tag
@@ -104,6 +163,6 @@ jobs:
           files: |
             release-package.zip
             artifacts/source-code.zip
-            artifacts/bin/*
+            artifacts/bin/* # Ensure this correctly captures the binaries. Consider listing them explicitly if it fails.
         env:
           GITHUB_TOKEN: ${{ secrets.PAT_LUIS }}

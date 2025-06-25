@@ -3,7 +3,7 @@ name: Build and Deploy for Raspberry Pi
 on:
   push:
     branches:
-      - 76-task-deploy-workflow-for-raspberry-pi-repo
+      - 80-task-object-detection-in-cluster
     tags:
       - 'v*'
 

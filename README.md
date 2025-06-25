@@ -64,23 +64,7 @@ This section lists the major frameworks, libraries, and tools used in this proje
 - [![I2C](https://img.shields.io/badge/I2C-Protocol-000000?style=for-the-badge)](https://en.wikipedia.org/wiki/I%2F2C)
 - [![CAN Bus](https://img.shields.io/badge/CAN%20Bus-Protocol-000000?style=for-the-badge)](https://www.kvaser.com/can/)
 
-🗂️ [Check here]() the CAN ID Reference Table
-
-### 💡 Light Bitmask (CAN ID 0x03)
-
-Each bit in the uint8_t bitfield corresponds to a vehicle light:
-
-| Bit Position | Light Function                  | Zenoh Topic                                                 |
-|--------------|----------------------------------|--------------------------------------------------------------|
-| 0            | Right Direction Indicator       | Vehicle/1/Body/Lights/DirectionIndicator/Right            |
-| 1            | Left Direction Indicator        | Vehicle/1/Body/Lights/DirectionIndicator/Left             |
-| 2            | Low Beam                        | Vehicle/1/Body/Lights/Beam/Low                            |
-| 3            | High Beam                       | Vehicle/1/Body/Lights/Beam/High                           |
-| 4            | Front Fog Light                 | Vehicle/1/Body/Lights/Fog/Front                           |
-| 5            | Rear Fog Light                  | Vehicle/1/Body/Lights/Fog/Rear                            |
-| 6            | Hazard Light                    | Vehicle/1/Body/Lights/Hazard                              |
-| 7            | Parking Light                   | Vehicle/1/Body/Lights/Parking                             |
-</details>
+🗂️ [Check here](https://github.com/SEAME-pt/Team02-RaspberryPi/blob/80-task-object-detection-in-cluster/MiddleWare/src/can-id-reference-table.md) the CAN ID Reference Table
 
 #### Hardware
 

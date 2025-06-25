@@ -19,7 +19,7 @@ Row {
         spacing: 8
 
         Text { text: "P"; font.family: fontFamily; font.pixelSize: gearSize(127); color: gearColor(127) }
-        Text { text: "R"; font.family: fontFamily; font.pixelSize: gearSize(-1); color: gearColor(-1) }
+        Text { text: "R"; font.family: fontFamily; font.pixelSize: gearSize(255); color: gearColor(255) }
         Text { text: "N"; font.family: fontFamily; font.pixelSize: gearSize(0); color: gearColor(0) }
         Text { text: "D"; font.family: fontFamily; font.pixelSize: gearSize(1); color: gearColor(1) }
     }

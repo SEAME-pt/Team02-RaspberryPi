@@ -23,3 +23,20 @@ This table defines the meaning of each CAN ID the middlewareApp handles, along w
 | 0x600      | Traffic Light – Yellow              | –                      | Vehicle/1/Environment/RoadSigns/TrafficLight = "yellow"                   |
 | 0x601      | Traffic Light – Green               | –                      | Vehicle/1/Environment/RoadSigns/TrafficLight = "green"                    |
 | 0x602      | Traffic Light – Red                 | –                      | Vehicle/1/Environment/RoadSigns/TrafficLight = "red"                      |
+
+---
+
+### 💡 Light Bitmask (CAN ID 0x03)
+
+Each bit in the uint8_t bitfield corresponds to a vehicle light:
+
+| Bit Position | Light Function                  | Zenoh Topic                                                 |
+|--------------|----------------------------------|--------------------------------------------------------------|
+| 0            | Right Direction Indicator       | Vehicle/1/Body/Lights/DirectionIndicator/Right            |
+| 1            | Left Direction Indicator        | Vehicle/1/Body/Lights/DirectionIndicator/Left             |
+| 2            | Low Beam                        | Vehicle/1/Body/Lights/Beam/Low                            |
+| 3            | High Beam                       | Vehicle/1/Body/Lights/Beam/High                           |
+| 4            | Front Fog Light                 | Vehicle/1/Body/Lights/Fog/Front                           |
+| 5            | Rear Fog Light                  | Vehicle/1/Body/Lights/Fog/Rear                            |
+| 6            | Hazard Light                    | Vehicle/1/Body/Lights/Hazard                              |
+| 7            | Parking Light                   | Vehicle/1/Body/Lights/Parking                             |

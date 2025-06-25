@@ -39,4 +39,4 @@ Each bit in the uint8_t bitfield corresponds to a vehicle light:
 | 4            | Front Fog Light                 | Vehicle/1/Body/Lights/Fog/Front                           |
 | 5            | Rear Fog Light                  | Vehicle/1/Body/Lights/Fog/Rear                            |
 | 6            | Hazard Light                    | Vehicle/1/Body/Lights/Hazard                              |
-| 7            | Parking Light                   | Vehicle/1/Body/Lights/Parking                             |
+| 7            | Parking Light                   | Vehicle/1/Body/Lights/Parking                             |l

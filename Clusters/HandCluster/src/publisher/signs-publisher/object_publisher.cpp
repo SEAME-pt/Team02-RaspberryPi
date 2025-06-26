@@ -11,18 +11,6 @@
 
 using namespace zenoh;
 
-    #include <zenoh.hxx>
-#include <thread>
-#include <chrono>
-#include <iostream>
-#include <string>
-#include <vector>
-#include <cstdlib>
-#include <ctime>
-#include <memory>
-
-using namespace zenoh;
-
 int main() {
     std::srand(static_cast<unsigned>(std::time(nullptr)));
 
@@ -40,12 +28,32 @@ int main() {
     auto pedestrianZone_pub = session->declare_publisher("Vehicle/1/Environment/RoadSigns/PedestrianZone");
     auto trafficLight_pub = session->declare_publisher("Vehicle/1/Environment/RoadSigns/TrafficLight");
 
+    auto left_blinker = session->declare_publisher("Vehicle/1/Body/Lights/DirectionIndicator/Left");
+    auto right_blinker = session->declare_publisher("Vehicle/1/Body/Lights/DirectionIndicator/Right");
     // Speed limit options
     std::vector<int> speedLimits = {50, 80};
+
+    // Traffic light state and timer
+    std::string currentTrafficLight = "red";
+    int trafficLightTimer = 0;
 
     // Loop publishing signs
     while (true) {
         int choice = std::rand() % 10;
+        
+        if (choice == 0) {
+            std::cout << "Publishing Left Blinker ON" << std::endl;
+            left_blinker.put("1");
+        } else if (choice == 1) {
+            std::cout << "Publishing Right Blinker ON" << std::endl;
+            right_blinker.put("1");
+        } else if (choice == 2) {
+            std::cout << "Publishing Left Blinker OFF" << std::endl;
+            left_blinker.put("0");
+        } else if (choice == 3) {
+            std::cout << "Publishing Right Blinker OFF" << std::endl;
+            right_blinker.put("0");
+        } 
 
         if (choice == 6) {
             int speed = speedLimits[std::rand() % speedLimits.size()];
@@ -61,21 +69,22 @@ int main() {
             std::cout << "Publishing Pedestrian Zone" << std::endl;
             pedestrianZone_pub.put("true");
         } else {
-            int trafficLightChoice = std::rand() % 3;
-            if (trafficLightChoice == 0) {
-                std::cout << "Publishing Traffic Light: yellow" << std::endl;
-                trafficLight_pub.put("yellow");
-            } else if (trafficLightChoice == 1) {
-                std::cout << "Publishing Traffic Light: green" << std::endl;
-                trafficLight_pub.put("green");
-            } else {
-                std::cout << "Publishing Traffic Light: red" << std::endl;
-                trafficLight_pub.put("red");
+            // Traffic light logic
+            trafficLightTimer++;
+            if (trafficLightTimer >= 5) { // Change traffic light every 5 iterations
+                if (currentTrafficLight == "red") {
+                    currentTrafficLight = "green";
+                } else if (currentTrafficLight == "green") {
+                    currentTrafficLight = "yellow";
+                } else {
+                    currentTrafficLight = "red";
+                }
+                std::cout << "Publishing Traffic Light: " << currentTrafficLight << std::endl;
+                trafficLight_pub.put(currentTrafficLight);
+                trafficLightTimer = 0;
             }
         }
-
-        std::this_thread::sleep_for(std::chrono::seconds(3));
+        std::this_thread::sleep_for(std::chrono::seconds(1));
     }
-
-    return 0;
 }
+

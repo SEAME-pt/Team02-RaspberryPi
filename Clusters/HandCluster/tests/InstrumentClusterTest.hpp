@@ -11,7 +11,6 @@ private slots: // Test functions should be in private slots
     void testFontLoading();
     void testInstrumentClusterInitialization();
     void testSetSpeed();
-    void testParseObjectData();
     void testSetWarningCode();
     void testSetHighBeam();
     void testSetLowBeam();
@@ -21,13 +20,11 @@ private slots: // Test functions should be in private slots
     void testPercentage();
     void testAutonomy();
     void testGear();
-    void testGetDetectedObjects();
-    void testSetDetectedObjects();
-    void testParseObjectData_InvalidJson();
-    void testParseObjectData_NonArrayJson();
     void testSubscriptionsIntegration();
-
-
+    void testSetSignDetected();
+    void testLaneDeparture();
+    void testAutonomyLevel();
+    void testInstrumentClusterConstructor();
     // void testSpeedCallback();
 };
 

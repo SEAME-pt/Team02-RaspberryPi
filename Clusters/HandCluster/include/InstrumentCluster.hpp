@@ -43,7 +43,6 @@ class InstrumentCluster : public QObject
     Q_PROPERTY(int gear READ getGear WRITE setGear NOTIFY gearChanged)
     Q_PROPERTY(QVariantMap leftLaneCoefs READ getLeftLaneCoefs WRITE setLeftLaneCoefs NOTIFY leftLaneChanged)
     Q_PROPERTY(QVariantMap rightLaneCoefs READ getRightLaneCoefs WRITE setRightLaneCoefs NOTIFY rightLaneChanged)
-    Q_PROPERTY(QVariantList detectedObjects READ getDetectedObjects NOTIFY detectedObjectsUpdated)
     Q_PROPERTY(int warningCode READ getWarningCode WRITE setWarningCode NOTIFY warningCodeChanged)
     Q_PROPERTY(bool laneDeparture READ getLaneDeparture WRITE setLaneDeparture NOTIFY laneDepartureChanged)
     Q_PROPERTY(int autonomyLevel READ getAutonomyLevel WRITE setAutonomyLevel NOTIFY autonomyLevelChanged)
@@ -93,7 +92,6 @@ class InstrumentCluster : public QObject
     std::optional<zenoh::Subscriber<void>> currentGear_subscriber;
     std::optional<zenoh::Subscriber<void>> leftLane_subscriber;
     std::optional<zenoh::Subscriber<void>> rightLane_subscriber;
-    std::optional<zenoh::Subscriber<void>> object_subscriber;
     std::optional<zenoh::Subscriber<void>> laneDeparture_subscriber;
     std::optional<zenoh::Subscriber<void>> obstacleWarning_subscriber;
     std::optional<zenoh::Subscriber<void>> sae0_subscriber;
@@ -112,9 +110,6 @@ class InstrumentCluster : public QObject
                                public:
     explicit InstrumentCluster(std::shared_ptr<zenoh::Session> session, QObject* parent = nullptr);
     ~InstrumentCluster();
-
-    QVariantList getDetectedObjects() const;
-    void setDetectedObjects(const QVariantList& detectedObjectsList);
 
     int getSpeed() const;
     void setSpeed(int speed);
@@ -168,8 +163,6 @@ class InstrumentCluster : public QObject
     bool getLaneDeparture() const;
 
     void parseLaneData(const std::string& laneData, const std::string& laneType);
-    void parseObjectData(const std::string& objectData);
-    // std::function<void(const zenoh::Sample&)> getSpeedCallback();
     void setupSubscriptions();
 
     int getAutonomyLevel() const;
@@ -190,7 +183,6 @@ class InstrumentCluster : public QObject
     void gearChanged(int gear);
     void leftLaneChanged(const QVariantMap& leftLaneCoefs);
     void rightLaneChanged(const QVariantMap& rightLaneCoefs);
-    void detectedObjectsUpdated(const QVariantList& objects);
     void warningCodeChanged(int code);
     void onSpeedSample(const zenoh::Sample& sample);
     void laneDepartureChanged(bool state);

@@ -63,6 +63,7 @@ void InstrumentCluster::setupSubscriptions()
         "Vehicle/1/Body/Lights/DirectionIndicator/Left",
         [this](const zenoh::Sample& sample)
         {
+            std::cout << "Recebido left blinker: " << sample.get_payload().as_string() << std::endl;
             bool isSignaling = std::stoi(sample.get_payload().as_string());
             setLeftBlinker(isSignaling);
         },
@@ -72,6 +73,7 @@ void InstrumentCluster::setupSubscriptions()
         "Vehicle/1/Body/Lights/DirectionIndicator/Right",
         [this](const zenoh::Sample& sample)
         {
+            std::cout << "Recebido right blinker: " << sample.get_payload().as_string() << std::endl;
             bool isSignaling = std::stoi(sample.get_payload().as_string());
             setRightBlinker(isSignaling);
         },
@@ -149,14 +151,6 @@ void InstrumentCluster::setupSubscriptions()
             std::string laneData = sample.get_payload().as_string();
             std::cout << "Recebido rightLaneData: " << laneData << std::endl;
             parseLaneData(laneData, "rightLane");
-        },
-        zenoh::closures::none));
-    object_subscriber.emplace(session->declare_subscriber(
-        "Vehicle/1/Scene/Objects",
-        [this](const zenoh::Sample& sample) {
-
-            std::string objectData = sample.get_payload().as_string();
-            parseObjectData(objectData);  
         },
         zenoh::closures::none));
     obstacleWarning_subscriber.emplace(session->declare_subscriber(
@@ -265,40 +259,6 @@ void InstrumentCluster::setupSubscriptions()
         zenoh::closures::none));
 }
 
-void InstrumentCluster::parseObjectData(const std::string& objectData) {
-    QByteArray byteArray = QByteArray::fromStdString(objectData);
-    QJsonParseError parseError;
-    QJsonDocument doc = QJsonDocument::fromJson(byteArray, &parseError);
-
-    if (parseError.error != QJsonParseError::NoError) {
-        qWarning() << "Erro ao parsear JSON:" << parseError.errorString();
-        return;
-    }
-
-    if (!doc.isArray()) {
-        qWarning() << "JSON recebido não é um array de objetos";
-        return;
-    }
-
-    QJsonArray array = doc.array();
-    QVariantList detectedObjectsList;
-
-    for (const QJsonValue& value : array) {
-        if (!value.isObject()) continue;
-        QJsonObject obj = value.toObject();
-
-        QVariantMap map;
-        map["x"] = obj["x"].toDouble();
-        map["y"] = obj["y"].toDouble();
-        map["width"] = obj["width"].toDouble();
-        map["height"] = obj["height"].toDouble();
-        map["type"] = obj["type"].toString();
-
-        detectedObjectsList.append(map);
-    }
-    setDetectedObjects(detectedObjectsList);
-}
-
 void InstrumentCluster::parseLaneData(const std::string& laneData, const std::string& laneType)
 {
     std::istringstream stream(laneData);
@@ -317,20 +277,6 @@ void InstrumentCluster::parseLaneData(const std::string& laneData, const std::st
         setRightLaneCoefs(coefficients); 
     }
 }
-
-QVariantList InstrumentCluster::getDetectedObjects() const {
-    return m_detectedObjects;
-}
-
-void InstrumentCluster::setDetectedObjects(const QVariantList& detectedObjectsList) {
-    if (m_detectedObjects != detectedObjectsList) {
-        m_detectedObjects = detectedObjectsList;
-        std::cout << "Detected objects updated: " << m_detectedObjects.size() << std::endl;
-        emit detectedObjectsUpdated(m_detectedObjects);
-    }
-}
-
-
 
 int InstrumentCluster::getSpeed() const
 {

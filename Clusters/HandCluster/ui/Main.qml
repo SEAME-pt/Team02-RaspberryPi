@@ -103,4 +103,44 @@ ApplicationWindow {
     SignDetector {
 
     }
+    Rectangle {
+        id: leftLaneDiagonal
+        width: 7
+        height: parent.height * 0.8 // Reduced height to make it shorter
+        anchors.verticalCenter: carImage.verticalCenter
+        rotation: -30
+        transformOrigin: Item.TopLeft
+        x: carImage.x + carImage.width - 70 // Adjusted to bring closer to the car
+        border.color: "black" // Added border for better visibility
+        border.width: 1
+        gradient: Gradient {
+            GradientStop { position: 0.0; color: "#A9A9A9" } // Dark gray
+            GradientStop { position: 1.0; color: "#D3D3D3" } // Light gray
+        }
+    }
+
+    Rectangle {
+        id: rightLaneDiagonal
+        width: 7
+        height: parent.height * 0.8 // Reduced height to make it shorter
+        anchors.verticalCenter: carImage.verticalCenter
+        rotation: 30
+        transformOrigin: Item.TopRight
+        x: carImage.x + 90 // Adjusted to bring closer to the car
+        border.color: "black" // Added border for better visibility
+        border.width: 1
+        gradient: Gradient {
+            GradientStop { position: 0.0; color: "#A9A9A9" } // Dark gray
+            GradientStop { position: 1.0; color: "#D3D3D3" } // Light gray
+        }
+    }
+
+    Rectangle {
+        id: roadBackground
+        width: parent.width
+        height: parent.height
+        color: "#808080" // Gray color to resemble asphalt
+        z: -1 // Positioned behind other elements
+    }
+
 }

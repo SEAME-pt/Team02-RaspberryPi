@@ -8,22 +8,19 @@
 #include <QJsonObject>
 #include <QJsonDocument>
 
-// Teste de carregamento da fonte
 void TestInstrumentCluster::testFontLoading()
 {
     int fontId = QFontDatabase::addApplicationFont("/usr/share/fonts/electrolize.ttf");
     QVERIFY(fontId != -1);
 }
 
-// Teste de inicialização do InstrumentCluster
 void TestInstrumentCluster::testInstrumentClusterInitialization()
 {
     InstrumentCluster cluster;
-    cluster.setObjectName("InstrumentCluster");  // Necessário se testado diretamente
+    cluster.setObjectName("InstrumentCluster");
     QVERIFY(!cluster.objectName().isEmpty());
 }
 
-// Teste do setter de velocidade
 void TestInstrumentCluster::testSetSpeed()
 {
     InstrumentCluster cluster;
@@ -33,7 +30,6 @@ void TestInstrumentCluster::testSetSpeed()
     QCOMPARE(cluster.getSpeed(), 80);
     QCOMPARE(spy.count(), 1);
 
-    // Não deve emitir novamente se o valor não mudar
     cluster.setSpeed(80);
     QCOMPARE(spy.count(), 1);
 }
@@ -64,7 +60,6 @@ void TestInstrumentCluster::testParseLaneData()
 }
 
 
-// Teste de warning code
 void TestInstrumentCluster::testSetWarningCode()
 {
     InstrumentCluster cluster;
@@ -75,7 +70,6 @@ void TestInstrumentCluster::testSetWarningCode()
     QCOMPARE(spy.count(), 1);
 }
 
-// Teste de sinal de farol alto
 void TestInstrumentCluster::testSetHighBeam()
 {
     InstrumentCluster cluster;
@@ -129,7 +123,6 @@ void TestInstrumentCluster::testLights()
 {
     InstrumentCluster cluster;
 
-    // Test front fog light
     QSignalSpy frontFogSpy(&cluster, &InstrumentCluster::frontFogLightChanged);
     cluster.setFrontFogLight(true);
     QCOMPARE(cluster.getFrontFogLight(), true);
@@ -139,7 +132,6 @@ void TestInstrumentCluster::testLights()
     QCOMPARE(cluster.getFrontFogLight(), false);
     QCOMPARE(frontFogSpy.count(), 2);
 
-    // Test rear fog light
     QSignalSpy rearFogSpy(&cluster, &InstrumentCluster::rearFogLightChanged);
     cluster.setRearFogLight(true);
     QCOMPARE(cluster.getRearFogLight(), true);
@@ -149,7 +141,6 @@ void TestInstrumentCluster::testLights()
     QCOMPARE(cluster.getRearFogLight(), false);
     QCOMPARE(rearFogSpy.count(), 2);
 
-    // Test hazard light
     QSignalSpy hazardSpy(&cluster, &InstrumentCluster::hazardLightChanged);
     cluster.setHazardLight(true);
     QCOMPARE(cluster.getHazardLight(), true);
@@ -159,7 +150,6 @@ void TestInstrumentCluster::testLights()
     QCOMPARE(cluster.getHazardLight(), false);
     QCOMPARE(hazardSpy.count(), 2);
 
-    // Test parking light
     QSignalSpy parkingSpy(&cluster, &InstrumentCluster::parkingLightChanged);
     cluster.setParkingLight(true);
     QCOMPARE(cluster.getParkingLight(), true);
@@ -212,112 +202,80 @@ void TestInstrumentCluster::testGear()
     QCOMPARE(spy.count(), 2);
 }
 
-void TestInstrumentCluster::testGetDetectedObjects()
+
+void TestInstrumentCluster::testSetSignDetected()
 {
-    InstrumentCluster cluster;
+    // Create a Zenoh session
+    auto config = zenoh::Config::create_default();
+    auto session = std::make_shared<zenoh::Session>(zenoh::Session::open(std::move(config)));
+    QVERIFY(session != nullptr);
 
-    // Simulate detected objects
-    QVariantList detectedObjects;
-    detectedObjects.append(QVariantMap{{"id", 1}, {"type", "car"}, {"distance", 10.5}});
-    detectedObjects.append(QVariantMap{{"id", 2}, {"type", "pedestrian"}, {"distance", 5.2}});
+    // Create an InstrumentCluster instance
+    InstrumentCluster cluster(session);
 
-    // Assuming there is a method to set detected objects
-    cluster.setDetectedObjects(detectedObjects);
+    // Test setting different signs
+    cluster.setSignDetected(0);  // Set to "20"
+    QCOMPARE(cluster.getSignDetected(), 0);
 
-    // Verify that getDetectedObjects() returns the correct list
-    QCOMPARE(cluster.getDetectedObjects(), detectedObjects);
+    cluster.setSignDetected(1);  // Set to "30"
+    QCOMPARE(cluster.getSignDetected(), 1);
+
+    cluster.setSignDetected(2);  // Set to "40"
+    QCOMPARE(cluster.getSignDetected(), 2);
+
+    cluster.setSignDetected(3);  // Set to "50"
+    QCOMPARE(cluster.getSignDetected(), 3);
+
+    cluster.setSignDetected(4);  // Set to "60"
+    QCOMPARE(cluster.getSignDetected(), 4);
+
+    cluster.setSignDetected(5);  // Set to "70"
+    QCOMPARE(cluster.getSignDetected(), 5);
+
+    cluster.setSignDetected(6);  // Set to "80"
+    QCOMPARE(cluster.getSignDetected(), 6);
+
+    cluster.setSignDetected(7);  // Set to "90"
+    QCOMPARE(cluster.getSignDetected(), 7);
+
+    cluster.setSignDetected(8);  // Set to "100"
+    QCOMPARE(cluster.getSignDetected(), 8);
+
+    cluster.setSignDetected(9);  // Set to "120"
+    QCOMPARE(cluster.getSignDetected(), 9);
+
+    // Test setting an invalid sign
+    cluster.setSignDetected(99);  // Invalid value
+    QCOMPARE(cluster.getSignDetected(), 0);  // Falls back to default or error handling
 }
 
-
-void TestInstrumentCluster::testSetDetectedObjects()
-{
-    InstrumentCluster cluster;
-    QSignalSpy spy(&cluster, &InstrumentCluster::detectedObjectsUpdated);
-
-    QVariantMap obj;
-    obj["x"] = 1.0;
-    obj["y"] = 2.0;
-    obj["width"] = 3.0;
-    obj["height"] = 4.0;
-    obj["type"] = "car";
-
-    QVariantList list;
-    list << obj;
-
-    cluster.setDetectedObjects(list);
-    QCOMPARE(spy.count(), 1);
-
-    // Repetir o mesmo valor não deve emitir novamente
-    cluster.setDetectedObjects(list);
-    QCOMPARE(spy.count(), 1);
-}
-
-void TestInstrumentCluster::testParseObjectData()
+void TestInstrumentCluster::testLaneDeparture()
 {
     InstrumentCluster cluster;
 
-    // Simulate JSON input
-    std::string objectData = R"([
-        {"x": 10.5, "y": 20.5, "width": 5.0, "height": 10.0, "type": "car"},
-        {"x": 15.0, "y": 25.0, "width": 6.0, "height": 12.0, "type": "pedestrian"}
-    ])";
+    QCOMPARE(cluster.getLaneDeparture(), false);
 
-    // Call the function
-    cluster.parseObjectData(objectData);
-
-    // Expected detected objects
-    QVariantList expectedObjects;
-    expectedObjects.append(QVariantMap{
-        {"x", 10.5},
-        {"y", 20.5},
-        {"width", 5.0},
-        {"height", 10.0},
-        {"type", "car"}
-    });
-    expectedObjects.append(QVariantMap{
-        {"x", 15.0},
-        {"y", 25.0},
-        {"width", 6.0},
-        {"height", 12.0},
-        {"type", "pedestrian"}
+    bool signalEmitted = false;
+    QObject::connect(&cluster, &InstrumentCluster::laneDepartureChanged, [&](bool state) {
+        signalEmitted = true;
+        QCOMPARE(state, true);
     });
 
-    // Verify that the detected objects were set correctly
-    QCOMPARE(cluster.getDetectedObjects(), expectedObjects);
+    cluster.setLaneDeparture(true);
+    QCOMPARE(cluster.getLaneDeparture(), true);
+    QVERIFY(signalEmitted);
+
+    signalEmitted = false;
+
+    cluster.setLaneDeparture(false);
+    QCOMPARE(cluster.getLaneDeparture(), false); 
+    QVERIFY(signalEmitted);
+
+    signalEmitted = false;
+    cluster.setLaneDeparture(false);
+    QCOMPARE(cluster.getLaneDeparture(), false); 
+    QVERIFY(!signalEmitted); 
 }
-
-void TestInstrumentCluster::testParseObjectData_InvalidJson()
-{
-    InstrumentCluster cluster;
-
-    // Simulate invalid JSON input
-    std::string invalidJson = "{invalid json}";
-
-    // Call the function
-    QSignalSpy spy(&cluster, &InstrumentCluster::detectedObjectsUpdated);
-    cluster.parseObjectData(invalidJson);
-
-    // Verify that no objects were detected and no signal was emitted
-    QCOMPARE(cluster.getDetectedObjects().size(), 0);
-    QCOMPARE(spy.count(), 0);
-}
-
-void TestInstrumentCluster::testParseObjectData_NonArrayJson()
-{
-    InstrumentCluster cluster("/home/lpicoli-/Documents/Team02-Course/RaspberryPi/deployLocal/zenoh-test.conf");
-
-    // Simulate non-array JSON input
-    std::string nonArrayJson = R"({"key": "value"})";
-
-    // Call the function
-    QSignalSpy spy(&cluster, &InstrumentCluster::detectedObjectsUpdated);
-    cluster.parseObjectData(nonArrayJson);
-
-    // Verify that no objects were detected and no signal was emitted
-    QCOMPARE(cluster.getDetectedObjects().size(), 0);
-    QCOMPARE(spy.count(), 0);
-}
-
 
 void TestInstrumentCluster::testSubscriptionsIntegration()
 {
@@ -380,11 +338,6 @@ void TestInstrumentCluster::testSubscriptionsIntegration()
     QTest::qWait(100);
     QCOMPARE(cluster.getParkingLight(), true);
 
-    // Publish detected objects (array of objects)
-    publish("Vehicle/1/Scene/Objects", R"([{"id":1},{"id":2}])");
-    QTest::qWait(100);
-    QCOMPARE(cluster.getDetectedObjects().size(), 2);
-
     // Publish warning code
     publish("Vehicle/1/Scene/Warning", "7");
     QTest::qWait(100);
@@ -410,8 +363,54 @@ void TestInstrumentCluster::testSubscriptionsIntegration()
         expected.insert("c", 6);
         QCOMPARE(cluster.getRightLaneCoefs(), expected);
     }
-
 }
 
+void TestInstrumentCluster::testAutonomyLevel()
+{
+    // Create an InstrumentCluster instance
+    InstrumentCluster cluster;
+
+    // Verify initial state
+    QCOMPARE(cluster.getAutonomyLevel(), 0); // Assuming default is 0
+
+    // Connect to the signal to verify emission
+    bool signalEmitted = false;
+    QObject::connect(&cluster, &InstrumentCluster::autonomyLevelChanged, [&](int level) {
+        signalEmitted = true;
+        QCOMPARE(level, 2); // Verify the signal carries the correct level
+    });
+
+    // Set autonomy level to 2
+    cluster.setAutonomyLevel(2);
+    QCOMPARE(cluster.getAutonomyLevel(), 2); // Verify state is updated
+    QVERIFY(signalEmitted); // Verify signal was emitted
+
+    // Reset signal flag
+    signalEmitted = false;
+
+    // Set autonomy level to 5
+    cluster.setAutonomyLevel(5);
+    QCOMPARE(cluster.getAutonomyLevel(), 5); // Verify state is updated
+    QVERIFY(signalEmitted); // Verify signal was emitted
+
+    // Test setting the same level (signal should not be emitted)
+    signalEmitted = false;
+    cluster.setAutonomyLevel(5);
+    QCOMPARE(cluster.getAutonomyLevel(), 5); // State remains unchanged
+    QVERIFY(!signalEmitted); // Signal should not be emitted
+}
+
+void TestInstrumentCluster::testInstrumentClusterConstructor()
+{
+    // Path to a valid Zenoh configuration file
+    const std::string configFile = "../zenoh-config-test-file.json";
+
+    // Ensure the configuration file exists
+    QVERIFY(QFile::exists(QString::fromStdString(configFile)));
+
+    // Create an InstrumentCluster instance
+    InstrumentCluster cluster(configFile);
+    // Verify that the constructor does not throw exceptions
+}
 
 QTEST_MAIN(TestInstrumentCluster)

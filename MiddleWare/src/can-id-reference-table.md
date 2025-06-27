@@ -1,42 +1,30 @@
-## 🗂️ CAN ID Reference Table
+# 🗂️ CAN ID Reference Table
 
-This table defines the meaning of each CAN ID the middlewareApp handles, along with expected data and the Zenoh topic it publishes to.
-
-| CAN ID (Hex) | Description                         | Payload Format        | Zenoh Topic(s) Published To                                                   |
-|--------------|-------------------------------------|------------------------|--------------------------------------------------------------------------------|
-| 0x01       | Wheel RPM                           | int32_t rpm (4 bytes) | Vehicle/1/Speed – calculated speed in km/h                                  |
-| 0x02       | Battery Voltage                     | double voltage (8 bytes) | Vehicle/1/Powertrain/TractionBattery/StateOfCharge                          |
-| 0x03       | Lights Status Bitmask               | uint8_t bitfield (1 byte) | Various topics (see below)                                                    |
-| 0x04       | Current Gear                        | int gear (4 bytes)   | Vehicle/1/Powertrain/Transmission/CurrentGear                               |
-| 0x100      | Left Lane Line (index + value)      | int index + float value | Vehicle/1/Scene/Lanes/Left                                                  |
-| 0x101      | Right Lane Line (index + value)     | int index + float value | Vehicle/1/Scene/Lanes/Right                                                 |
-| 0x200      | Obstacle Warning                    | –                      | Vehicle/1/ADAS/ObstacleDetection/Warning                                    |
-| 0x301      | Lane Departure Detected             | –                      | Vehicle/1/ADAS/LaneDeparture/Detected = "1"                               |
-| 0x302      | Lane Departure Cleared              | –                      | Vehicle/1/ADAS/LaneDeparture/Detected = "0"                               |
-| 0x400      | SAE Autonomy Level: 0               | –                      | Vehicle/1/ADAS/ActiveAutonomyLevel/SAE_0 = "0"                            |
-| 0x401      | SAE Autonomy Level: 1               | –                      | Vehicle/1/ADAS/ActiveAutonomyLevel/SAE_1 = "1"                            |
-| 0x405      | SAE Autonomy Level: 5               | –                      | Vehicle/1/ADAS/ActiveAutonomyLevel/SAE_5 = "5"                            |
-| 0x500      | Speed Limit Sign                    | int kmh (4 bytes)    | Vehicle/1/Environment/RoadSigns/SpeedLimit                                  |
-| 0x501      | Stop Sign Detected                  | –                      | Vehicle/1/Environment/RoadSigns/Stop = "1"                                |
-| 0x502      | Yield Sign Detected                 | –                      | Vehicle/1/Environment/RoadSigns/Yield = "1"                               |
-| 0x503      | Pedestrian Zone Sign Detected       | –                      | Vehicle/1/Environment/RoadSigns/PedestrianZone = "1"                      |
-| 0x600      | Traffic Light – Yellow              | –                      | Vehicle/1/Environment/RoadSigns/TrafficLight = "yellow"                   |
-| 0x601      | Traffic Light – Green               | –                      | Vehicle/1/Environment/RoadSigns/TrafficLight = "green"                    |
-| 0x602      | Traffic Light – Red                 | –                      | Vehicle/1/Environment/RoadSigns/TrafficLight = "red"                      |
-
----
-
-### 💡 Light Bitmask (CAN ID 0x03)
-
-Each bit in the uint8_t bitfield corresponds to a vehicle light:
-
-| Bit Position | Light Function                  | Zenoh Topic                                                 |
-|--------------|----------------------------------|--------------------------------------------------------------|
-| 0            | Right Direction Indicator       | Vehicle/1/Body/Lights/DirectionIndicator/Right            |
-| 1            | Left Direction Indicator        | Vehicle/1/Body/Lights/DirectionIndicator/Left             |
-| 2            | Low Beam                        | Vehicle/1/Body/Lights/Beam/Low                            |
-| 3            | High Beam                       | Vehicle/1/Body/Lights/Beam/High                           |
-| 4            | Front Fog Light                 | Vehicle/1/Body/Lights/Fog/Front                           |
-| 5            | Rear Fog Light                  | Vehicle/1/Body/Lights/Fog/Rear                            |
-| 6            | Hazard Light                    | Vehicle/1/Body/Lights/Hazard                              |
-| 7            | Parking Light                   | Vehicle/1/Body/Lights/Parking                             |l
+| CAN ID     | Description                                      | Payload Details                            | Description                                                                 | Zenoh Key Expression                                                       |
+|------------|--------------------------------------------------|---------------------------------------------|-----------------------------------------------------------------------|-----------------------------------------------------------|
+| `0x01`     | Vehicle Speed (from RPM)                         | `int32_t rpm`                                | RPM converted to km/h using wheel diameter.                           | `Vehicle/1/Speed`                                         |
+| `0x02`     | Battery Voltage                                  | `double voltage`                             | Converted to % battery (SoC) assuming linear range 9.5V–12.6V.        | `Vehicle/1/Powertrain/TractionBattery/StateOfCharge`     |
+| `0x04`     | Current Gear                                     | `int`                                        | Gear number.                                                          | `Vehicle/1/Powertrain/Transmission/CurrentGear`          |
+| `0x100`    | Left Lane Marking                                | `int index`, `float value`                   | Indices 0–2 (3 values). Publishes after receiving all 3.              | `Vehicle/1/Scene/Lanes/Left`                             |
+| `0x101`    | Right Lane Marking                               | `int index`, `float value`                   | Indices 0–2 (3 values). Publishes after receiving all 3.              | `Vehicle/1/Scene/Lanes/Right`                            |
+| `0x200`    | Obstacle Warning                                 | None                                         | Always publishes `"1"` when received.                                 | `Vehicle/1/ADAS/ObstacleDetection/Warning`               |
+| `0x301`    | Lane Departure Detected                          | None                                         | Publishes `"1"`.                                                      | `Vehicle/1/ADAS/LaneDeparture/Detected`                  |
+| `0x302`    | Lane Departure Cleared                           | None                                         | Publishes `"0"`.                                                      | `Vehicle/1/ADAS/LaneDeparture/Detected`                  |
+| `0x400`    | SAE Autonomy Level: 0                            | None                                         | Publishes `"0"`.                                                      | `Vehicle/1/ADAS/ActiveAutonomyLevel/SAE_0`               |
+| `0x401`    | SAE Autonomy Level: 1                            | None                                         | Publishes `"1"`.                                                      | `Vehicle/1/ADAS/ActiveAutonomyLevel/SAE_1`               |
+| `0x405`    | SAE Autonomy Level: 5                            | None                                         | Publishes `"5"`.                                                      | `Vehicle/1/ADAS/ActiveAutonomyLevel/SAE_5`               |
+| `0x500`    | Speed Limit Sign                                 | `int speedLimit`                             | Uses `ntohl()` to convert from network to host order.                 | `Vehicle/1/Environment/RoadSigns/SpeedLimit`             |
+| `0x501`    | Stop Sign Detected                               | None                                         | Publishes `"1"`.                                                      | `Vehicle/1/Environment/RoadSigns/Stop`                   |
+| `0x502`    | Yield Sign Detected                              | None                                         | Publishes `"1"`.                                                      | `Vehicle/1/Environment/RoadSigns/Yield`                  |
+| `0x503`    | Pedestrian Zone Sign Detected                    | None                                         | Publishes `"1"`.                                                      | `Vehicle/1/Environment/RoadSigns/PedestrianZone`         |
+| `0x600`    | Traffic Light: Yellow                            | None                                         | Publishes `"yellow"`.                                                 | `Vehicle/1/Environment/RoadSigns/TrafficLight`           |
+| `0x601`    | Traffic Light: Green                             | None                                         | Publishes `"green"`.                                                  | `Vehicle/1/Environment/RoadSigns/TrafficLight`           |
+| `0x602`    | Traffic Light: Red                               | None                                         | Publishes `"red"`.                                                    | `Vehicle/1/Environment/RoadSigns/TrafficLight`           |
+| `0x700`    | Direction Indicator Left                         | `uint8_t state`                              | First byte: `0` = OFF, `1` = ON.                                      | `Vehicle/1/Body/Lights/DirectionIndicator/Left`          |
+| `0x701`    | Direction Indicator Right                        | `uint8_t state`                              | First byte: `0` = OFF, `1` = ON.                                      | `Vehicle/1/Body/Lights/DirectionIndicator/Right`         |
+| `0x702`    | Beam Low                                         | `uint8_t state`                              | First byte: `0` = OFF, `1` = ON.                                      | `Vehicle/1/Body/Lights/Beam/Low`                         |
+| `0x703`    | Beam High                                        | `uint8_t state`                              | First byte: `0` = OFF, `1` = ON.                                      | `Vehicle/1/Body/Lights/Beam/High`                        |
+| `0x704`    | Fog Front                                        | `uint8_t state`                              | First byte: `0` = OFF, `1` = ON.                                      | `Vehicle/1/Body/Lights/Fog/Front`                        |
+| `0x705`    | Fog Rear                                         | `uint8_t state`                              | First byte: `0` = OFF, `1` = ON.                                      | `Vehicle/1/Body/Lights/Fog/Rear`                         |
+| `0x706`    | Hazard                                           | `uint8_t state`                              | First byte: `0` = OFF, `1` = ON.                                      | `Vehicle/1/Body/Lights/Hazard`                           |
+| `0x707`    | Parking Light                                    | `uint8_t state`                              | First byte: `0` = OFF, `1` = ON.                                      | `Vehicle/1/Body/Lights/Parking`                          |

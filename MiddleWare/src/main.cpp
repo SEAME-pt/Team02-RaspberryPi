@@ -13,8 +13,8 @@
 #include "zenoh.hxx"
 #include <cstdint>
 #include <cstring>
-#include <arpa/inet.h>  // For ntohl
-#include <cmath>        // For M_PI
+#include <arpa/inet.h>
+#include <cmath>
 
 using namespace zenoh;
 
@@ -25,9 +25,6 @@ int main(int argc, char** argv)
     struct sockaddr_can addr;
     std::vector<uint8_t> rightLaneBuffer;
     std::vector<uint8_t> leftLaneBuffer;
-
-    // std::vector<std::string> objectTypes = { "car", "pedestrian", "cyclist" };
-    // std::vector<QJsonObject> objectList;
 
     float rightLane[3] = {0.0f};
     float leftLane[3] = {0.0f};
@@ -179,29 +176,47 @@ int main(int argc, char** argv)
             std::cout << "Publishing battery state of charge: " << battery_str << "%" << std::endl;
             state_of_charge_pub.put(battery_str.c_str());
         }
-        else if (frame.can_id == 0x03)
+        else if (frame.can_id >= 0x700 && frame.can_id <= 0x707)
         {
-            char lights;
-
-            memcpy(&lights, frame.data, sizeof(char));
-
-            printf("Can received lights: ");
-            for (int i = 7; i >= 0; i--)
+            bool lightState = frame.data[0] != 0; // first byte indicates ON/OFF state
+            switch (frame.can_id)
             {
-                printf("%d", (lights >> i) & 0x01);
+            case 0x700:
+                directionIndicatorLeft_pub.put(std::to_string(lightState));
+                std::cout << "Publishing Direction Indicator Left: " << lightState << std::endl;
+                break;
+            case 0x701:
+                directionIndicatorRight_pub.put(std::to_string(lightState));
+                std::cout << "Publishing Direction Indicator Right: " << lightState << std::endl;
+                break;
+            case 0x702:
+                beamLow_pub.put(std::to_string(lightState));
+                std::cout << "Publishing Beam Low: " << lightState << std::endl;
+                break;
+            case 0x703:
+                beamHigh_pub.put(std::to_string(lightState));
+                std::cout << "Publishing Beam High: " << lightState << std::endl;
+                break;
+            case 0x704:
+                fogFront_pub.put(std::to_string(lightState));
+                std::cout << "Publishing Fog Front: " << lightState << std::endl;
+                break;
+            case 0x705:
+                fogRear_pub.put(std::to_string(lightState));
+                std::cout << "Publishing Fog Rear: " << lightState << std::endl;
+                break;
+            case 0x706:
+                hazard_pub.put(std::to_string(lightState));
+                std::cout << "Publishing Hazard: " << lightState << std::endl;
+                break;
+            case 0x707:
+                parking_pub.put(std::to_string(lightState));
+                std::cout << "Publishing Parking: " << lightState << std::endl;
+                break;
+            default:
+                std::cerr << "Unknown CAN ID for lights: " << frame.can_id << std::endl;
+                break;
             }
-            printf("\n");
-
-            directionIndicatorRight_pub.put(
-                std::to_string((lights & (1 << 0)) != 0));
-            directionIndicatorLeft_pub.put(
-                std::to_string((lights & (1 << 1)) != 0));
-            beamLow_pub.put(std::to_string((lights & (1 << 2)) != 0));
-            beamHigh_pub.put(std::to_string((lights & (1 << 3)) != 0));
-            fogFront_pub.put(std::to_string((lights & (1 << 4)) != 0));
-            fogRear_pub.put(std::to_string((lights & (1 << 5)) != 0));
-            hazard_pub.put(std::to_string((lights & (1 << 6)) != 0));
-            parking_pub.put(std::to_string((lights & (1 << 7)) != 0));
         }
         else if (frame.can_id == 0x04)
         {

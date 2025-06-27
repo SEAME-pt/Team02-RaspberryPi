@@ -33,7 +33,6 @@ Row {
             height: parent.height
             source: "../assets/icons/high_beam_on.png"
             visible: instrumentCluster.highBeam
-            // visible: true
         }
     }
 
@@ -48,7 +47,6 @@ Row {
             height: parent.height
             source: "../assets/icons/front_fog_on.png"
             visible: instrumentCluster.frontFogLight
-            // visible: true
         }
     }
 
@@ -63,7 +61,6 @@ Row {
             height: parent.height
             source: "../assets/icons/parking_lights_on.png"
             visible: instrumentCluster.parkingLight
-            // visible: true
         }
     }
 
@@ -78,7 +75,6 @@ Row {
             height: parent.height
             source: "../assets/icons/back_fog_on.png"
             visible: instrumentCluster.rearFogLight
-            // visible: true
         }
     }
 
@@ -113,7 +109,6 @@ Row {
             height: parent.height
             source: "../assets/icons/lane-departure.png"
             visible: instrumentCluster.laneDeparture
-            // visible: true
         }
     }
 }

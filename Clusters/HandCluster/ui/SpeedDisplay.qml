@@ -7,9 +7,9 @@ Rectangle {
     color: "transparent"
     anchors.left: parent.left
     anchors.leftMargin: 150
+
     property string fontFamily: "default"
-    property bool leftBlinkerVisible: false
-    property bool rightBlinkerVisible: false
+    property bool blinkerPhase: false
 
     Connections {
         target: instrumentCluster
@@ -17,16 +17,12 @@ Rectangle {
         onLeftBlinkerChanged: {
             if (instrumentCluster.leftBlinker) {
                 instrumentCluster.rightBlinker = false;
-            } else {
-                leftBlinkerVisible = false;
             }
         }
 
         onRightBlinkerChanged: {
             if (instrumentCluster.rightBlinker) {
                 instrumentCluster.leftBlinker = false;
-            } else {
-                rightBlinkerVisible = false;
             }
         }
     }
@@ -42,9 +38,9 @@ Rectangle {
             Image {
                 id: leftArrow
                 source: "../assets/icons/turn_left_on.png"
-                opacity: leftBlinkerVisible ? 1.0 : 0.0
-                width: 50
-                height: 50
+                opacity: instrumentCluster.leftBlinker && blinkerPhase ? 1.0 : 0.0
+                width: 60
+                height: 60
                 anchors.verticalCenter: parent.verticalCenter
             }
 
@@ -60,9 +56,9 @@ Rectangle {
             Image {
                 id: rightArrow
                 source: "../assets/icons/turn_right_on.png"
-                opacity: rightBlinkerVisible ? 1.0 : 0.0
-                width: 50
-                height: 50
+                opacity: instrumentCluster.rightBlinker && blinkerPhase ? 1.0 : 0.0
+                width: 60
+                height: 60
                 anchors.verticalCenter: parent.verticalCenter
             }
         }
@@ -73,16 +69,7 @@ Rectangle {
             running: instrumentCluster.leftBlinker || instrumentCluster.rightBlinker
             repeat: true
             onTriggered: {
-                if (instrumentCluster.leftBlinker && !instrumentCluster.rightBlinker) {
-                    leftBlinkerVisible = !leftBlinkerVisible;
-                    rightBlinkerVisible = false;
-                } else if (instrumentCluster.rightBlinker && !instrumentCluster.leftBlinker) {
-                    rightBlinkerVisible = !rightBlinkerVisible;
-                    leftBlinkerVisible = false;
-                } else {
-                    leftBlinkerVisible = false;
-                    rightBlinkerVisible = false;
-                }
+                blinkerPhase = !blinkerPhase;
             }
         }
 

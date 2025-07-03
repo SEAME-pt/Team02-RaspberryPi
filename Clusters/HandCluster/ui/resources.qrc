@@ -31,7 +31,6 @@
         <file alias="cloud.png">../assets/icons/cloud.png</file>
         <file alias="watch.png">../assets/icons/watch.png</file>
         <file alias="raio.png">../assets/icons/raio.png</file>
-        <file alias="warning.png">../assets/icons/warning.png</file>
         <file alias="assist-navigate-driving-off.png">../assets/icons/assist-navigate-driving-off.png</file>
         <file alias="assist-navigate-driving-on.png">../assets/icons/assist-navigate-driving-on.png</file>
         <file alias="assist-steer-off.png">../assets/icons/assist-steer-off.png</file>
@@ -43,10 +42,13 @@
         <file alias="stop.png">../assets/icons/stop.png</file>
         <file alias="yield.png">../assets/icons/yield.png</file>
         <file alias="pedestrian.png">../assets/icons/pedestrian.png</file>
-        <file alias="warning-sign.png">../assets/icons/warning-sign.png</file>
         <file alias="traffic-light-yellow.png">../assets/icons/traffic-light-yellow.png</file>
         <file alias="traffic-light-green.png">../assets/icons/traffic-light-green.png</file>
         <file alias="traffic-light-red.png">../assets/icons/traffic-light-red.png</file>
+        <file alias="danger.png">../assets/icons/danger.png</file>
+        <file alias="warning.png">../assets/icons/warning.png</file>
+        <file alias="brake.png">../assets/icons/brake.png</file>
+        <file alias="cruise-control.png">../assets/icons/cruise-control.png</file>
     </qresource>
     
     <qresource prefix="/assets/images">

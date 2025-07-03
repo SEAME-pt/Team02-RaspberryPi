@@ -3,7 +3,7 @@ Row {
     anchors.top: parent.top
     anchors.topMargin: 25
     anchors.right: parent.right
-    anchors.rightMargin: 150
+    anchors.rightMargin: 50
     spacing: 10
     property string fontFamily: "default"
     
@@ -22,7 +22,7 @@ Row {
 
     Text {
         text: instrumentCluster.percentage + "%"
-        font.pixelSize: 35
+        font.pixelSize: 30
         // font.family: Qt.binding(function() { return app.font; })
         font.family: fontFamily
         color: "white"

@@ -122,6 +122,8 @@ int main(int argc, char** argv)
         zenoh::KeyExpr("Vehicle/1/ADAS/ActiveAutonomyLevel/SAE_0"));
     auto sae1_pub = session->declare_publisher(
         zenoh::KeyExpr("Vehicle/1/ADAS/ActiveAutonomyLevel/SAE_1"));
+    auto sae2_pub = session->declare_publisher(
+        zenoh::KeyExpr("Vehicle/1/ADAS/ActiveAutonomyLevel/SAE_2"));
     auto sae5_pub = session->declare_publisher(
         zenoh::KeyExpr("Vehicle/1/ADAS/ActiveAutonomyLevel/SAE_5"));
     auto speedLimit_pub = session->declare_publisher(
@@ -134,6 +136,9 @@ int main(int argc, char** argv)
         zenoh::KeyExpr("Vehicle/1/Environment/RoadSigns/PedestrianZone"));
     auto trafficLight_pub = session->declare_publisher( 
         zenoh::KeyExpr("Vehicle/1/Environment/RoadSigns/TrafficLight"));
+    auto dangerSign_pub = session->declare_publisher(
+        zenoh::KeyExpr("Vehicle/1/Environment/RoadSigns/DangerSign"));
+    
 
     while (1)
     {
@@ -275,25 +280,31 @@ int main(int argc, char** argv)
         }
         else if (frame.can_id == 0x200)
             obstacleWarning_pub.put("1");
-        else if (frame.can_id == 0x301)
+        else if (frame.can_id == 0x301) //left lane departure
             laneDeparture_pub.put("1");
-        else if (frame.can_id == 0x302)
+        else if (frame.can_id == 0x302) //left lane departure off
+            laneDeparture_pub.put("0"); 
+        else if(frame.can_id == 0x303) //right lane departure
+            laneDeparture_pub.put("1"); 
+        else if(frame.can_id == 0x304) //right lane departure off
             laneDeparture_pub.put("0");
         else if (frame.can_id == 0x400)
             sae0_pub.put("0");
         else if (frame.can_id == 0x401)
             sae1_pub.put("1");
+        else if (frame.can_id == 0x402)
+            sae2_pub.put("2");
         else if (frame.can_id == 0x405)
             sae5_pub.put("5");
         else if (frame.can_id == 0x500)
         {
-            int speedLimit;
-
-            memcpy(&speedLimit, frame.data, sizeof(int));
-            speedLimit = ntohl(speedLimit);
-
-            std::cout << "Publishing speed limit: " << speedLimit << " km/h" << std::endl;
-            speedLimit_pub.put(std::to_string(speedLimit).c_str());
+            std::cout << "Publishing speed limit: 50km/h" << std::endl;
+            speedLimit_pub.put("50");
+        }
+        else if (frame.can_id == 0x505)
+        {
+            std::cout << "Publishing speed limit: 80km/h" << std::endl;
+            speedLimit_pub.put("80");
         }
         else if (frame.can_id == 0x501)
         {
@@ -309,6 +320,11 @@ int main(int argc, char** argv)
         {
             std::cout << "Publishing pedestrian zone sign detected. (13)" << std::endl;
             pedestrianZone_pub.put("1");
+        }
+        else if (frame.can_id == 0x504)
+        {
+            std::cout << "Publishing danger sign detected. (17)" << std::endl;
+            dangerSign_pub.put("1");
         }
         else if (frame.can_id == 0x600)
         {

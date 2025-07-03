@@ -3,6 +3,7 @@ import QtQuick 2.15
 Row {
     anchors.right: parent.right
     anchors.verticalCenter: parent.verticalCenter
+    anchors.verticalCenterOffset: 30
     anchors.rightMargin: 40
     spacing: 16
     property string fontFamily: "default"

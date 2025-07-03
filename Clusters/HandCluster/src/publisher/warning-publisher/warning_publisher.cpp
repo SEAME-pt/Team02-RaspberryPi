@@ -27,20 +27,44 @@ int main() {
     auto session = std::make_shared<zenoh::Session>(
         zenoh::Session::open(std::move(config)));
 
-    auto warning_pub = session->declare_publisher("Vehicle/1/ObstacleDetection/IsWarning");
+    auto warning_pub = session->declare_publisher("Vehicle/1/ADAS/ObstacleDetection/Warning");
+    auto sae1_pub = session->declare_publisher("Vehicle/1/ADAS/ActiveAutonomyLevel/SAE_1");
+    auto sae5_pub = session->declare_publisher("Vehicle/1/ADAS/ActiveAutonomyLevel/SAE_5");
+    auto laneDeparture_pub = session->declare_publisher("Vehicle/1/ADAS/LaneDeparture/Detected");
+
+
 
     while (true) {
 
         // Publish
         std::cout << "Publishing warning code..." << std::endl;
-        // Always publish warning code 1
         int warningCode = 1;
         std::cout << "Warning code: " << warningCode << std::endl;
 
         // Convert the warning code to a string and publish it
         std::string warningCodeStr = std::to_string(warningCode);
         warning_pub.put(warningCodeStr);
-        std::this_thread::sleep_for(std::chrono::milliseconds(4500));
+        
+        // std::cout << "Publishing SAE Level 1..." << std::endl;
+        // sae1_pub.put("1");
+
+        std::cout << "Lane Departure to right" << std::endl;
+        laneDeparture_pub.put("20");
+
+        // std::cout << "Lane Departure to left" << std::endl;
+        // laneDeparture_pub.put("10");
+
+        // Simulate a delay before the next publication
+        std::this_thread::sleep_for(std::chrono::milliseconds(3000));
+
+        // std::cout << "Lane Departure left off" << std::endl;
+        // laneDeparture_pub.put("11");
+
+
+        std::cout << "Lane Departure right off" << std::endl;
+        laneDeparture_pub.put("21");
+
+        std::this_thread::sleep_for(std::chrono::milliseconds(3000));
     }
 
     return 0;

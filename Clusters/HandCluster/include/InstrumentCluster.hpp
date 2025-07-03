@@ -38,13 +38,11 @@ class InstrumentCluster : public QObject
                    NOTIFY parkingLightChanged)
     Q_PROPERTY(int percentage READ getPercentage WRITE setPercentage NOTIFY
                    percentageChanged)
-    Q_PROPERTY(
-        int autonomy READ getAutonomy WRITE setAutonomy NOTIFY autonomyChanged)
     Q_PROPERTY(int gear READ getGear WRITE setGear NOTIFY gearChanged)
     Q_PROPERTY(QVariantMap leftLaneCoefs READ getLeftLaneCoefs WRITE setLeftLaneCoefs NOTIFY leftLaneChanged)
     Q_PROPERTY(QVariantMap rightLaneCoefs READ getRightLaneCoefs WRITE setRightLaneCoefs NOTIFY rightLaneChanged)
     Q_PROPERTY(int warningCode READ getWarningCode WRITE setWarningCode NOTIFY warningCodeChanged)
-    Q_PROPERTY(bool laneDeparture READ getLaneDeparture WRITE setLaneDeparture NOTIFY laneDepartureChanged)
+    Q_PROPERTY(int laneDeparture READ getLaneDeparture WRITE setLaneDeparture NOTIFY laneDepartureChanged)
     Q_PROPERTY(int autonomyLevel READ getAutonomyLevel WRITE setAutonomyLevel NOTIFY autonomyLevelChanged)
     Q_PROPERTY(int signDetected READ getSignDetected WRITE setSignDetected NOTIFY signDetectedChanged)
 
@@ -58,9 +56,8 @@ class InstrumentCluster : public QObject
     bool rearFogLight{false};
     bool hazardLight{false};
     bool parkingLight{false};
-    bool laneDeparture{false};
+    int laneDeparture{false};
     int percentage;
-    int autonomy;
     int gear;  
     int warningCode;
     int autonomyLevel;
@@ -96,12 +93,14 @@ class InstrumentCluster : public QObject
     std::optional<zenoh::Subscriber<void>> obstacleWarning_subscriber;
     std::optional<zenoh::Subscriber<void>> sae0_subscriber;
     std::optional<zenoh::Subscriber<void>> sae1_subscriber;
+    std::optional<zenoh::Subscriber<void>> sae2_subscriber;
     std::optional<zenoh::Subscriber<void>> sae5_subscriber;
     std::optional<zenoh::Subscriber<void>> speedLimit_subscriber;
     std::optional<zenoh::Subscriber<void>> stopSign_subscriber;
     std::optional<zenoh::Subscriber<void>> yieldSign_subscriber;
     std::optional<zenoh::Subscriber<void>> pedestrianZone_subscriber;
     std::optional<zenoh::Subscriber<void>> trafficLight_subscriber;
+    std::optional<zenoh::Subscriber<void>> dangerSign_subscriber;
     
   public:
     explicit InstrumentCluster(QObject* parent = nullptr);
@@ -141,9 +140,6 @@ class InstrumentCluster : public QObject
     int getPercentage() const;
     void setPercentage(int value);
 
-    int getAutonomy() const;
-    void setAutonomy(int value);
-
     int getGear() const;
     void setGear(int value);
 
@@ -159,8 +155,8 @@ class InstrumentCluster : public QObject
     QVariantMap getRightLaneCoefs() const;
     void setRightLaneCoefs(const QVariantMap& coefs);
 
-    void setLaneDeparture(bool state);
-    bool getLaneDeparture() const;
+    void setLaneDeparture(int state);
+    int getLaneDeparture() const;
 
     void parseLaneData(const std::string& laneData, const std::string& laneType);
     void setupSubscriptions();
@@ -179,7 +175,6 @@ class InstrumentCluster : public QObject
     void hazardLightChanged(bool state);
     void parkingLightChanged(bool state);
     void percentageChanged(int value);
-    void autonomyChanged(int value);
     void gearChanged(int gear);
     void leftLaneChanged(const QVariantMap& leftLaneCoefs);
     void rightLaneChanged(const QVariantMap& rightLaneCoefs);

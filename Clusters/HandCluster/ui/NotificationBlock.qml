@@ -1,15 +1,15 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.4
-
 Rectangle {
     id: notificationBlock
-    width: 400
+    width: 350
     height: 40
     radius: 10
+    anchors.top: parent.top
+    anchors.topMargin: 20
+    anchors.horizontalCenter: parent.horizontalCenter
     color: "gray"
     opacity: 0
-    anchors.horizontalCenter: parent.horizontalCenter
-    y: -height
     visible: false
     property string fontFamily: "default"
 
@@ -24,7 +24,11 @@ Rectangle {
                 iconSource = "../assets/icons/warning.png"
                 messageText = "Emergency braking activated!";
                 break;
-            case 2:
+            case 10:
+                iconSource = "../assets/icons/warning.png"
+                messageText = "Lane departure detected!";
+                break;
+            case 11:
                 iconSource = "../assets/icons/warning.png"
                 messageText = "Lane departure detected!";
                 break;
@@ -59,16 +63,17 @@ Rectangle {
     // Animations
     SequentialAnimation {
         id: appearAnimation
-        PropertyAnimation { target: notificationBlock; property: "y"; to: 70; duration: 300; easing.type: Easing.OutQuad }
+        PropertyAnimation { target: notificationBlock; property: "y"; to: 60; duration: 300; easing.type: Easing.OutQuad } // Adjusted to move up slightly
         PropertyAnimation { target: notificationBlock; property: "opacity"; to: 0.9; duration: 200 }
     }
 
     SequentialAnimation {
         id: disappearAnimation
         PropertyAnimation { target: notificationBlock; property: "opacity"; to: 0; duration: 200 }
-        PropertyAnimation { target: notificationBlock; property: "y"; to: -height; duration: 300; easing.type: Easing.InQuad }
+        PropertyAnimation { target: notificationBlock; property: "y"; to: -height + 10; duration: 300; easing.type: Easing.InQuad } // Adjusted to move up slightly
         onStopped: {
             visible = false;
+            instrumentCluster.warningCode = 0;
         }
     }
 

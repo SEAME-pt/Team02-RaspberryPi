@@ -10,9 +10,9 @@ ApplicationWindow {
     height: 400
     flags: Qt.Window | Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint
     // flags: Qt.Window | Qt.WindowStaysOnTopHint
-    //visibility: Window.FullScreen
+    visibility: Window.FullScreen
 
-    visibility: Window.Windowed
+    // visibility: Window.Windowed
     property int iconWidth: 65
     property int iconHeight: 65
 
@@ -105,11 +105,11 @@ ApplicationWindow {
         anchors.left: parent.left
         anchors.topMargin: 10
         anchors.leftMargin: 65
-        spacing: 15
+        spacing: 13
 
         Rectangle {
-        width: app.iconWidth
-        height: app.iconHeight
+        width: app.iconWidth - 7
+        height: app.iconHeight - 7
         color: "transparent"
         
 

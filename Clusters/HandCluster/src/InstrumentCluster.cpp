@@ -5,7 +5,7 @@
 
 
 InstrumentCluster::InstrumentCluster(QObject* parent)
-    : QObject(parent), m_speed(0), percentage(0), autonomy(0), gear(0)
+    : QObject(parent), m_speed(0), percentage(0), autonomyLevel(0), gear(0)
 {
     std::cout << "Using default configuration." << std::endl;
     auto config = zenoh::Config::create_default();
@@ -16,7 +16,7 @@ InstrumentCluster::InstrumentCluster(QObject* parent)
 
 InstrumentCluster::InstrumentCluster(const std::string& configFile,
                                      QObject* parent)
-    : QObject(parent), m_speed(0), percentage(0), autonomy(0), gear(0)
+    : QObject(parent), m_speed(0), percentage(0), autonomyLevel(0), gear(0)
 {
     std::cout << "Using configuration file: " << configFile << std::endl;
     auto config = zenoh::Config::from_file(configFile);
@@ -163,11 +163,28 @@ void InstrumentCluster::setupSubscriptions()
     laneDeparture_subscriber.emplace(session->declare_subscriber(
         "Vehicle/1/ADAS/LaneDeparture/Detected",
         [this](const zenoh::Sample& sample) {
-            bool isDeparting = std::stoi(sample.get_payload().as_string());
-            if (isDeparting) {
-                setWarningCode(2);
+            try {
+                int isDeparting = std::stoi(sample.get_payload().as_string());
+                if (isDeparting == 10) //lane departure to left
+                {
+                    std::cout << "Received lane departure to left" << std::endl;
+                    setLaneDeparture(10);
+                } 
+                else if (isDeparting == 11) { //lane departure to left off
+                    std::cout << "Received lane departure to left off" << std::endl;
+                    setLaneDeparture(11);
+                }
+                else if(isDeparting == 20) { //lane departure to right
+                    std::cout << "Received lane departure to right" << std::endl;
+                    setLaneDeparture(20);
+                } 
+                else if(isDeparting == 21) { //lane departure to right off
+                    std::cout << "Received lane departure to right off" << std::endl;
+                    setLaneDeparture(21);
+                }
+            } catch (const std::exception& e) {
+                std::cerr << "Error parsing lane departure data: " << e.what() << std::endl;
             }
-            setLaneDeparture(isDeparting);
         },
         zenoh::closures::none));
     sae0_subscriber.emplace(session->declare_subscriber(
@@ -182,6 +199,13 @@ void InstrumentCluster::setupSubscriptions()
         [this](const zenoh::Sample& sample) {
                 std::cout << "Recebido SAE 1" << std::endl;
                 setAutonomyLevel(1);
+        },
+        zenoh::closures::none));
+    sae2_subscriber.emplace(session->declare_subscriber(
+        "Vehicle/1/ADAS/ActiveAutonomyLevel/SAE_2",
+        [this](const zenoh::Sample& sample) {
+                std::cout << "Recebido SAE 2" << std::endl;
+                setAutonomyLevel(2);
         },
         zenoh::closures::none));
     sae5_subscriber.emplace(session->declare_subscriber(
@@ -224,13 +248,15 @@ void InstrumentCluster::setupSubscriptions()
         "Vehicle/1/Environment/RoadSigns/Stop",
         [this](const zenoh::Sample& sample) {
             std::cout << "Recebido Stop Sign" << std::endl;
-            setSignDetected(11);
+            setSignDetected(0);
+            setSignDetected(11); 
         },
         zenoh::closures::none));
     yieldSign_subscriber.emplace(session->declare_subscriber(
         "Vehicle/1/Environment/RoadSigns/Yield",
         [this](const zenoh::Sample& sample) {
             std::cout << "Recebido Yield Sign" << std::endl;
+            setSignDetected(0);
             setSignDetected(12);
         },
         zenoh::closures::none));
@@ -238,7 +264,16 @@ void InstrumentCluster::setupSubscriptions()
         "Vehicle/1/Environment/RoadSigns/PedestrianZone",
         [this](const zenoh::Sample& sample) {
             std::cout << "Recebido Pedestrian Zone Sign" << std::endl;
+            setSignDetected(0);
             setSignDetected(13);
+        },
+        zenoh::closures::none));
+    dangerSign_subscriber.emplace(session->declare_subscriber(
+        "Vehicle/1/Environment/RoadSigns/DangerSign",
+        [this](const zenoh::Sample& sample) {
+            std::cout << "Recebido Danger Sign" << std::endl;
+            setSignDetected(0);
+            setSignDetected(17);
         },
         zenoh::closures::none));
     trafficLight_subscriber.emplace(session->declare_subscriber(
@@ -247,12 +282,15 @@ void InstrumentCluster::setupSubscriptions()
             std::string trafficLight = sample.get_payload().as_string();
             if (trafficLight == "yellow") {
                 std::cout << "Recebido Traffic Sign: yellow" << std::endl;
+                setSignDetected(0);
                 setSignDetected(14);
             } else if (trafficLight == "green") {
                 std::cout << "Recebido Traffic Sign: green" << std::endl;
+                setSignDetected(0);
                 setSignDetected(15);
             } else if (trafficLight == "red") {
                 std::cout << "Recebido Traffic Sign: red" << std::endl;
+                setSignDetected(0);
                 setSignDetected(16);
             }
         },
@@ -303,11 +341,11 @@ void InstrumentCluster::setWarningCode(int code) {
     emit warningCodeChanged(code);
 }
 
-bool InstrumentCluster::getLaneDeparture() const {
+int InstrumentCluster::getLaneDeparture() const {
     return this->laneDeparture;
 }
 
-void InstrumentCluster::setLaneDeparture(bool state) {
+void InstrumentCluster::setLaneDeparture(int state) {
     if (this->laneDeparture != state) {
         this->laneDeparture = state;
         emit laneDepartureChanged(state);
@@ -431,18 +469,6 @@ void InstrumentCluster::setPercentage(int value)
     }
 }
 
-int InstrumentCluster::getAutonomy() const
-{
-    return autonomy;
-}
-void InstrumentCluster::setAutonomy(int value)
-{
-    if (autonomy != value)
-    {
-        autonomy = value;
-        emit autonomyChanged(value);
-    }
-}
 
 int InstrumentCluster::getSignDetected() const
 {
@@ -485,11 +511,12 @@ int InstrumentCluster::getAutonomyLevel() const {
 }
 
 void InstrumentCluster::setAutonomyLevel(int level) {
-    if (autonomyLevel != level) {
+    // if (autonomyLevel != level) {
         autonomyLevel = level;
         std::cout << "Autonomy level updated: " << autonomyLevel << std::endl;
         emit autonomyLevelChanged(level);
-    }
+        std::cout << "Autonomy level changed signal emitted to: " << getAutonomyLevel() << std::endl;
+    // }
 }
 
 void InstrumentCluster::setLeftLaneCoefs(const QVariantMap& coefs) {
@@ -517,7 +544,7 @@ void InstrumentCluster::setRightLaneCoefs(const QVariantMap& coefs) {
 }
 
 InstrumentCluster::InstrumentCluster(std::shared_ptr<zenoh::Session> session, QObject* parent)
-    : QObject(parent), session(std::move(session)), m_speed(0), percentage(0), autonomy(0), gear(0) {
+    : QObject(parent), session(std::move(session)), m_speed(0), percentage(0), autonomyLevel(0), gear(0) {
     this->setupSubscriptions();
 }
 

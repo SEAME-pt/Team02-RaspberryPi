@@ -30,6 +30,8 @@ int main() {
 
     auto left_blinker = session->declare_publisher("Vehicle/1/Body/Lights/DirectionIndicator/Left");
     auto right_blinker = session->declare_publisher("Vehicle/1/Body/Lights/DirectionIndicator/Right");
+    auto dangerSign = session->declare_publisher("Vehicle/1/Environment/RoadSigns/DangerSign");
+
     // Speed limit options
     std::vector<int> speedLimits = {50, 80};
 
@@ -37,6 +39,12 @@ int main() {
     std::string currentTrafficLight = "red";
     int trafficLightTimer = 0;
 
+    // while(true)
+    // {
+    //     std::cout << "Publishing Stop Sign" << std::endl;
+    //     stopSign_pub.put("true");
+    //     std::this_thread::sleep_for(std::chrono::seconds(5));
+    // }
     // Loop publishing signs
     while (true) {
         int choice = std::rand() % 10;
@@ -54,7 +62,10 @@ int main() {
             std::cout << "Publishing Right Blinker OFF" << std::endl;
             right_blinker.put("0");
         } 
-
+        else if(choice == 5) {
+            std::cout << "Publishing Danger Sign" << std::endl;
+            dangerSign.put("true");
+        }
         if (choice == 6) {
             int speed = speedLimits[std::rand() % speedLimits.size()];
             std::cout << "Publishing Speed Limit: " << speed << " km/h" << std::endl;
@@ -69,7 +80,6 @@ int main() {
             std::cout << "Publishing Pedestrian Zone" << std::endl;
             pedestrianZone_pub.put("true");
         } else {
-            // Traffic light logic
             trafficLightTimer++;
             if (trafficLightTimer >= 5) { // Change traffic light every 5 iterations
                 if (currentTrafficLight == "red") {

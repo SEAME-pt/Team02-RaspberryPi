@@ -9,9 +9,10 @@ ApplicationWindow {
     width: 1280
     height: 400
     flags: Qt.Window | Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint
-    visibility: Window.FullScreen
+    // flags: Qt.Window | Qt.WindowStaysOnTopHint
+    //visibility: Window.FullScreen
 
-    // visibility: Window.Windowed
+    visibility: Window.Windowed
     property int iconWidth: 65
     property int iconHeight: 65
 
@@ -72,6 +73,7 @@ ApplicationWindow {
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: parent.bottom 
         anchors.bottomMargin: -25
+        // anchors.verticalCenter: parent.verticalCenter
     }
 
     SpeedDisplay {
@@ -98,21 +100,122 @@ ApplicationWindow {
 
     LightInfo {}
 
-    SignDetector {
+    Row {
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.topMargin: 10
+        anchors.leftMargin: 65
+        spacing: 15
 
+        Rectangle {
+        width: app.iconWidth
+        height: app.iconHeight
+        color: "transparent"
+        
+
+            Image {
+                id: assistSteerSignal
+                anchors.centerIn: parent
+                width: parent.width
+                height: parent.height
+                fillMode: Image.PreserveAspectFit
+
+                source: {
+                    if (instrumentCluster.autonomyLevel === 2)
+                        return "../assets/icons/assist-steer-on.png"
+                    else if (instrumentCluster.autonomyLevel === 5)
+                        return "../assets/icons/assist-navigate-driving-on.png"
+                    else
+                        return "../assets/icons/assist-steer-on.png"
+                }
+
+                // visible: source !== ""
+                visible: true
+
+            }
+        }
+
+        Rectangle {
+            width: app.iconWidth - 17  
+            height: app.iconHeight - 17
+            color: "transparent"
+            y: 5
+
+            Image {
+                id: cruiseControlSignal
+                anchors.centerIn: parent
+                width: parent.width
+                height: parent.height
+                source: "../assets/icons/cruise-control.png"
+                visible: true
+            }
+        }
+
+        Rectangle {
+            width: app.iconWidth - 15  
+            height: app.iconHeight - 15
+            color: "transparent"
+            y: 5
+
+            Image {
+                id: laneDepartureSignal
+                anchors.centerIn: parent
+                width: parent.width
+                height: parent.height
+                source: "../assets/icons/lane-departure.png"
+                visible: instrumentCluster.laneDeparture == 10 || instrumentCluster.laneDeparture == 20
+            }
+        }
+
+        Rectangle {
+            width: app.iconWidth - 15  
+            height: app.iconHeight - 15
+            color: "transparent"
+            y: 5
+
+            Image {
+                id: emergencyBrakingSignal
+                anchors.centerIn: parent
+                width: parent.width
+                height: parent.height
+                source: "../assets/icons/brake.png"
+                visible: instrumentCluster.warningCode == 1
+            }
+        }
+    }
+   
+
+    SignDetector {
+        id: signDetector
+        width: parent.width
+        height: parent.height
+        iconWidth: app.iconWidth
+        iconHeight: app.iconHeight
     }
     Rectangle {
         id: leftLaneDiagonal
         width: 7
         height: parent.height * 0.70
         anchors.verticalCenter: carImage.verticalCenter
-        rotation: -35
+        rotation: 35
         transformOrigin: Item.TopLeft
-        x: carImage.x + carImage.width - 100
+        x: carImage.x + 130
         border.color: "black"
+
         gradient: Gradient {
-            GradientStop { position: 0.0; color: "#252525" }
-            GradientStop { position: 1.0; color: "#D3D3D3" }
+            GradientStop {
+                position: 0.0
+                color: instrumentCluster.laneDeparture === 10 ? "#252525" : "#252525"
+            }
+            GradientStop {
+                position: 1.0
+                color: instrumentCluster.laneDeparture === 10 ? "#972727" : "#5c5c5c"
+            }
+        }
+
+        Connections {
+            target: instrumentCluster
+            onLaneDepartureChanged: leftLaneDiagonal.update()
         }
     }
 
@@ -121,14 +224,26 @@ ApplicationWindow {
         width: 7
         height: parent.height * 0.70
         anchors.verticalCenter: carImage.verticalCenter
-        rotation: 35 
+        rotation: -35
         transformOrigin: Item.TopRight
-        x: carImage.x + 130 
+        x: carImage.x + carImage.width - 100
         border.color: "black"
         border.width: 1
+
         gradient: Gradient {
-            GradientStop { position: 0.0; color: "#252525" }
-            GradientStop { position: 1.0; color: "#D3D3D3" }
+            GradientStop {
+                position: 0.0
+                color: instrumentCluster.laneDeparture === 20 ? "#252525" : "#252525"
+            }
+            GradientStop {
+                position: 1.0
+                color: instrumentCluster.laneDeparture === 20 ?  "#972727" : "#5c5c5c"
+            }
+        }
+
+        Connections {
+            target: instrumentCluster
+            onLaneDepartureChanged: rightLaneDiagonal.update()
         }
     }
 

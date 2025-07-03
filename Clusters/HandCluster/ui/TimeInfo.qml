@@ -1,11 +1,11 @@
 import QtQuick 2.15
 
 Row {
-    anchors.rightMargin: 30
-    anchors.horizontalCenter: parent.horizontalCenter
-    spacing: 5
     anchors.top: parent.top
     anchors.topMargin: 25
+    anchors.right: parent.right
+    anchors.rightMargin: 200
+    spacing: 10
     property string fontFamily: "default"
 
     Rectangle {
@@ -18,7 +18,7 @@ Row {
         font.family: fontFamily
         id: timeDisplay
         text: "11:11"
-        font.pixelSize:  app.letterSize
+        font.pixelSize:  app.letterSize - 10
         color: "white"
         opacity: 0.0
     }
@@ -27,7 +27,7 @@ Row {
         font.family: fontFamily
         id: amPmDisplay
         text: "AM"
-        font.pixelSize: app.letterSize
+        font.pixelSize: app.letterSize - 10
         color: "gray"
         opacity: 0.0
     }

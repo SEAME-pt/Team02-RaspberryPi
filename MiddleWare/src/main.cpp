@@ -126,6 +126,8 @@ int main(int argc, char** argv)
         zenoh::KeyExpr("Vehicle/1/ADAS/ActiveAutonomyLevel/SAE_2"));
     auto sae5_pub = session->declare_publisher(
         zenoh::KeyExpr("Vehicle/1/ADAS/ActiveAutonomyLevel/SAE_5"));
+    auto cruise_control_pub = session->declare_publisher(
+        zenoh::KeyExpr("Vehicle/1/ADAS/ActiveAutonomyLevel/CruiseControl"));
     auto speedLimit_pub = session->declare_publisher(
         zenoh::KeyExpr("Vehicle/1/Environment/RoadSigns/SpeedLimit"));
     auto stopSign_pub = session->declare_publisher(
@@ -138,7 +140,6 @@ int main(int argc, char** argv)
         zenoh::KeyExpr("Vehicle/1/Environment/RoadSigns/TrafficLight"));
     auto dangerSign_pub = session->declare_publisher(
         zenoh::KeyExpr("Vehicle/1/Environment/RoadSigns/DangerSign"));
-    
 
     while (1)
     {
@@ -281,13 +282,20 @@ int main(int argc, char** argv)
         else if (frame.can_id == 0x200)
             obstacleWarning_pub.put("1");
         else if (frame.can_id == 0x301) //left lane departure
-            laneDeparture_pub.put("1");
+        {
+            std::cout << "Publishing lane departure to left." << std::endl;
+            laneDeparture_pub.put("10");
+        }
         else if (frame.can_id == 0x302) //left lane departure off
-            laneDeparture_pub.put("0"); 
+        {
+            std::cout << "Publishing lane departure to left or right off." << std::endl;
+            laneDeparture_pub.put("11"); 
+        }
         else if(frame.can_id == 0x303) //right lane departure
-            laneDeparture_pub.put("1"); 
-        else if(frame.can_id == 0x304) //right lane departure off
-            laneDeparture_pub.put("0");
+        {
+            std::cout << "Publishing lane departure to right." << std::endl;
+            laneDeparture_pub.put("20"); 
+        }
         else if (frame.can_id == 0x400)
             sae0_pub.put("0");
         else if (frame.can_id == 0x401)
@@ -296,6 +304,16 @@ int main(int argc, char** argv)
             sae2_pub.put("2");
         else if (frame.can_id == 0x405)
             sae5_pub.put("5");
+        else if (frame.can_id == 0x406)
+        {
+            std::cout << "Publishing cruise control activated." << std::endl;
+            cruise_control_pub.put("1");
+        }
+        else if (frame.can_id == 0x407)
+        {
+            std::cout << "Publishing cruise control deactivated." << std::endl;
+            cruise_control_pub.put("0");
+        }
         else if (frame.can_id == 0x500)
         {
             std::cout << "Publishing speed limit: 50km/h" << std::endl;
@@ -341,6 +359,7 @@ int main(int argc, char** argv)
             std::cout << "Publishing traffic sign detected: red (16)" << std::endl;
             trafficLight_pub.put("red");
         }
+        
         usleep(10);
     }
     return 0;

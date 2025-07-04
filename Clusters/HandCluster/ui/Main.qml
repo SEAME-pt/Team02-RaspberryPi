@@ -9,7 +9,6 @@ ApplicationWindow {
     width: 1280
     height: 400
     flags: Qt.Window | Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint
-    // flags: Qt.Window | Qt.WindowStaysOnTopHint
     visibility: Window.FullScreen
 
     // visibility: Window.Windowed
@@ -126,12 +125,9 @@ ApplicationWindow {
                     else if (instrumentCluster.autonomyLevel === 5)
                         return "../assets/icons/assist-navigate-driving-on.png"
                     else
-                        return "../assets/icons/assist-steer-on.png"
+                        return ""
                 }
-
-                // visible: source !== ""
-                visible: true
-
+                visible: source !== ""
             }
         }
 
@@ -147,7 +143,7 @@ ApplicationWindow {
                 width: parent.width
                 height: parent.height
                 source: "../assets/icons/cruise-control.png"
-                visible: true
+                visible: instrumentCluster.cruiseControl === true
             }
         }
 
@@ -194,7 +190,7 @@ ApplicationWindow {
     }
     Rectangle {
         id: leftLaneDiagonal
-        width: 7
+        width: 13
         height: parent.height * 0.70
         anchors.verticalCenter: carImage.verticalCenter
         rotation: 35
@@ -221,7 +217,7 @@ ApplicationWindow {
 
     Rectangle {
         id: rightLaneDiagonal
-        width: 7
+        width: 13
         height: parent.height * 0.70
         anchors.verticalCenter: carImage.verticalCenter
         rotation: -35

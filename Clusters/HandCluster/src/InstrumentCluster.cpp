@@ -171,17 +171,13 @@ void InstrumentCluster::setupSubscriptions()
                     setLaneDeparture(10);
                 } 
                 else if (isDeparting == 11) { //lane departure to left off
-                    std::cout << "Received lane departure to left off" << std::endl;
+                    std::cout << "Received lane departure to left or right off" << std::endl;
                     setLaneDeparture(11);
                 }
                 else if(isDeparting == 20) { //lane departure to right
                     std::cout << "Received lane departure to right" << std::endl;
                     setLaneDeparture(20);
                 } 
-                else if(isDeparting == 21) { //lane departure to right off
-                    std::cout << "Received lane departure to right off" << std::endl;
-                    setLaneDeparture(21);
-                }
             } catch (const std::exception& e) {
                 std::cerr << "Error parsing lane departure data: " << e.what() << std::endl;
             }
@@ -213,6 +209,19 @@ void InstrumentCluster::setupSubscriptions()
         [this](const zenoh::Sample& sample) {
                 std::cout << "Recebido SAE 5" << std::endl;
                 setAutonomyLevel(5);
+        },
+        zenoh::closures::none));
+    cruiseControl_subscriber.emplace(session->declare_subscriber(
+        "Vehicle/1/ADAS/ActiveAutonomyLevel/CruiseControl",
+        [this](const zenoh::Sample& sample) {
+            std::string cruiseControlState = sample.get_payload().as_string();
+            if (cruiseControlState == "1") {
+                std::cout << "Cruise Control Activated" << std::endl;
+                setCruiseControl(true);
+            } else if (cruiseControlState == "0") {
+                std::cout << "Cruise Control Deactivated" << std::endl;
+                setCruiseControl(false);
+            }
         },
         zenoh::closures::none));
     speedLimit_subscriber.emplace(session->declare_subscriber(
@@ -313,6 +322,20 @@ void InstrumentCluster::parseLaneData(const std::string& laneData, const std::st
     }
     else if (laneType == "rightLane") {
         setRightLaneCoefs(coefficients); 
+    }
+}
+
+bool InstrumentCluster::getCruiseControl() const
+{
+    return cruiseControl;
+}
+
+void InstrumentCluster::setCruiseControl(bool state)
+{
+    if (cruiseControl != state)
+    {
+        cruiseControl = state;
+        emit cruiseControlChanged(state);
     }
 }
 

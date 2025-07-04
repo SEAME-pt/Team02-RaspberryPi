@@ -45,6 +45,7 @@ class InstrumentCluster : public QObject
     Q_PROPERTY(int laneDeparture READ getLaneDeparture WRITE setLaneDeparture NOTIFY laneDepartureChanged)
     Q_PROPERTY(int autonomyLevel READ getAutonomyLevel WRITE setAutonomyLevel NOTIFY autonomyLevelChanged)
     Q_PROPERTY(int signDetected READ getSignDetected WRITE setSignDetected NOTIFY signDetectedChanged)
+    Q_PROPERTY(bool cruiseControl READ getCruiseControl WRITE setCruiseControl NOTIFY cruiseControlChanged)
 
   private:
     int m_speed;
@@ -56,12 +57,14 @@ class InstrumentCluster : public QObject
     bool rearFogLight{false};
     bool hazardLight{false};
     bool parkingLight{false};
+    bool cruiseControl{false};
     int laneDeparture{false};
     int percentage;
     int gear;  
     int warningCode;
     int autonomyLevel;
     int signDetected = 0;
+
 
     QVariantMap m_leftLaneCoefs;
     QVariantMap m_rightLaneCoefs;
@@ -101,6 +104,7 @@ class InstrumentCluster : public QObject
     std::optional<zenoh::Subscriber<void>> pedestrianZone_subscriber;
     std::optional<zenoh::Subscriber<void>> trafficLight_subscriber;
     std::optional<zenoh::Subscriber<void>> dangerSign_subscriber;
+    std::optional<zenoh::Subscriber<void>> cruiseControl_subscriber;
     
   public:
     explicit InstrumentCluster(QObject* parent = nullptr);
@@ -109,6 +113,9 @@ class InstrumentCluster : public QObject
                                public:
     explicit InstrumentCluster(std::shared_ptr<zenoh::Session> session, QObject* parent = nullptr);
     ~InstrumentCluster();
+
+    bool getCruiseControl() const;
+    void setCruiseControl(bool state);
 
     int getSpeed() const;
     void setSpeed(int speed);
@@ -183,6 +190,8 @@ class InstrumentCluster : public QObject
     void laneDepartureChanged(bool state);
     void autonomyLevelChanged(int level);
     void signDetectedChanged(int sign);
+    void cruiseControlChanged(bool state);
+    
     #ifdef UNIT_TEST
       std::function<void(const zenoh::Sample&)> getSpeedCallback();
     #endif

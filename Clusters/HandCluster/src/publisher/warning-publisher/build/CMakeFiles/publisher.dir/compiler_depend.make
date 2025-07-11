@@ -180,6 +180,9 @@ CMakeFiles/publisher.dir/warning_publisher.cpp.o: ../warning_publisher.cpp \
   /usr/include/c++/11/bits/streambuf.tcc \
   /usr/local/include/zenoh/api/base.hxx \
   /usr/include/c++/11/cstddef \
+  /usr/local/include/zenoh/detail/availability_checks.hxx \
+  /usr/include/c++/11/optional \
+  /usr/include/c++/11/bits/enable_special_members.h \
   /usr/local/include/zenoh/zenohc.hxx \
   /usr/local/include/zenoh.h \
   /usr/include/assert.h \
@@ -194,24 +197,41 @@ CMakeFiles/publisher.dir/warning_publisher.cpp.o: ../warning_publisher.cpp \
   /usr/local/include/zenoh_memory.h \
   /usr/local/include/zenoh/api/closures.hxx \
   /usr/local/include/zenoh/api/interop.hxx \
-  /usr/include/c++/11/optional \
-  /usr/include/c++/11/bits/enable_special_members.h \
-  /usr/include/c++/11/memory \
+  /usr/local/include/zenoh/api/shm/buffer/buffer.hxx \
+  /usr/local/include/zenoh/api/shm/buffer/zshm.hxx \
+  /usr/include/c++/11/functional \
+  /usr/include/c++/11/tuple \
+  /usr/include/c++/11/array \
+  /usr/include/c++/11/bits/uses_allocator.h \
+  /usr/include/c++/11/bits/invoke.h \
+  /usr/include/c++/11/bits/refwrap.h \
+  /usr/include/c++/11/bits/std_function.h \
+  /usr/include/c++/11/unordered_map \
+  /usr/include/c++/11/ext/aligned_buffer.h \
+  /usr/include/c++/11/bits/hashtable.h \
+  /usr/include/c++/11/bits/hashtable_policy.h \
+  /usr/include/c++/11/bits/node_handle.h \
+  /usr/include/c++/11/bits/unordered_map.h \
+  /usr/include/c++/11/bits/erase_if.h \
+  /usr/include/c++/11/vector \
   /usr/include/c++/11/bits/stl_uninitialized.h \
+  /usr/include/c++/11/bits/stl_vector.h \
+  /usr/include/c++/11/bits/stl_bvector.h \
+  /usr/include/c++/11/bits/vector.tcc \
+  /usr/include/c++/11/bits/stl_algo.h \
+  /usr/include/c++/11/bits/algorithmfwd.h \
+  /usr/include/c++/11/bits/stl_heap.h \
   /usr/include/c++/11/bits/stl_tempbuf.h \
+  /usr/include/c++/11/bits/uniform_int_dist.h \
+  /usr/local/include/zenoh/api/shm/buffer/zshmmut.hxx \
+  /usr/include/c++/11/memory \
   /usr/include/c++/11/bits/stl_raw_storage_iter.h \
   /usr/include/c++/11/bits/align.h \
   /usr/include/c++/11/bit \
-  /usr/include/c++/11/bits/uses_allocator.h \
   /usr/include/c++/11/bits/unique_ptr.h \
-  /usr/include/c++/11/tuple \
-  /usr/include/c++/11/array \
-  /usr/include/c++/11/bits/invoke.h \
   /usr/include/c++/11/bits/shared_ptr.h \
   /usr/include/c++/11/bits/shared_ptr_base.h \
   /usr/include/c++/11/bits/allocated_ptr.h \
-  /usr/include/c++/11/bits/refwrap.h \
-  /usr/include/c++/11/ext/aligned_buffer.h \
   /usr/include/c++/11/ext/concurrence.h \
   /usr/include/c++/11/bits/shared_ptr_atomic.h \
   /usr/include/c++/11/bits/atomic_base.h \
@@ -219,30 +239,14 @@ CMakeFiles/publisher.dir/warning_publisher.cpp.o: ../warning_publisher.cpp \
   /usr/include/c++/11/backward/auto_ptr.h \
   /usr/include/c++/11/pstl/glue_memory_defs.h \
   /usr/include/c++/11/pstl/execution_defs.h \
-  /usr/include/c++/11/vector \
-  /usr/include/c++/11/bits/stl_vector.h \
-  /usr/include/c++/11/bits/stl_bvector.h \
-  /usr/include/c++/11/bits/vector.tcc \
   /usr/local/include/zenoh/api/channels.hxx \
   /usr/include/c++/11/variant \
   /usr/include/c++/11/bits/parse_numbers.h \
   /usr/local/include/zenoh/api/query.hxx \
-  /usr/include/c++/11/functional \
-  /usr/include/c++/11/bits/std_function.h \
-  /usr/include/c++/11/unordered_map \
-  /usr/include/c++/11/bits/hashtable.h \
-  /usr/include/c++/11/bits/hashtable_policy.h \
-  /usr/include/c++/11/bits/node_handle.h \
-  /usr/include/c++/11/bits/unordered_map.h \
-  /usr/include/c++/11/bits/erase_if.h \
-  /usr/include/c++/11/bits/stl_algo.h \
-  /usr/include/c++/11/bits/algorithmfwd.h \
-  /usr/include/c++/11/bits/stl_heap.h \
-  /usr/include/c++/11/bits/uniform_int_dist.h \
   /usr/local/include/zenoh/api/encoding.hxx \
   /usr/local/include/zenoh/api/enums.hxx \
   /usr/local/include/zenoh/api/keyexpr.hxx \
-  /usr/local/include/zenoh/api/timestamp.hxx \
+  /usr/local/include/zenoh/api/source_info.hxx \
   /usr/local/include/zenoh/api/id.hxx \
   /usr/include/c++/11/iomanip \
   /usr/include/c++/11/locale \
@@ -272,6 +276,7 @@ CMakeFiles/publisher.dir/warning_publisher.cpp.o: ../warning_publisher.cpp \
   /usr/include/c++/11/bits/istream.tcc \
   /usr/include/c++/11/bits/sstream.tcc \
   /usr/include/c++/11/iostream \
+  /usr/local/include/zenoh/api/timestamp.hxx \
   /usr/local/include/zenoh/api/reply.hxx \
   /usr/local/include/zenoh/api/sample.hxx \
   /usr/local/include/zenoh/api/config.hxx \
@@ -280,11 +285,35 @@ CMakeFiles/publisher.dir/warning_publisher.cpp.o: ../warning_publisher.cpp \
   /usr/local/include/zenoh/api/logging.hxx \
   /usr/local/include/zenoh/api/publisher.hxx \
   /usr/local/include/zenoh/detail/closures_concrete.hxx \
+  /usr/local/include/zenoh/api/matching.hxx \
   /usr/local/include/zenoh/api/query_consolidation.hxx \
   /usr/local/include/zenoh/api/queryable.hxx \
   /usr/local/include/zenoh/api/scout.hxx \
   /usr/local/include/zenoh/api/session.hxx \
   /usr/local/include/zenoh/api/subscriber.hxx \
+  /usr/local/include/zenoh/api/querier.hxx \
+  /usr/local/include/zenoh/api/shm/client_storage/client_storage.hxx \
+  /usr/local/include/zenoh/api/shm/client/shm_client.hxx \
+  /usr/include/memory.h \
+  /usr/include/string.h \
+  /usr/include/strings.h \
+  /usr/local/include/zenoh/api/shm/common/types.hxx \
+  /usr/local/include/zenoh/api/shm/client/shm_segment.hxx \
+  /usr/local/include/zenoh/api/shm/shm.hxx \
+  /usr/local/include/zenoh/api/shm/cleanup.hxx \
+  /usr/local/include/zenoh/api/shm/client/client.hxx \
+  /usr/local/include/zenoh/api/shm/protocol_implementations/protocol_implementations.hxx \
+  /usr/local/include/zenoh/api/shm/protocol_implementations/posix/posix.hxx \
+  /usr/local/include/zenoh/api/shm/protocol_implementations/posix/posix_shm_client.hxx \
+  /usr/local/include/zenoh/api/shm/protocol_implementations/posix/posix_shm_provider.hxx \
+  /usr/local/include/zenoh/api/shm/provider/shm_provider.hxx \
+  /usr/local/include/zenoh/api/shm/common/common.hxx \
+  /usr/local/include/zenoh/api/shm/provider/chunk.hxx \
+  /usr/local/include/zenoh/api/shm/provider/shm_provider_backend.hxx \
+  /usr/local/include/zenoh/api/shm/provider/types.hxx \
+  /usr/local/include/zenoh/api/shm/provider/types_impl.hxx \
+  /usr/local/include/zenoh/api/shm/provider/provider.hxx \
+  /usr/local/include/zenoh/api/shm/provider/alloc_layout.hxx \
   /usr/local/include/zenoh/api/ext/serialization.hxx \
   /usr/include/c++/11/deque \
   /usr/include/c++/11/bits/stl_deque.h \
@@ -298,6 +327,14 @@ CMakeFiles/publisher.dir/warning_publisher.cpp.o: ../warning_publisher.cpp \
   /usr/include/c++/11/bits/stl_multiset.h \
   /usr/include/c++/11/unordered_set \
   /usr/include/c++/11/bits/unordered_set.h \
+  /usr/local/include/zenoh/api/ext/session_ext.hxx \
+  /usr/include/c++/11/algorithm \
+  /usr/include/c++/11/pstl/glue_algorithm_defs.h \
+  /usr/local/include/zenoh/api/ext/advanced_publisher.hxx \
+  /usr/local/include/zenoh/api/ext/advanced_subscriber.hxx \
+  /usr/local/include/zenoh/api/ext/miss.hxx \
+  /usr/local/include/zenoh/api/ext/publication_cache.hxx \
+  /usr/local/include/zenoh/api/ext/querying_subscriber.hxx \
   /usr/include/c++/11/thread \
   /usr/include/c++/11/bits/std_thread.h \
   /usr/include/c++/11/bits/this_thread_sleep.h \
@@ -312,7 +349,19 @@ CMakeFiles/publisher.dir/warning_publisher.cpp.o: ../warning_publisher.cpp \
 
 /usr/include/c++/11/thread:
 
+/usr/local/include/zenoh/api/ext/querying_subscriber.hxx:
+
+/usr/local/include/zenoh/api/ext/publication_cache.hxx:
+
+/usr/local/include/zenoh/api/ext/miss.hxx:
+
+/usr/local/include/zenoh/api/ext/advanced_publisher.hxx:
+
+/usr/include/c++/11/algorithm:
+
 /usr/include/c++/11/bits/unordered_set.h:
+
+/usr/local/include/zenoh/api/ext/advanced_subscriber.hxx:
 
 /usr/include/c++/11/bits/stl_multiset.h:
 
@@ -330,17 +379,37 @@ CMakeFiles/publisher.dir/warning_publisher.cpp.o: ../warning_publisher.cpp \
 
 /usr/include/c++/11/deque:
 
+/usr/local/include/zenoh/api/shm/provider/provider.hxx:
+
+/usr/local/include/zenoh/api/shm/provider/shm_provider_backend.hxx:
+
+/usr/local/include/zenoh/api/shm/provider/shm_provider.hxx:
+
+/usr/local/include/zenoh/api/shm/protocol_implementations/protocol_implementations.hxx:
+
+/usr/local/include/zenoh/api/shm/common/types.hxx:
+
+/usr/include/strings.h:
+
+/usr/include/memory.h:
+
+/usr/local/include/zenoh/api/shm/client/shm_client.hxx:
+
+/usr/local/include/zenoh/api/querier.hxx:
+
 /usr/local/include/zenoh/api/subscriber.hxx:
+
+/usr/local/include/zenoh/api/shm/protocol_implementations/posix/posix_shm_provider.hxx:
 
 /usr/local/include/zenoh/api/session.hxx:
 
 /usr/local/include/zenoh/api/scout.hxx:
 
+/usr/local/include/zenoh/api/shm/provider/chunk.hxx:
+
 /usr/local/include/zenoh/api/queryable.hxx:
 
 /usr/local/include/zenoh/api/query_consolidation.hxx:
-
-/usr/local/include/zenoh/detail/closures_concrete.hxx:
 
 /usr/local/include/zenoh/api/publisher.hxx:
 
@@ -350,6 +419,8 @@ CMakeFiles/publisher.dir/warning_publisher.cpp.o: ../warning_publisher.cpp \
 
 /usr/local/include/zenoh/api/reply.hxx:
 
+/usr/local/include/zenoh/api/timestamp.hxx:
+
 /usr/include/c++/11/bits/istream.tcc:
 
 /usr/include/c++/11/bits/ostream.tcc:
@@ -358,9 +429,13 @@ CMakeFiles/publisher.dir/warning_publisher.cpp.o: ../warning_publisher.cpp \
 
 /usr/include/c++/11/sstream:
 
-/usr/include/c++/11/bits/quoted_string.h:
-
 /usr/include/c++/11/bits/locale_conv.h:
+
+/usr/include/c++/11/bits/locale_facets_nonio.tcc:
+
+/usr/include/libintl.h:
+
+/usr/include/x86_64-linux-gnu/c++/11/bits/messages_members.h:
 
 /usr/include/c++/11/bits/cxxabi_forced.h:
 
@@ -372,6 +447,8 @@ CMakeFiles/publisher.dir/warning_publisher.cpp.o: ../warning_publisher.cpp \
 
 /usr/local/include/zenoh/api/base.hxx:
 
+/usr/local/include/zenoh/api/matching.hxx:
+
 /usr/include/c++/11/backward/binders.h:
 
 /usr/include/x86_64-linux-gnu/c++/11/bits/c++allocator.h:
@@ -382,9 +459,13 @@ CMakeFiles/publisher.dir/warning_publisher.cpp.o: ../warning_publisher.cpp \
 
 /usr/include/c++/11/bits/char_traits.h:
 
+/usr/local/include/zenoh/api/shm/client_storage/client_storage.hxx:
+
 /usr/include/asm-generic/errno-base.h:
 
 /usr/include/c++/11/pstl/pstl_config.h:
+
+/usr/local/include/zenoh/api/ext/session_ext.hxx:
 
 /usr/include/c++/11/bits/allocator.h:
 
@@ -410,8 +491,6 @@ CMakeFiles/publisher.dir/warning_publisher.cpp.o: ../warning_publisher.cpp \
 
 /usr/include/c++/11/bits/stl_pair.h:
 
-/usr/include/c++/11/bits/locale_facets_nonio.tcc:
-
 /usr/include/x86_64-linux-gnu/bits/setjmp.h:
 
 /usr/include/time.h:
@@ -419,6 +498,8 @@ CMakeFiles/publisher.dir/warning_publisher.cpp.o: ../warning_publisher.cpp \
 /usr/include/x86_64-linux-gnu/bits/cpu-set.h:
 
 /usr/include/c++/11/bits/unordered_map.h:
+
+/usr/local/include/zenoh/api/shm/provider/types.hxx:
 
 /usr/include/c++/11/ext/alloc_traits.h:
 
@@ -440,9 +521,9 @@ CMakeFiles/publisher.dir/warning_publisher.cpp.o: ../warning_publisher.cpp \
 
 /usr/include/x86_64-linux-gnu/bits/endianness.h:
 
-/usr/local/include/zenoh/api/keyexpr.hxx:
+/usr/local/include/zenoh/api/shm/protocol_implementations/posix/posix.hxx:
 
-/usr/include/libintl.h:
+/usr/local/include/zenoh/api/keyexpr.hxx:
 
 /usr/include/c++/11/bits/predefined_ops.h:
 
@@ -468,17 +549,19 @@ CMakeFiles/publisher.dir/warning_publisher.cpp.o: ../warning_publisher.cpp \
 
 /usr/include/x86_64-linux-gnu/bits/pthreadtypes-arch.h:
 
+/usr/local/include/zenoh/detail/availability_checks.hxx:
+
 /usr/local/include/zenoh/api/bytes.hxx:
 
 /usr/include/c++/11/bits/stream_iterator.h:
-
-/usr/local/include/zenoh/api/timestamp.hxx:
 
 /usr/include/c++/11/bits/std_thread.h:
 
 /usr/include/c++/11/bits/cpp_type_traits.h:
 
 /usr/include/c++/11/bits/stl_iterator_base_funcs.h:
+
+/usr/local/include/zenoh/api/shm/cleanup.hxx:
 
 /usr/local/include/zenoh/detail/commons.hxx:
 
@@ -502,6 +585,12 @@ CMakeFiles/publisher.dir/warning_publisher.cpp.o: ../warning_publisher.cpp \
 
 /usr/include/x86_64-linux-gnu/asm/errno.h:
 
+/usr/local/include/zenoh/detail/closures_concrete.hxx:
+
+/usr/local/include/zenoh/api/source_info.hxx:
+
+/usr/local/include/zenoh/api/shm/provider/alloc_layout.hxx:
+
 /usr/include/c++/11/bits/memoryfwd.h:
 
 /usr/include/c++/11/bits/stl_function.h:
@@ -516,7 +605,11 @@ CMakeFiles/publisher.dir/warning_publisher.cpp.o: ../warning_publisher.cpp \
 
 /usr/include/c++/11/bits/uniform_int_dist.h:
 
+/usr/local/include/zenoh/api/shm/shm.hxx:
+
 /usr/include/c++/11/bits/unique_ptr.h:
+
+/usr/local/include/zenoh/api/shm/provider/types_impl.hxx:
 
 /usr/include/x86_64-linux-gnu/sys/single_threaded.h:
 
@@ -628,6 +721,8 @@ CMakeFiles/publisher.dir/warning_publisher.cpp.o: ../warning_publisher.cpp \
 
 /usr/include/c++/11/bits/postypes.h:
 
+/usr/local/include/zenoh/api/shm/client/client.hxx:
+
 /usr/local/include/zenoh/api/logging.hxx:
 
 /usr/include/x86_64-linux-gnu/bits/types/__fpos64_t.h:
@@ -661,6 +756,8 @@ CMakeFiles/publisher.dir/warning_publisher.cpp.o: ../warning_publisher.cpp \
 /usr/include/x86_64-linux-gnu/bits/struct_mutex.h:
 
 /usr/include/c++/11/bits/stl_iterator.h:
+
+/usr/local/include/zenoh/api/shm/protocol_implementations/posix/posix_shm_client.hxx:
 
 /usr/include/c++/11/bits/sstream.tcc:
 
@@ -778,6 +875,8 @@ CMakeFiles/publisher.dir/warning_publisher.cpp.o: ../warning_publisher.cpp \
 
 /usr/include/x86_64-linux-gnu/c++/11/bits/error_constants.h:
 
+/usr/include/c++/11/pstl/glue_algorithm_defs.h:
+
 /usr/include/c++/11/stdexcept:
 
 /usr/include/c++/11/exception:
@@ -788,19 +887,35 @@ CMakeFiles/publisher.dir/warning_publisher.cpp.o: ../warning_publisher.cpp \
 
 /usr/include/c++/11/bits/nested_exception.h:
 
+/usr/include/string.h:
+
 /usr/include/c++/11/bits/streambuf.tcc:
 
 /usr/include/c++/11/bits/atomic_lockfree_defines.h:
 
+/usr/include/c++/11/optional:
+
+/usr/include/c++/11/bits/vector.tcc:
+
+/usr/include/c++/11/bits/basic_ios.tcc:
+
+/usr/include/c++/11/bits/codecvt.h:
+
+/usr/include/c++/11/bits/enable_special_members.h:
+
 /usr/local/include/zenoh/zenohc.hxx:
 
 /usr/lib/gcc/x86_64-linux-gnu/11/include/stdbool.h:
+
+/usr/local/include/zenoh/api/shm/common/common.hxx:
 
 /usr/local/include/zenoh.h:
 
 /usr/local/include/zenoh_configure.h:
 
 /usr/local/include/zenoh_concrete.h:
+
+/usr/local/include/zenoh/api/shm/buffer/buffer.hxx:
 
 /usr/include/c++/11/stdlib.h:
 
@@ -814,53 +929,21 @@ CMakeFiles/publisher.dir/warning_publisher.cpp.o: ../warning_publisher.cpp \
 
 /usr/local/include/zenoh/api/closures.hxx:
 
-/usr/include/c++/11/optional:
+/usr/include/c++/11/bits/quoted_string.h:
 
-/usr/include/c++/11/bits/vector.tcc:
+/usr/local/include/zenoh/api/shm/buffer/zshm.hxx:
 
-/usr/include/c++/11/bits/basic_ios.tcc:
+/usr/include/c++/11/bits/this_thread_sleep.h:
 
-/usr/include/c++/11/bits/codecvt.h:
+/usr/include/x86_64-linux-gnu/bits/types/struct_tm.h:
 
-/usr/include/c++/11/bits/enable_special_members.h:
-
-publisher_autogen/mocs_compilation.cpp:
-
-/usr/include/c++/11/memory:
-
-/usr/include/c++/11/bits/stl_uninitialized.h:
-
-/usr/include/c++/11/backward/auto_ptr.h:
-
-/usr/include/c++/11/bits/stl_raw_storage_iter.h:
-
-/usr/include/c++/11/bits/align.h:
-
-/usr/include/c++/11/vector:
-
-/usr/include/c++/11/bits/uses_allocator.h:
+/usr/include/c++/11/bits/locale_facets.tcc:
 
 /usr/include/c++/11/array:
 
+/usr/include/c++/11/bits/uses_allocator.h:
+
 /usr/include/c++/11/bits/refwrap.h:
-
-/usr/include/c++/11/bits/shared_ptr_atomic.h:
-
-/usr/include/c++/11/bits/parse_numbers.h:
-
-/usr/include/x86_64-linux-gnu/bits/types/struct___jmp_buf_tag.h:
-
-/usr/include/x86_64-linux-gnu/bits/types/clockid_t.h:
-
-/usr/include/c++/11/bits/stl_bvector.h:
-
-/usr/include/c++/11/set:
-
-/usr/local/include/zenoh/api/channels.hxx:
-
-/usr/include/c++/11/bits/locale_facets_nonio.h:
-
-/usr/include/c++/11/variant:
 
 /usr/include/c++/11/bits/hashtable.h:
 
@@ -874,6 +957,20 @@ publisher_autogen/mocs_compilation.cpp:
 
 /usr/include/c++/11/bits/erase_if.h:
 
+/usr/include/c++/11/vector:
+
+/usr/include/c++/11/bits/align.h:
+
+/usr/include/c++/11/bits/stl_uninitialized.h:
+
+/usr/include/c++/11/backward/auto_ptr.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/struct___jmp_buf_tag.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/clockid_t.h:
+
+/usr/include/c++/11/bits/stl_bvector.h:
+
 /usr/include/c++/11/bits/stl_algo.h:
 
 /usr/include/c++/11/pstl/execution_defs.h:
@@ -884,11 +981,33 @@ publisher_autogen/mocs_compilation.cpp:
 
 /usr/include/c++/11/bits/stl_heap.h:
 
+/usr/local/include/zenoh/api/shm/client/shm_segment.hxx:
+
+publisher_autogen/mocs_compilation.cpp:
+
+/usr/include/c++/11/memory:
+
+/usr/include/c++/11/bits/stl_raw_storage_iter.h:
+
+/usr/include/c++/11/bits/shared_ptr_atomic.h:
+
+/usr/include/c++/11/bits/parse_numbers.h:
+
+/usr/include/c++/11/set:
+
+/usr/local/include/zenoh/api/channels.hxx:
+
+/usr/include/c++/11/bits/locale_facets_nonio.h:
+
+/usr/include/c++/11/variant:
+
 /usr/local/include/zenoh/api/enums.hxx:
 
 /usr/include/x86_64-linux-gnu/bits/types/__sigset_t.h:
 
 /usr/local/include/zenoh/api/id.hxx:
+
+/usr/local/include/zenoh/api/shm/buffer/zshmmut.hxx:
 
 /usr/include/x86_64-linux-gnu/c++/11/bits/time_members.h:
 
@@ -899,11 +1018,3 @@ publisher_autogen/mocs_compilation.cpp:
 /usr/include/c++/11/cwctype:
 
 /usr/include/x86_64-linux-gnu/c++/11/bits/ctype_inline.h:
-
-/usr/include/c++/11/bits/this_thread_sleep.h:
-
-/usr/include/x86_64-linux-gnu/bits/types/struct_tm.h:
-
-/usr/include/c++/11/bits/locale_facets.tcc:
-
-/usr/include/x86_64-linux-gnu/c++/11/bits/messages_members.h:

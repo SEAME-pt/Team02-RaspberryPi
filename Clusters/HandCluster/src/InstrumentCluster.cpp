@@ -343,6 +343,7 @@ int InstrumentCluster::getSpeed() const
 {
     return m_speed;
 }
+
 void InstrumentCluster::setSpeed(int speed)
 {
     if (m_speed != speed)

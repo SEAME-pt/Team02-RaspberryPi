@@ -22,7 +22,7 @@ Item {
 
     Timer {
         id: hideTimer
-        interval: 1000
+        interval: 2000
         running: false
         repeat: false
         onTriggered: {
@@ -88,6 +88,7 @@ Item {
                     trafficLights.clear()
                     trafficLights.append({ source: path + cacheBuster })
                 }
+                hideTimer.restart()
             } else if ([3,4,5,6,7,8,9].includes(value)) {
                 if (!alreadyExists(speedSigns, path)) {
                     speedSigns.clear()

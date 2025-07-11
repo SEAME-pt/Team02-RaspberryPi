@@ -142,6 +142,9 @@ CMakeFiles/publisher.dir/warning_publisher.cpp.o: \
  /usr/include/c++/11/typeinfo /usr/include/c++/11/bits/nested_exception.h \
  /usr/include/c++/11/bits/streambuf.tcc \
  /usr/local/include/zenoh/api/base.hxx /usr/include/c++/11/cstddef \
+ /usr/local/include/zenoh/detail/availability_checks.hxx \
+ /usr/include/c++/11/optional \
+ /usr/include/c++/11/bits/enable_special_members.h \
  /usr/local/include/zenoh/zenohc.hxx /usr/local/include/zenoh.h \
  /usr/include/assert.h /usr/local/include/zenoh_configure.h \
  /usr/local/include/zenoh_concrete.h \
@@ -150,46 +153,50 @@ CMakeFiles/publisher.dir/warning_publisher.cpp.o: \
  /usr/local/include/zenoh_commons.h /usr/local/include/zenoh_constants.h \
  /usr/local/include/zenoh_macros.h /usr/local/include/zenoh_memory.h \
  /usr/local/include/zenoh/api/closures.hxx \
- /usr/local/include/zenoh/api/interop.hxx /usr/include/c++/11/optional \
- /usr/include/c++/11/bits/enable_special_members.h \
- /usr/include/c++/11/memory /usr/include/c++/11/bits/stl_uninitialized.h \
+ /usr/local/include/zenoh/api/interop.hxx \
+ /usr/local/include/zenoh/api/shm/buffer/buffer.hxx \
+ /usr/local/include/zenoh/api/shm/buffer/zshm.hxx \
+ /usr/include/c++/11/functional /usr/include/c++/11/tuple \
+ /usr/include/c++/11/array /usr/include/c++/11/bits/uses_allocator.h \
+ /usr/include/c++/11/bits/invoke.h /usr/include/c++/11/bits/refwrap.h \
+ /usr/include/c++/11/bits/std_function.h \
+ /usr/include/c++/11/unordered_map \
+ /usr/include/c++/11/ext/aligned_buffer.h \
+ /usr/include/c++/11/bits/hashtable.h \
+ /usr/include/c++/11/bits/hashtable_policy.h \
+ /usr/include/c++/11/bits/node_handle.h \
+ /usr/include/c++/11/bits/unordered_map.h \
+ /usr/include/c++/11/bits/erase_if.h /usr/include/c++/11/vector \
+ /usr/include/c++/11/bits/stl_uninitialized.h \
+ /usr/include/c++/11/bits/stl_vector.h \
+ /usr/include/c++/11/bits/stl_bvector.h \
+ /usr/include/c++/11/bits/vector.tcc /usr/include/c++/11/bits/stl_algo.h \
+ /usr/include/c++/11/bits/algorithmfwd.h \
+ /usr/include/c++/11/bits/stl_heap.h \
  /usr/include/c++/11/bits/stl_tempbuf.h \
+ /usr/include/c++/11/bits/uniform_int_dist.h \
+ /usr/local/include/zenoh/api/shm/buffer/zshmmut.hxx \
+ /usr/include/c++/11/memory \
  /usr/include/c++/11/bits/stl_raw_storage_iter.h \
  /usr/include/c++/11/bits/align.h /usr/include/c++/11/bit \
- /usr/include/c++/11/bits/uses_allocator.h \
- /usr/include/c++/11/bits/unique_ptr.h /usr/include/c++/11/tuple \
- /usr/include/c++/11/array /usr/include/c++/11/bits/invoke.h \
+ /usr/include/c++/11/bits/unique_ptr.h \
  /usr/include/c++/11/bits/shared_ptr.h \
  /usr/include/c++/11/bits/shared_ptr_base.h \
  /usr/include/c++/11/bits/allocated_ptr.h \
- /usr/include/c++/11/bits/refwrap.h \
- /usr/include/c++/11/ext/aligned_buffer.h \
  /usr/include/c++/11/ext/concurrence.h \
  /usr/include/c++/11/bits/shared_ptr_atomic.h \
  /usr/include/c++/11/bits/atomic_base.h \
  /usr/include/c++/11/bits/atomic_lockfree_defines.h \
  /usr/include/c++/11/backward/auto_ptr.h \
  /usr/include/c++/11/pstl/glue_memory_defs.h \
- /usr/include/c++/11/pstl/execution_defs.h /usr/include/c++/11/vector \
- /usr/include/c++/11/bits/stl_vector.h \
- /usr/include/c++/11/bits/stl_bvector.h \
- /usr/include/c++/11/bits/vector.tcc \
+ /usr/include/c++/11/pstl/execution_defs.h \
  /usr/local/include/zenoh/api/channels.hxx /usr/include/c++/11/variant \
  /usr/include/c++/11/bits/parse_numbers.h \
- /usr/local/include/zenoh/api/query.hxx /usr/include/c++/11/functional \
- /usr/include/c++/11/bits/std_function.h \
- /usr/include/c++/11/unordered_map /usr/include/c++/11/bits/hashtable.h \
- /usr/include/c++/11/bits/hashtable_policy.h \
- /usr/include/c++/11/bits/node_handle.h \
- /usr/include/c++/11/bits/unordered_map.h \
- /usr/include/c++/11/bits/erase_if.h /usr/include/c++/11/bits/stl_algo.h \
- /usr/include/c++/11/bits/algorithmfwd.h \
- /usr/include/c++/11/bits/stl_heap.h \
- /usr/include/c++/11/bits/uniform_int_dist.h \
+ /usr/local/include/zenoh/api/query.hxx \
  /usr/local/include/zenoh/api/encoding.hxx \
  /usr/local/include/zenoh/api/enums.hxx \
  /usr/local/include/zenoh/api/keyexpr.hxx \
- /usr/local/include/zenoh/api/timestamp.hxx \
+ /usr/local/include/zenoh/api/source_info.hxx \
  /usr/local/include/zenoh/api/id.hxx /usr/include/c++/11/iomanip \
  /usr/include/c++/11/locale /usr/include/c++/11/bits/locale_facets.h \
  /usr/include/c++/11/cwctype /usr/include/wctype.h \
@@ -210,6 +217,7 @@ CMakeFiles/publisher.dir/warning_publisher.cpp.o: \
  /usr/include/c++/11/bits/ostream.tcc \
  /usr/include/c++/11/bits/istream.tcc \
  /usr/include/c++/11/bits/sstream.tcc /usr/include/c++/11/iostream \
+ /usr/local/include/zenoh/api/timestamp.hxx \
  /usr/local/include/zenoh/api/reply.hxx \
  /usr/local/include/zenoh/api/sample.hxx \
  /usr/local/include/zenoh/api/config.hxx \
@@ -218,11 +226,33 @@ CMakeFiles/publisher.dir/warning_publisher.cpp.o: \
  /usr/local/include/zenoh/api/logging.hxx \
  /usr/local/include/zenoh/api/publisher.hxx \
  /usr/local/include/zenoh/detail/closures_concrete.hxx \
+ /usr/local/include/zenoh/api/matching.hxx \
  /usr/local/include/zenoh/api/query_consolidation.hxx \
  /usr/local/include/zenoh/api/queryable.hxx \
  /usr/local/include/zenoh/api/scout.hxx \
  /usr/local/include/zenoh/api/session.hxx \
  /usr/local/include/zenoh/api/subscriber.hxx \
+ /usr/local/include/zenoh/api/querier.hxx \
+ /usr/local/include/zenoh/api/shm/client_storage/client_storage.hxx \
+ /usr/local/include/zenoh/api/shm/client/shm_client.hxx \
+ /usr/include/memory.h /usr/include/string.h /usr/include/strings.h \
+ /usr/local/include/zenoh/api/shm/common/types.hxx \
+ /usr/local/include/zenoh/api/shm/client/shm_segment.hxx \
+ /usr/local/include/zenoh/api/shm/shm.hxx \
+ /usr/local/include/zenoh/api/shm/cleanup.hxx \
+ /usr/local/include/zenoh/api/shm/client/client.hxx \
+ /usr/local/include/zenoh/api/shm/protocol_implementations/protocol_implementations.hxx \
+ /usr/local/include/zenoh/api/shm/protocol_implementations/posix/posix.hxx \
+ /usr/local/include/zenoh/api/shm/protocol_implementations/posix/posix_shm_client.hxx \
+ /usr/local/include/zenoh/api/shm/protocol_implementations/posix/posix_shm_provider.hxx \
+ /usr/local/include/zenoh/api/shm/provider/shm_provider.hxx \
+ /usr/local/include/zenoh/api/shm/common/common.hxx \
+ /usr/local/include/zenoh/api/shm/provider/chunk.hxx \
+ /usr/local/include/zenoh/api/shm/provider/shm_provider_backend.hxx \
+ /usr/local/include/zenoh/api/shm/provider/types.hxx \
+ /usr/local/include/zenoh/api/shm/provider/types_impl.hxx \
+ /usr/local/include/zenoh/api/shm/provider/provider.hxx \
+ /usr/local/include/zenoh/api/shm/provider/alloc_layout.hxx \
  /usr/local/include/zenoh/api/ext/serialization.hxx \
  /usr/include/c++/11/deque /usr/include/c++/11/bits/stl_deque.h \
  /usr/include/c++/11/bits/deque.tcc /usr/include/c++/11/map \
@@ -231,7 +261,15 @@ CMakeFiles/publisher.dir/warning_publisher.cpp.o: \
  /usr/include/c++/11/bits/stl_set.h \
  /usr/include/c++/11/bits/stl_multiset.h \
  /usr/include/c++/11/unordered_set \
- /usr/include/c++/11/bits/unordered_set.h /usr/include/c++/11/thread \
- /usr/include/c++/11/bits/std_thread.h \
+ /usr/include/c++/11/bits/unordered_set.h \
+ /usr/local/include/zenoh/api/ext/session_ext.hxx \
+ /usr/include/c++/11/algorithm \
+ /usr/include/c++/11/pstl/glue_algorithm_defs.h \
+ /usr/local/include/zenoh/api/ext/advanced_publisher.hxx \
+ /usr/local/include/zenoh/api/ext/advanced_subscriber.hxx \
+ /usr/local/include/zenoh/api/ext/miss.hxx \
+ /usr/local/include/zenoh/api/ext/publication_cache.hxx \
+ /usr/local/include/zenoh/api/ext/querying_subscriber.hxx \
+ /usr/include/c++/11/thread /usr/include/c++/11/bits/std_thread.h \
  /usr/include/c++/11/bits/this_thread_sleep.h /usr/include/c++/11/chrono \
  /usr/include/c++/11/ratio /usr/include/c++/11/limits

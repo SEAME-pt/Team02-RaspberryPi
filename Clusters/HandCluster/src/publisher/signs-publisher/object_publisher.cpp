@@ -41,60 +41,64 @@ int main() {
 
     // while(true)
     // {
-    //     std::cout << "Publishing Stop Sign" << std::endl;
-    //     stopSign_pub.put("true");
-    //     std::this_thread::sleep_for(std::chrono::seconds(5));
+        std::this_thread::sleep_for(std::chrono::seconds(5));
+        std::cout << "Publishing Traffic Light: " << "green" << std::endl;
+        trafficLight_pub.put("green");
+        std::this_thread::sleep_for(std::chrono::seconds(5));
+        // std::cout << "Publishing Traffic Light: " << currentTrafficLight << std::endl;
+        // trafficLight_pub.put("green");
+
     // }
     // Loop publishing signs
-    while (true) {
-        int choice = std::rand() % 10;
+    // while (true) {
+    //     int choice = std::rand() % 10;
         
-        if (choice == 0) {
-            std::cout << "Publishing Left Blinker ON" << std::endl;
-            left_blinker.put("1");
-        } else if (choice == 1) {
-            std::cout << "Publishing Right Blinker ON" << std::endl;
-            right_blinker.put("1");
-        } else if (choice == 2) {
-            std::cout << "Publishing Left Blinker OFF" << std::endl;
-            left_blinker.put("0");
-        } else if (choice == 3) {
-            std::cout << "Publishing Right Blinker OFF" << std::endl;
-            right_blinker.put("0");
-        } 
-        else if(choice == 5) {
-            std::cout << "Publishing Danger Sign" << std::endl;
-            dangerSign.put("true");
-        }
-        if (choice == 6) {
-            int speed = speedLimits[std::rand() % speedLimits.size()];
-            std::cout << "Publishing Speed Limit: " << speed << " km/h" << std::endl;
-            speedLimit_pub.put(std::to_string(speed));
-        } else if (choice == 7) {
-            std::cout << "Publishing Stop Sign" << std::endl;
-            stopSign_pub.put("true");
-        } else if (choice == 8) {
-            std::cout << "Publishing Yield Sign" << std::endl;
-            yieldSign_pub.put("true");
-        } else if (choice == 9) {
-            std::cout << "Publishing Pedestrian Zone" << std::endl;
-            pedestrianZone_pub.put("true");
-        } else {
-            trafficLightTimer++;
-            if (trafficLightTimer >= 5) { // Change traffic light every 5 iterations
-                if (currentTrafficLight == "red") {
-                    currentTrafficLight = "green";
-                } else if (currentTrafficLight == "green") {
-                    currentTrafficLight = "yellow";
-                } else {
-                    currentTrafficLight = "red";
-                }
-                std::cout << "Publishing Traffic Light: " << currentTrafficLight << std::endl;
-                trafficLight_pub.put(currentTrafficLight);
-                trafficLightTimer = 0;
-            }
-        }
-        std::this_thread::sleep_for(std::chrono::seconds(1));
-    }
+    //     if (choice == 0) {
+    //         std::cout << "Publishing Left Blinker ON" << std::endl;
+    //         left_blinker.put("1");
+    //     } else if (choice == 1) {
+    //         std::cout << "Publishing Right Blinker ON" << std::endl;
+    //         right_blinker.put("1");
+    //     } else if (choice == 2) {
+    //         std::cout << "Publishing Left Blinker OFF" << std::endl;
+    //         left_blinker.put("0");
+    //     } else if (choice == 3) {
+    //         std::cout << "Publishing Right Blinker OFF" << std::endl;
+    //         right_blinker.put("0");
+    //     } 
+    //     else if(choice == 5) {
+    //         std::cout << "Publishing Danger Sign" << std::endl;
+    //         dangerSign.put("true");
+    //     }
+    //     if (choice == 6) {
+    //         int speed = speedLimits[std::rand() % speedLimits.size()];
+    //         std::cout << "Publishing Speed Limit: " << speed << " km/h" << std::endl;
+    //         speedLimit_pub.put(std::to_string(speed));
+    //     } else if (choice == 7) {
+    //         std::cout << "Publishing Stop Sign" << std::endl;
+    //         stopSign_pub.put("true");
+    //     } else if (choice == 8) {
+    //         std::cout << "Publishing Yield Sign" << std::endl;
+    //         yieldSign_pub.put("true");
+    //     } else if (choice == 9) {
+    //         std::cout << "Publishing Pedestrian Zone" << std::endl;
+    //         pedestrianZone_pub.put("true");
+    //     } else {
+    //         trafficLightTimer++;
+    //         if (trafficLightTimer >= 5) { // Change traffic light every 5 iterations
+    //             if (currentTrafficLight == "red") {
+    //                 currentTrafficLight = "green";
+    //             } else if (currentTrafficLight == "green") {
+    //                 currentTrafficLight = "yellow";
+    //             } else {
+    //                 currentTrafficLight = "red";
+    //             }
+    //             std::cout << "Publishing Traffic Light: " << currentTrafficLight << std::endl;
+    //             trafficLight_pub.put(currentTrafficLight);
+    //             trafficLightTimer = 0;
+    //         }
+    //     }
+    //     std::this_thread::sleep_for(std::chrono::seconds(1));
+    // }
 }
 

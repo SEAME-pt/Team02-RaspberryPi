@@ -3,6 +3,9 @@ project(HandCluster)
 
 set(CMAKE_CXX_STANDARD 17)
 
+set(zenohc_DIR "/usr/local/lib/cmake/zenohc")
+set(zenohcxx_DIR "/usr/local/lib/cmake/zenohcxx")
+
 # Habilita suporte a Qt
 find_package(Qt5 COMPONENTS Core Quick DBus Test REQUIRED)
 find_package(zenohc REQUIRED)

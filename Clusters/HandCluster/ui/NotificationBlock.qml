@@ -73,7 +73,7 @@ Rectangle {
         PropertyAnimation { target: notificationBlock; property: "y"; to: -height + 10; duration: 300; easing.type: Easing.InQuad } // Adjusted to move up slightly
         onStopped: {
             visible = false;
-            instrumentCluster.warningCode = 0;
+            // instrumentCluster.warningCode = 0;
         }
     }
 

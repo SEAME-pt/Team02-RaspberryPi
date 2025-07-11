@@ -34,7 +34,9 @@ int main() {
 
 
 
-    while (true) {
+    // while (true) {
+
+        std::this_thread::sleep_for(std::chrono::milliseconds(5000));
 
         // Publish
         std::cout << "Publishing warning code..." << std::endl;
@@ -45,27 +47,26 @@ int main() {
         std::string warningCodeStr = std::to_string(warningCode);
         warning_pub.put(warningCodeStr);
         
-        // std::cout << "Publishing SAE Level 1..." << std::endl;
-        // sae1_pub.put("1");
+        // // std::cout << "Publishing SAE Level 1..." << std::endl;
+        // // sae1_pub.put("1");
 
-        std::cout << "Lane Departure to right" << std::endl;
-        laneDeparture_pub.put("20");
+        // std::cout << "Lane Departure to right" << std::endl;
+        // laneDeparture_pub.put("20");
 
-        // std::cout << "Lane Departure to left" << std::endl;
-        // laneDeparture_pub.put("10");
+        // // std::cout << "Lane Departure to left" << std::endl;
+        // // laneDeparture_pub.put("10");
 
-        // Simulate a delay before the next publication
-        std::this_thread::sleep_for(std::chrono::milliseconds(3000));
+        // // Simulate a delay before the next publication
+        // std::this_thread::sleep_for(std::chrono::milliseconds(3000));
 
-        // std::cout << "Lane Departure left off" << std::endl;
-        // laneDeparture_pub.put("11");
+        // // std::cout << "Lane Departure left off" << std::endl;
+        // // laneDeparture_pub.put("11");
 
 
-        std::cout << "Lane Departure right off" << std::endl;
-        laneDeparture_pub.put("21");
+        // std::cout << "Lane Departure right off" << std::endl;
+        // laneDeparture_pub.put("21");
 
-        std::this_thread::sleep_for(std::chrono::milliseconds(3000));
-    }
+    // }
 
     return 0;
 }

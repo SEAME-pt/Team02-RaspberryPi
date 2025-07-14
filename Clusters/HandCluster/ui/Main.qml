@@ -8,8 +8,8 @@ ApplicationWindow {
     property int letterSizeLoaded: 45
     width: 1280
     height: 400
-    // flags: Qt.Window | Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint
-    flags: Qt.Window | Qt.WindowStaysOnTopHint
+    flags: Qt.Window | Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint
+    // flags: Qt.Window | Qt.WindowStaysOnTopHint
 
     // visibility: Window.FullScreen
 
@@ -19,6 +19,8 @@ ApplicationWindow {
 
     property string fontPath1: Qt.resolvedUrl("file:/opt/vehicle/etc/fonts/electrolize.ttf")
     property bool fontExists: false
+    property bool objectStillPresent: false
+    property bool showEmergencyBrakeIcon: instrumentCluster.warningCode === 1
 
     FontLoader {
         id: customFont
@@ -95,7 +97,8 @@ ApplicationWindow {
     }
     
     NotificationBlock {
-        warningCode: instrumentCluster.warningCode
+        id: notificationBlock
+        // warningCode: instrumentCluster.warningCode
         fontFamily: customFont.status === FontLoader.Ready ? customFont.name : "default"
     }
 
@@ -134,18 +137,18 @@ ApplicationWindow {
         }
 
         Rectangle {
-            width: app.iconWidth - 17  
-            height: app.iconHeight - 17
+            width: app.iconWidth - 15  
+            height: app.iconHeight - 15
             color: "transparent"
             y: 5
 
             Image {
-                id: cruiseControlSignal
+                id: emergencyBrakingSignal
                 anchors.centerIn: parent
                 width: parent.width
                 height: parent.height
-                source: "../assets/icons/cruise-control.png"
-                visible: instrumentCluster.cruiseControl === true
+                source: "../assets/icons/brake.png"
+                visible: showEmergencyBrakeIcon
             }
         }
 
@@ -161,23 +164,56 @@ ApplicationWindow {
                 width: parent.width
                 height: parent.height
                 source: "../assets/icons/lane-departure.png"
-                visible: instrumentCluster.laneDeparture == 10 || instrumentCluster.laneDeparture == 20
+                visible: instrumentCluster.laneDeparture === 10 || instrumentCluster.laneDeparture === 20
+            }
+
+        }
+
+        Timer {
+            id: emergencyBrakeNotificationTimer
+            interval: 3000
+            running: false
+            repeat: false
+            onTriggered: {
+                notificationBlock.visible = false
+            }
+        }
+
+        Timer {
+            id: objectPresenceMonitor
+            interval: 1000
+            repeat: false
+            running: false
+            onTriggered: {
+                emergencyBrakeIconHideDelay.start()
+            }
+        }
+
+
+        Timer {
+            id: emergencyBrakeIconHideDelay
+            interval: 2000
+            running: false
+            repeat: false
+            onTriggered: {
+                showEmergencyBrakeIcon = false
+                instrumentCluster.warningCode = 0
             }
         }
 
         Rectangle {
-            width: app.iconWidth - 15  
-            height: app.iconHeight - 15
+            width: app.iconWidth - 17  
+            height: app.iconHeight - 17
             color: "transparent"
             y: 5
 
             Image {
-                id: emergencyBrakingSignal
+                id: cruiseControlSignal
                 anchors.centerIn: parent
                 width: parent.width
                 height: parent.height
-                source: "../assets/icons/brake.png"
-                visible: instrumentCluster.warningCode == 1
+                source: "../assets/icons/cruise-control.png"
+                visible: instrumentCluster.cruiseControl === true
             }
         }
     }

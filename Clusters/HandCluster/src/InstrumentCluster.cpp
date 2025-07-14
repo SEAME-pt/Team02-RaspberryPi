@@ -169,14 +169,20 @@ void InstrumentCluster::setupSubscriptions()
                 {
                     std::cout << "Received lane departure to left" << std::endl;
                     setLaneDeparture(10);
+                    std::cout << "Setting warning code to 2" << std::endl;
+                    setWarningCode(2);
                 } 
                 else if (isDeparting == 11) { //lane departure to left off
                     std::cout << "Received lane departure to left or right off" << std::endl;
                     setLaneDeparture(11);
+                    std::cout << "Setting warning code to 0" << std::endl;
+                    setWarningCode(0);
                 }
                 else if(isDeparting == 20) { //lane departure to right
                     std::cout << "Received lane departure to right" << std::endl;
                     setLaneDeparture(20);
+                    std::cout << "Setting warning code to 2" << std::endl;
+                    setWarningCode(2);
                 } 
             } catch (const std::exception& e) {
                 std::cerr << "Error parsing lane departure data: " << e.what() << std::endl;

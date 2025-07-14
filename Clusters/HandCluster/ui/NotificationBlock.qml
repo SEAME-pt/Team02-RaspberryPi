@@ -12,30 +12,31 @@ Rectangle {
     opacity: 0
     visible: false
     property string fontFamily: "default"
-
     property int warningCode: 0
-
     property string iconSource: ""
     property string messageText: ""
+    property bool emergencyBrakeAlreadyShown: false
 
     function updateNotification() {
+
+        showEmergencyBrakeIcon = false
+        iconSource = ""
+        messageText = ""
+
         switch (warningCode) {
             case 1:
                 iconSource = "../assets/icons/warning.png"
-                messageText = "Emergency braking activated!";
+                messageText = "Emergency braking activated!"
+                showEmergencyBrakeIcon = true
                 break;
-            case 10:
+            case 2:
                 iconSource = "../assets/icons/warning.png"
-                messageText = "Lane departure detected!";
-                break;
-            case 11:
-                iconSource = "../assets/icons/warning.png"
-                messageText = "Lane departure detected!";
+                messageText = "Lane departure detected!"
                 break;
         }
 
         if (iconSource !== "") {
-            showNotification();
+            showNotification()
         }
     }
 
@@ -55,10 +56,31 @@ Rectangle {
         target: instrumentCluster
 
         onWarningCodeChanged: {
-            notificationBlock.warningCode = instrumentCluster.warningCode;
-            notificationBlock.updateNotification();
+            if (instrumentCluster.warningCode === 1) {
+                if (!emergencyBrakeAlreadyShown) {
+                    emergencyBrakeAlreadyShown = true
+
+                    showEmergencyBrakeIcon = true
+                    notificationBlock.warningCode = 1
+                    notificationBlock.updateNotification()
+                    notificationBlock.visible = true
+
+                    emergencyBrakeNotificationTimer.restart()
+                    emergencyBrakeIconHideDelay.stop()
+                    objectPresenceMonitor.restart()
+                } else {
+                    // ainda está ativo, mas já mostramos — só mantemos o ícone
+                    showEmergencyBrakeIcon = true
+                    emergencyBrakeIconHideDelay.stop()
+                    objectPresenceMonitor.restart()
+                }
+            } else {
+                // Qualquer mudança que não seja warningCode 1: resetar flag
+                emergencyBrakeAlreadyShown = false
+            }
         }
     }
+
 
     // Animations
     SequentialAnimation {
@@ -73,13 +95,12 @@ Rectangle {
         PropertyAnimation { target: notificationBlock; property: "y"; to: -height + 10; duration: 300; easing.type: Easing.InQuad } // Adjusted to move up slightly
         onStopped: {
             visible = false;
-            // instrumentCluster.warningCode = 0;
         }
     }
 
     Timer {
         id: hideTimer
-        interval: 4000
+        interval: 3000
         running: false
         repeat: false
         onTriggered: hideNotification()

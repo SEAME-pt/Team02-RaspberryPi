@@ -13,7 +13,8 @@ int main(int argc, char* argv[])
     QQmlApplicationEngine engine;
 
     // Font configuration
-    int fontId = QFontDatabase::addApplicationFont("/usr/share/fonts/electrolize.ttf");
+    // int fontId = QFontDatabase::addApplicationFont("/usr/share/fonts/electrolize.ttf");
+    int fontId = QFontDatabase::addApplicationFont("RaspberryPi/Clusters/HandCluster/assets/fonts/electrolize.ttf");
 
     if (fontId == -1) {
         qWarning() << "Falha ao carregar a fonte!";

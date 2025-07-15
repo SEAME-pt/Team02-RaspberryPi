@@ -16,6 +16,7 @@ Rectangle {
     property string iconSource: ""
     property string messageText: ""
     property bool emergencyBrakeAlreadyShown: false
+    property bool laneDepartureAlreadyShown: false
 
     function updateNotification() {
 
@@ -23,6 +24,7 @@ Rectangle {
         iconSource = ""
         messageText = ""
 
+        console.log("Updating notification with warning code:", warningCode)
         switch (warningCode) {
             case 1:
                 iconSource = "../assets/icons/warning.png"
@@ -53,10 +55,11 @@ Rectangle {
     Component.onCompleted: updateNotification()
 
     Connections {
-        target: instrumentCluster
+    target: instrumentCluster
 
         onWarningCodeChanged: {
             if (instrumentCluster.warningCode === 1) {
+                // Emergency braking
                 if (!emergencyBrakeAlreadyShown) {
                     emergencyBrakeAlreadyShown = true
 
@@ -69,18 +72,36 @@ Rectangle {
                     emergencyBrakeIconHideDelay.stop()
                     objectPresenceMonitor.restart()
                 } else {
-                    // ainda está ativo, mas já mostramos — só mantemos o ícone
                     showEmergencyBrakeIcon = true
                     emergencyBrakeIconHideDelay.stop()
                     objectPresenceMonitor.restart()
                 }
+            } else if (instrumentCluster.warningCode === 2) {
+                // Lane departure
+                if (!laneDepartureAlreadyShown) {
+                    laneDepartureAlreadyShown = true
+
+                    notificationBlock.warningCode = 2
+                    notificationBlock.updateNotification()
+                    notificationBlock.visible = true
+                }
             } else {
-                // Qualquer mudança que não seja warningCode 1: resetar flag
+                // Reset flags when warning code is cleared (optional)
                 emergencyBrakeAlreadyShown = false
+                laneDepartureAlreadyShown = false
+            }
+        }
+    }   
+
+    Connections {
+        target: instrumentCluster
+
+        onLaneDepartureChanged: {
+            if (instrumentCluster.laneDeparture === 0) {
+                laneDepartureAlreadyShown = false
             }
         }
     }
-
 
     // Animations
     SequentialAnimation {

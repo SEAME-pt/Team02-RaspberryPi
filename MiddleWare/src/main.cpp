@@ -18,6 +18,15 @@
 
 using namespace zenoh;
 
+void shared_memory_publisher(const zenoh::Publisher &publisher, const zenoh::PosixShmProvider &provider, const std::string& value_str) {
+    const auto len = value_str.size() + 1;
+    auto alloc_result =
+        provider.alloc_gc_defrag_blocking(len, zenoh::AllocAlignment({0}));
+    zenoh::ZShmMut&& buf = std::get<zenoh::ZShmMut>(std::move(alloc_result));
+    memcpy(buf.data(), value_str.c_str(), len);
+    publisher.put(std::move(buf));
+}
+
 int main(int argc, char** argv)
 {
     std::vector<uint8_t> laneDataBuffer; 
@@ -77,6 +86,8 @@ int main(int argc, char** argv)
         close(canSocket);
         exit(1);
     }
+
+    auto provider = zenoh::MemoryLayout(65536, zenoh::AllocAlignment({2}));
 
     auto speed_pub =
         session->declare_publisher(zenoh::KeyExpr("Vehicle/1/Speed"));
@@ -166,7 +177,7 @@ int main(int argc, char** argv)
 
                 std::string speed_str = std::to_string(speed_kmh);
                 std::cout << "Publishing speed: " << speed_str << " km/h" << std::endl;
-                speed_pub.put(speed_str.c_str());
+                shared_memory_publisher(speed_pub, provider, speed_str);
             }
         }
         else if (frame.can_id == 0x02)
@@ -180,7 +191,7 @@ int main(int argc, char** argv)
             std::string battery_str = std::to_string(battery);
 
             std::cout << "Publishing battery state of charge: " << battery_str << "%" << std::endl;
-            state_of_charge_pub.put(battery_str.c_str());
+            shared_memory_publisher(state_of_charge_pub, provider, battery_str);
         }
         else if (frame.can_id >= 0x700 && frame.can_id <= 0x707)
         {
@@ -188,35 +199,35 @@ int main(int argc, char** argv)
             switch (frame.can_id)
             {
             case 0x700:
-                directionIndicatorLeft_pub.put(std::to_string(lightState));
+                shared_memory_publisher(directionIndicatorLeft_pub, provider, std::to_string(lightState));
                 std::cout << "Publishing Direction Indicator Left: " << lightState << std::endl;
                 break;
             case 0x701:
-                directionIndicatorRight_pub.put(std::to_string(lightState));
+                shared_memory_publisher(directionIndicatorRight_pub, provider, std::to_string(lightState));
                 std::cout << "Publishing Direction Indicator Right: " << lightState << std::endl;
                 break;
             case 0x702:
-                beamLow_pub.put(std::to_string(lightState));
+                shared_memory_publisher(beamLow_pub, provider, std::to_string(lightState));
                 std::cout << "Publishing Beam Low: " << lightState << std::endl;
                 break;
             case 0x703:
-                beamHigh_pub.put(std::to_string(lightState));
+                shared_memory_publisher(beamHigh_pub, provider, std::to_string(lightState));
                 std::cout << "Publishing Beam High: " << lightState << std::endl;
                 break;
             case 0x704:
-                fogFront_pub.put(std::to_string(lightState));
+                shared_memory_publisher(fogFront_pub, provider, std::to_string(lightState));
                 std::cout << "Publishing Fog Front: " << lightState << std::endl;
                 break;
             case 0x705:
-                fogRear_pub.put(std::to_string(lightState));
+                shared_memory_publisher(fogRear_pub, provider, std::to_string(lightState));
                 std::cout << "Publishing Fog Rear: " << lightState << std::endl;
                 break;
             case 0x706:
-                hazard_pub.put(std::to_string(lightState));
+                shared_memory_publisher(hazard_pub, provider, std::to_string(lightState));
                 std::cout << "Publishing Hazard: " << lightState << std::endl;
                 break;
             case 0x707:
-                parking_pub.put(std::to_string(lightState));
+                shared_memory_publisher(parking_pub, provider, std::to_string(lightState));
                 std::cout << "Publishing Parking: " << lightState << std::endl;
                 break;
             default:
@@ -231,7 +242,7 @@ int main(int argc, char** argv)
             memcpy(&gear, frame.data, sizeof(gear));
 
             std::cout << "Can received gear: " << gear << std::endl;
-            currentGear_pub.put(std::to_string(gear));
+            shared_memory_publisher(currentGear_pub, provider, std::to_string(gear));
         }
         if (frame.can_id == 0x100 || frame.can_id == 0x101)
         {
@@ -258,7 +269,7 @@ int main(int argc, char** argv)
                         stream << leftLane[i] << " ";
 
                     std::cout << "Publishing left lane: " << stream.str() << std::endl;
-                    left_lanes_pub.put(stream.str());
+                    shared_memory_publisher(left_lanes_pub, provider, stream.str());
                     std::fill(std::begin(leftReceived), std::end(leftReceived), false);
                 }
             }
@@ -274,90 +285,90 @@ int main(int argc, char** argv)
                         stream << rightLane[i] << " ";
                     
                     std::cout << "Publishing right lane: " << stream.str() << std::endl;
-                    right_lanes_pub.put(stream.str());
+                    shared_memory_publisher(right_lanes_pub, provider, stream.str());
                     std::fill(std::begin(rightReceived), std::end(rightReceived), false);
                 }
             }
         }
         else if (frame.can_id == 0x200)
-            obstacleWarning_pub.put("1");
+            shared_memory_publisher(obstacleWarning_pub, provider, "1");
         else if (frame.can_id == 0x301) //left lane departure
         {
             std::cout << "Publishing lane departure to left." << std::endl;
-            laneDeparture_pub.put("10");
+            shared_memory_publisher(laneDeparture_pub, provider, "10");
         }
         else if (frame.can_id == 0x302) //left lane departure off
         {
             std::cout << "Publishing lane departure to left or right off." << std::endl;
-            laneDeparture_pub.put("11"); 
+            shared_memory_publisher(laneDeparture_pub, provider, "11");
         }
         else if(frame.can_id == 0x303) //right lane departure
         {
             std::cout << "Publishing lane departure to right." << std::endl;
-            laneDeparture_pub.put("20"); 
+            shared_memory_publisher(laneDeparture_pub, provider, "20");
         }
         else if (frame.can_id == 0x400)
-            sae0_pub.put("0");
-        else if (frame.can_id == 0x401)
-            sae1_pub.put("1");
+            shared_memory_publisher(sae0_pub, provider, "0");
+            else if (frame.can_id == 0x401)
+            shared_memory_publisher(sae1_pub, provider, "1");
         else if (frame.can_id == 0x402)
-            sae2_pub.put("2");
+            shared_memory_publisher(sae2_pub, provider, "2");
         else if (frame.can_id == 0x405)
-            sae5_pub.put("5");
+            shared_memory_publisher(sae5_pub, provider, "5");
         else if (frame.can_id == 0x406)
         {
             std::cout << "Publishing cruise control activated." << std::endl;
-            cruise_control_pub.put("1");
+            shared_memory_publisher(cruise_control_pub, provider, "1");
         }
         else if (frame.can_id == 0x407)
         {
             std::cout << "Publishing cruise control deactivated." << std::endl;
-            cruise_control_pub.put("0");
+            shared_memory_publisher(cruise_control_pub, provider, "0");
         }
         else if (frame.can_id == 0x500)
         {
             std::cout << "Publishing speed limit: 50km/h" << std::endl;
-            speedLimit_pub.put("50");
+            shared_memory_publisher(speedLimit_pub, provider, "50");
         }
         else if (frame.can_id == 0x505)
         {
             std::cout << "Publishing speed limit: 80km/h" << std::endl;
-            speedLimit_pub.put("80");
+            shared_memory_publisher(speedLimit_pub, provider, "80");
         }
         else if (frame.can_id == 0x501)
         {
             std::cout << "Publishing stop sign detected. (11)" << std::endl;
-            stopSign_pub.put("1");
+            shared_memory_publisher(stopSign_pub, provider, "1");
         }
         else if (frame.can_id == 0x502)
         {
             std::cout << "Publishing yield sign detected (12)." << std::endl;
-            yieldSign_pub.put("1");
+            shared_memory_publisher(yieldSign_pub, provider, "1");
         }
         else if (frame.can_id == 0x503)
         {
             std::cout << "Publishing pedestrian zone sign detected. (13)" << std::endl;
-            pedestrianZone_pub.put("1");
+            shared_memory_publisher(pedestrianZone_pub, provider, "1");
         }
         else if (frame.can_id == 0x504)
         {
             std::cout << "Publishing danger sign detected. (17)" << std::endl;
-            dangerSign_pub.put("1");
+            shared_memory_publisher(dangerSign_pub, provider, "1");
         }
         else if (frame.can_id == 0x600)
         {
             std::cout << "Publishing traffic sign detected: yellow (14)" << std::endl;
-            trafficLight_pub.put("yellow");
+            shared_memory_publisher(trafficLight_pub, provider, "yellow");
         }
         else if (frame.can_id == 0x601)
         {
             std::cout << "Publishing traffic sign detected: green (15)" << std::endl;
-            trafficLight_pub.put("green");
+            shared_memory_publisher(trafficLight_pub, provider, "green");
         }
         else if (frame.can_id == 0x602)
         {
             std::cout << "Publishing traffic sign detected: red (16)" << std::endl;
-            trafficLight_pub.put("red");
+            shared_memory_publisher(trafficLight_pub, provider, "red");
         }
         
         usleep(10);

@@ -34,6 +34,7 @@ private:
     std::optional<zenoh::Publisher> directionIndicatorLeft_publisher_;
     std::optional<zenoh::Publisher> directionIndicatorRight_publisher_;
     std::optional<zenoh::Publisher> laneDeparture_publisher_;
+    std::optional<zenoh::Publisher> currentGear_publisher_;
     std::optional<zenoh::Publisher> current_voltage_publisher_;
     std::optional<zenoh::Publisher> current_current_publisher_;
     std::optional<zenoh::Publisher> current_power_publisher_;
@@ -373,8 +374,6 @@ int main(int argc, char** argv)
     }
     
     SHMPublishers publishers(session);
-
-    
 
     while (1)
     {

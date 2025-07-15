@@ -79,6 +79,7 @@ RUN { \
     libffi-dev \
     libsqlite3-dev \
     libbsd-dev \
+    libeigen3-dev \
     perl \
     patch \
     m4 \
@@ -151,7 +152,9 @@ RUN { \
     cd build && \
     cmake .. \
     -DCMAKE_INSTALL_PREFIX=/usr/local \
-    -DBUILD_SHARED_LIBS=FALSE && \
+    -DBUILD_SHARED_LIBS=FALSE \
+    -DZENOHC_BUILD_WITH_UNSTABLE_API=true \
+    -DZENOHC_BUILD_WITH_SHARED_MEMORY=true && \
     make -j$(nproc) && \
     make install && \
     cd ../.. && \

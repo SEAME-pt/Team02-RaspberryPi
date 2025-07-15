@@ -18,6 +18,8 @@ ApplicationWindow {
     property int iconHeight: 65
 
     property string fontPath1: Qt.resolvedUrl("file:/opt/vehicle/etc/fonts/electrolize.ttf")
+    // property string fontPath1: Qt.resolvedUrl("file:electrolize.ttf")
+
     property bool fontExists: false
     property bool objectStillPresent: false
     property bool showEmergencyBrakeIcon: instrumentCluster.warningCode === 1
@@ -98,7 +100,7 @@ ApplicationWindow {
     
     NotificationBlock {
         id: notificationBlock
-        // warningCode: instrumentCluster.warningCode
+        warningCode: instrumentCluster.warningCode
         fontFamily: customFont.status === FontLoader.Ready ? customFont.name : "default"
     }
 

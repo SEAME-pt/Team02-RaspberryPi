@@ -1,4 +1,4 @@
-FROM ruipires99/raspcrosscompile:latest
+FROM ruipires99/raspcrosscompile:0.0.3
 
 ARG projectDir
 

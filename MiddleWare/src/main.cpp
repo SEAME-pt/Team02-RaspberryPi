@@ -22,6 +22,7 @@ class SHMPublishers {
 private:
     std::shared_ptr<zenoh::Session> session_;
     std::optional<zenoh::PosixShmProvider> provider_;
+    std::optional<zenoh::Publisher> zenoh_speed_publisher_;
     std::optional<zenoh::Publisher> speed_publisher_;
     std::optional<zenoh::Publisher> beamLow_publisher_;
     std::optional<zenoh::Publisher> beamHigh_publisher_;

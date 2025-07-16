@@ -22,6 +22,7 @@ class SHMPublishers {
 private:
     std::shared_ptr<zenoh::Session> session_;
     std::optional<zenoh::PosixShmProvider> provider_;
+    std::optional<zenoh::Publisher> zenoh_speed_publisher_;
     std::optional<zenoh::Publisher> speed_publisher_;
     std::optional<zenoh::Publisher> beamLow_publisher_;
     std::optional<zenoh::Publisher> beamHigh_publisher_;
@@ -207,7 +208,8 @@ public:
     }
     void state_of_charge_publish(const std::string& value_str) {
         const auto len = value_str.size() + 1;
-        auto alloc_result = provider_->alloc_gc_defrag_blocking(len, zenoh::AllocAlignment({0}));
+        auto alloc_result =
+            provider_->alloc_gc_defrag_blocking(len, zenoh::AllocAlignment({0}));
         zenoh::ZShmMut&& buf = std::get<zenoh::ZShmMut>(std::move(alloc_result));
         memcpy(buf.data(), value_str.c_str(), len);
         state_of_charge_publisher_->put(std::move(buf));

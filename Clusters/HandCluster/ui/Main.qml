@@ -12,7 +12,6 @@ ApplicationWindow {
     // flags: Qt.Window | Qt.WindowStaysOnTopHint
 
     visibility: Window.FullScreen
-    visibility: Window.Windowed
     property int iconWidth: 65
     property int iconHeight: 65
 

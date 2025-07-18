@@ -142,30 +142,17 @@ int main() {
     sae5_pub.put("1"); sleepMs(1500);
     sae2_pub.put("1"); sleepMs(1500);
 
-    for (int i = 0; i < 20; ++i) {
-        laneDeparture_pub.put("10");
-        sleepMs(500);
-    }
-    laneDeparture_pub.put("11"); sleepMs(500);
-    warning_pub.put("1"); sleepMs(5000);
+    warning_pub.put("1"); sleepMs(2000);
 
-    // Lane departure left/right
-    // laneDeparture_pub.put("10"); sleepMs(3000);
-    // laneDeparture_pub.put("11"); sleepMs(500);
-    laneDeparture_pub.put("20"); sleepMs(3000);
+    laneDeparture_pub.put("20"); sleepMs(2000);
     laneDeparture_pub.put("11");
 
-    // Emergency braking
-    for (int i = 0; i < 20; ++i) {
-        laneDeparture_pub.put("10");
-        sleepMs(500);
-    }
-    laneDeparture_pub.put("11"); sleepMs(500);
-    sleepMs(2000);
-        // Blinkers
-    leftBlinker_pub.put("1"); sleepMs(3000);
+    laneDeparture_pub.put("10"); sleepMs(2000);
+    laneDeparture_pub.put("11"); 
+
+    leftBlinker_pub.put("1"); sleepMs(2000);
     leftBlinker_pub.put("0"); sleepMs(1000);
-    rightBlinker_pub.put("1"); sleepMs(3000);
+    rightBlinker_pub.put("1"); sleepMs(2000);
     rightBlinker_pub.put("0"); sleepMs(1000);
 
     // Traffic signs

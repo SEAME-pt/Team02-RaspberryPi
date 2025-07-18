@@ -53,7 +53,7 @@ This project offers hands-on experience with software engineering, embedded syst
 | <img src="assets/assist-navigate-driving-on.png" height="40"/> | Navigation assist is active – the vehicle is following a planned route with high automation. **SAE Level 5** |
 | <img src="assets/assist-steer-on.png" height="40"/> | Steering assist is active – the system provides partial control over steering. **SAE Level 2** |
 | <img src="assets/brake.png" height="40"/> | Brake system – indicates automatic or assisted braking is engaged. |
-| <img src="assets/cruise-control.png" height="40"/> | Cruise control is active – maintains constant speed without pedal input. |
+| <img src="assets/cruise-control1.png" height="40"/> | Cruise control is active – maintains constant speed without pedal input. |
 | <img src="assets/lane-departure.png" height="40"/> | Lane departure warning – alerts the driver when drifting out of the lane. |
 
 

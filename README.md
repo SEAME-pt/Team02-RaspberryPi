@@ -4,10 +4,10 @@
   <h1 align="center">Instrument Cluster</h1>
   <p align="center">
     A real-time vehicle speed and data display.
+    <p>
     <br />
-    <img src="assets/demo.gif" alt="Cluster Demo" width="600" />
+    <img src="assets/demo.gif" alt="Cluster Demo" width="1280" />
     <br />
-    ·
     <a href="https://github.com/SEAME-pt/Team02-Cluster/issues/new?labels=bug&template=bug-report.yml">Report Bug</a>
     ·
     <a href="https://github.com/SEAME-pt/Team02-Cluster/issues/new?labels=enhancement&template=feature-request.yml">Request Feature</a>

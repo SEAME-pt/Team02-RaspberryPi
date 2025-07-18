@@ -46,7 +46,7 @@ ApplicationWindow {
     Rectangle {
         width: parent.width
         height: parent.height
-        color: "#252525"
+        color: "#2c2c2c"  // cinza médio
     }
 
     LaneLines {
@@ -68,15 +68,16 @@ ApplicationWindow {
         anchors.topMargin: 50
     }
 
-    Image { 
+    Image {
         id: carImage
         width: parent.width * 1/4
-        height: parent.height * 0.6
+        height: parent.height * 0.7
         source: "../assets/images/car.png"
         anchors.horizontalCenter: parent.horizontalCenter
-        anchors.bottom: parent.bottom 
-        anchors.bottomMargin: -25
-        // anchors.verticalCenter: parent.verticalCenter
+        // anchors.bottom: parent.bottom 
+        fillMode: Image.PreserveAspectFit
+        anchors.verticalCenter: parent.verticalCenter
+        anchors.verticalCenterOffset: 110  // Aumente para mais abaixo
     }
 
     SpeedDisplay {
@@ -226,15 +227,18 @@ ApplicationWindow {
         iconWidth: app.iconWidth
         iconHeight: app.iconHeight
     }
+
     Rectangle {
         id: leftLaneDiagonal
-        width: 13
+        width: 7
         height: parent.height * 0.70
         anchors.verticalCenter: carImage.verticalCenter
+        anchors.horizontalCenter: carImage.horizontalCenter
+        anchors.horizontalCenterOffset: -40
         rotation: 35
-        transformOrigin: Item.TopLeft
-        x: carImage.x + 130
-        border.color: "black"
+        transformOrigin: Item.Top
+
+        border.width: 0
 
         gradient: Gradient {
             GradientStop {
@@ -243,7 +247,8 @@ ApplicationWindow {
             }
             GradientStop {
                 position: 1.0
-                color: instrumentCluster.laneDeparture === 10 ? "#972727" : "#5c5c5c"
+                color: instrumentCluster.laneDeparture === 10 ? "#972727" : "#a5a4a4"
+                
             }
         }
 
@@ -255,14 +260,14 @@ ApplicationWindow {
 
     Rectangle {
         id: rightLaneDiagonal
-        width: 13
+        width: 7
         height: parent.height * 0.70
         anchors.verticalCenter: carImage.verticalCenter
+        anchors.horizontalCenter: carImage.horizontalCenter
+        anchors.horizontalCenterOffset: 40
         rotation: -35
-        transformOrigin: Item.TopRight
-        x: carImage.x + carImage.width - 100
-        border.color: "black"
-        border.width: 1
+        transformOrigin: Item.Top
+        border.width: 0
 
         gradient: Gradient {
             GradientStop {
@@ -271,7 +276,7 @@ ApplicationWindow {
             }
             GradientStop {
                 position: 1.0
-                color: instrumentCluster.laneDeparture === 20 ?  "#972727" : "#5c5c5c"
+                color: instrumentCluster.laneDeparture === 20 ?  "#972727" : "#a5a4a4"
             }
         }
 
@@ -280,6 +285,7 @@ ApplicationWindow {
             onLaneDepartureChanged: rightLaneDiagonal.update()
         }
     }
+
 
     Rectangle {
         id: roadBackground

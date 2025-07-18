@@ -113,20 +113,24 @@ Item {
         }
     }
 
-    // SPEED LIMIT SIGNS
     Item {
         anchors.centerIn: parent
         anchors.verticalCenterOffset: -100
-        anchors.horizontalCenterOffset: -10
         z: 102
 
-        Repeater {
-            model: speedSigns
-            delegate: Image {
-                width: iconWidth
-                height: iconHeight
-                source: model.source
-                fillMode: Image.PreserveAspectFit
+        Row {
+            id: speedSignRow
+            anchors.horizontalCenter: parent.horizontalCenter
+            spacing: 10
+
+            Repeater {
+                model: speedSigns
+                delegate: Image {
+                    width: iconWidth
+                    height: iconHeight
+                    source: model.source
+                    fillMode: Image.PreserveAspectFit
+                }
             }
         }
     }

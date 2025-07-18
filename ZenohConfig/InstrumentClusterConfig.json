@@ -1,7 +1,7 @@
 {
     "mode": "peer",
     "connect": {
-        "endpoints": ["tcp/127.0.0.1:7448"]
+        "endpoints": []
     },
     "listen": {
         "endpoints": ["tcp/127.0.0.1:7447"]

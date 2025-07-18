@@ -109,7 +109,6 @@ int main() {
     auto config = Config::create_default();
     auto session = std::make_shared<zenoh::Session>(Session::open(std::move(config)));
 
-    // Declare publishers
     auto warning_pub         = session->declare_publisher("Vehicle/1/ADAS/ObstacleDetection/Warning");
     auto laneDeparture_pub   = session->declare_publisher("Vehicle/1/ADAS/LaneDeparture/Detected");
     auto sae1_pub            = session->declare_publisher("Vehicle/1/ADAS/ActiveAutonomyLevel/SAE_1");
@@ -127,7 +126,6 @@ int main() {
     auto leftBlinker_pub     = session->declare_publisher("Vehicle/1/Body/Lights/DirectionIndicator/Left");
     auto rightBlinker_pub    = session->declare_publisher("Vehicle/1/Body/Lights/DirectionIndicator/Right");
 
-    // Start background thread for speed + gear
     std::thread background([&]() {
         while (true) {
             speed_pub.put("2");         // Constant 2 km/h
@@ -137,38 +135,37 @@ int main() {
         }
     });
 
-    // Main sequence
     sae1_pub.put("1"); sleepMs(1500);
     sae5_pub.put("1"); sleepMs(1500);
     sae2_pub.put("1"); sleepMs(1500);
 
     warning_pub.put("1"); sleepMs(2000);
-
-    laneDeparture_pub.put("20"); sleepMs(2000);
+    sleepMs(2000);
+    laneDeparture_pub.put("20"); sleepMs(2500);
     laneDeparture_pub.put("11");
-
-    laneDeparture_pub.put("10"); sleepMs(2000);
+    sleepMs(2000);
+    laneDeparture_pub.put("10"); sleepMs(2500);
     laneDeparture_pub.put("11"); 
 
-    leftBlinker_pub.put("1"); sleepMs(2000);
+    leftBlinker_pub.put("1"); sleepMs(2500);
     leftBlinker_pub.put("0"); sleepMs(1000);
-    rightBlinker_pub.put("1"); sleepMs(2000);
+    rightBlinker_pub.put("1"); sleepMs(2500);
     rightBlinker_pub.put("0"); sleepMs(1000);
 
     // Traffic signs
-    sign_pub.put("30"); sleepMs(1500);
     sign_pub.put("80"); sleepMs(1500);
     stopSign_pub.put("1"); sleepMs(1000);
     yieldSign_pub.put("1"); sleepMs(1000);
     pedestrianSign_pub.put("1"); sleepMs(1000);
     dangerSign_pub.put("1"); sleepMs(1000);
+    sign_pub.put("50"); sleepMs(1500);
 
     // Traffic lights
-    trafficLight_pub.put("green"); sleepMs(1500);
-    trafficLight_pub.put("yellow"); sleepMs(1500);
-    trafficLight_pub.put("red"); sleepMs(1500);
+    trafficLight_pub.put("green"); sleepMs(2000);
+    trafficLight_pub.put("yellow"); sleepMs(2000);
+    trafficLight_pub.put("red"); sleepMs(2000);
 
     std::cout << "Demo sequence completed." << std::endl;
-    background.detach(); // Keep background running if you want ongoing data
+    background.detach();
     return 0;
 }

@@ -5,7 +5,7 @@
   <p align="center">
     A real-time vehicle speed and data display.
     <br />
-    [GIF]
+    ![Cluster Demo](assets/demo.gif)
     <br />
     ·
     <a href="https://github.com/SEAME-pt/Team02-Cluster/issues/new?labels=bug&template=bug-report.yml">Report Bug</a>

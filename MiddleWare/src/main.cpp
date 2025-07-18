@@ -18,6 +18,301 @@
 
 using namespace zenoh;
 
+class SHMPublishers {
+private:
+    std::shared_ptr<zenoh::Session> session_;
+    std::optional<zenoh::PosixShmProvider> provider_;
+    std::optional<zenoh::Publisher> zenoh_speed_publisher_;
+    std::optional<zenoh::Publisher> speed_publisher_;
+    std::optional<zenoh::Publisher> beamLow_publisher_;
+    std::optional<zenoh::Publisher> beamHigh_publisher_;
+    std::optional<zenoh::Publisher> running_publisher_;
+    std::optional<zenoh::Publisher> parking_publisher_;
+    std::optional<zenoh::Publisher> fogRear_publisher_;
+    std::optional<zenoh::Publisher> fogFront_publisher_;
+    std::optional<zenoh::Publisher> brake_publisher_;
+    std::optional<zenoh::Publisher> hazard_publisher_;
+    std::optional<zenoh::Publisher> directionIndicatorLeft_publisher_;
+    std::optional<zenoh::Publisher> directionIndicatorRight_publisher_;
+    std::optional<zenoh::Publisher> laneDeparture_publisher_;
+    std::optional<zenoh::Publisher> current_voltage_publisher_;
+    std::optional<zenoh::Publisher> current_current_publisher_;
+    std::optional<zenoh::Publisher> current_power_publisher_;
+    std::optional<zenoh::Publisher> state_of_charge_publisher_;
+    std::optional<zenoh::Publisher> right_lanes_publisher_;
+    std::optional<zenoh::Publisher> left_lanes_publisher_;
+    std::optional<zenoh::Publisher> obstacleWarning_publisher_;
+    std::optional<zenoh::Publisher> sae0_publisher_;
+    std::optional<zenoh::Publisher> sae1_publisher_;
+    std::optional<zenoh::Publisher> sae2_publisher_;
+    std::optional<zenoh::Publisher> sae5_publisher_;
+    std::optional<zenoh::Publisher> cruise_control_publisher_;
+    std::optional<zenoh::Publisher> speedLimit_publisher_;
+    std::optional<zenoh::Publisher> stopSign_publisher_;
+    std::optional<zenoh::Publisher> yieldSign_publisher_;
+    std::optional<zenoh::Publisher> pedestrianZone_publisher_;
+    std::optional<zenoh::Publisher> trafficLight_publisher_;
+    std::optional<zenoh::Publisher> dangerSign_publisher_;
+
+public:
+    SHMPublishers(std::shared_ptr<zenoh::Session> session) {
+        session_ = session;
+        provider_.emplace(zenoh::MemoryLayout(65536, zenoh::AllocAlignment({2})));
+
+        speed_publisher_.emplace(session_->declare_publisher(zenoh::KeyExpr("Vehicle/1/Speed")));
+        beamLow_publisher_.emplace(session_->declare_publisher(zenoh::KeyExpr("Vehicle/1/Body/Lights/Beam/Low")));
+        beamHigh_publisher_.emplace(session_->declare_publisher(zenoh::KeyExpr("Vehicle/1/Body/Lights/Beam/High")));
+        running_publisher_.emplace(session_->declare_publisher(zenoh::KeyExpr("Vehicle/1/Body/Lights/Running")));
+        parking_publisher_.emplace(session_->declare_publisher(zenoh::KeyExpr("Vehicle/1/Body/Lights/Parking")));
+        fogRear_publisher_.emplace(session_->declare_publisher(zenoh::KeyExpr("Vehicle/1/Body/Lights/Fog/Rear")));
+        fogFront_publisher_.emplace(session_->declare_publisher(zenoh::KeyExpr("Vehicle/1/Body/Lights/Fog/Front")));
+        brake_publisher_.emplace(session_->declare_publisher(zenoh::KeyExpr("Vehicle/1/Body/Lights/Brake")));
+        hazard_publisher_.emplace(session_->declare_publisher(zenoh::KeyExpr("Vehicle/1/Body/Lights/Hazard")));
+        directionIndicatorLeft_publisher_.emplace(session_->declare_publisher(zenoh::KeyExpr("Vehicle/1/Body/Lights/DirectionIndicator/Left")));
+        directionIndicatorRight_publisher_.emplace(session_->declare_publisher(zenoh::KeyExpr("Vehicle/1/Body/Lights/DirectionIndicator/Right")));
+        laneDeparture_publisher_.emplace(session_->declare_publisher(zenoh::KeyExpr("Vehicle/1/ADAS/LaneDeparture/Detected")));
+        currentGear_publisher_.emplace(session_->declare_publisher(zenoh::KeyExpr("Vehicle/1/Powertrain/Transmission/CurrentGear")));
+        current_voltage_publisher_.emplace(session_->declare_publisher(zenoh::KeyExpr("Vehicle/1/Powertrain/TractionBattery/CurentVoltage")));
+        current_current_publisher_.emplace(session_->declare_publisher(zenoh::KeyExpr("Vehicle/1/Powertrain/TractionBattery/CurrentCurrent")));
+        current_power_publisher_.emplace(session_->declare_publisher(zenoh::KeyExpr("Vehicle/1/Powertrain/TractionBattery/CurrentPower")));
+        state_of_charge_publisher_.emplace(session_->declare_publisher(zenoh::KeyExpr("Vehicle/1/Powertrain/TractionBattery/StateOfCharge")));
+        right_lanes_publisher_.emplace(session_->declare_publisher(zenoh::KeyExpr("Vehicle/1/Scene/Lanes/Right")));
+        left_lanes_publisher_.emplace(session_->declare_publisher(zenoh::KeyExpr("Vehicle/1/Scene/Lanes/Left")));
+        obstacleWarning_publisher_.emplace(session_->declare_publisher(zenoh::KeyExpr("Vehicle/1/ADAS/ObstacleDetection/Warning")));
+        sae0_publisher_.emplace(session_->declare_publisher(zenoh::KeyExpr("Vehicle/1/ADAS/ActiveAutonomyLevel/SAE_0")));
+        sae1_publisher_.emplace(session_->declare_publisher(zenoh::KeyExpr("Vehicle/1/ADAS/ActiveAutonomyLevel/SAE_1")));
+        sae2_publisher_.emplace(session_->declare_publisher(zenoh::KeyExpr("Vehicle/1/ADAS/ActiveAutonomyLevel/SAE_2")));
+        sae5_publisher_.emplace(session_->declare_publisher(zenoh::KeyExpr("Vehicle/1/ADAS/ActiveAutonomyLevel/SAE_5")));
+        cruise_control_publisher_.emplace(session_->declare_publisher(zenoh::KeyExpr("Vehicle/1/ADAS/ActiveAutonomyLevel/CruiseControl")));
+        speedLimit_publisher_.emplace(session_->declare_publisher(zenoh::KeyExpr("Vehicle/1/Environment/RoadSigns/SpeedLimit")));
+        stopSign_publisher_.emplace(session_->declare_publisher(zenoh::KeyExpr("Vehicle/1/Environment/RoadSigns/Stop")));
+        yieldSign_publisher_.emplace(session_->declare_publisher(zenoh::KeyExpr("Vehicle/1/Environment/RoadSigns/Yield")));
+        pedestrianZone_publisher_.emplace(session_->declare_publisher(zenoh::KeyExpr("Vehicle/1/Environment/RoadSigns/PedestrianZone")));
+        trafficLight_publisher_.emplace(session_->declare_publisher(zenoh::KeyExpr("Vehicle/1/Environment/RoadSigns/TrafficLight")));
+        dangerSign_publisher_.emplace(session_->declare_publisher(zenoh::KeyExpr("Vehicle/1/Environment/RoadSigns/DangerSign")));
+    }
+
+    void speed_publisher(const std::string& value_str) {
+        const auto len = value_str.size() + 1;
+        auto alloc_result =
+            provider_->alloc_gc_defrag_blocking(len, zenoh::AllocAlignment({0}));
+        zenoh::ZShmMut&& buf = std::get<zenoh::ZShmMut>(std::move(alloc_result));
+        memcpy(buf.data(), value_str.c_str(), len);
+        speed_publisher_->put(std::move(buf));
+    }
+    void beamLow_publish(const std::string& value_str) {
+        const auto len = value_str.size() + 1;
+        auto alloc_result = provider_->alloc_gc_defrag_blocking(len, zenoh::AllocAlignment({0}));
+        zenoh::ZShmMut&& buf = std::get<zenoh::ZShmMut>(std::move(alloc_result));
+        memcpy(buf.data(), value_str.c_str(), len);
+        beamLow_publisher_->put(std::move(buf));
+    }
+    void beamHigh_publish(const std::string& value_str) {
+        const auto len = value_str.size() + 1;
+        auto alloc_result = provider_->alloc_gc_defrag_blocking(len, zenoh::AllocAlignment({0}));
+        zenoh::ZShmMut&& buf = std::get<zenoh::ZShmMut>(std::move(alloc_result));
+        memcpy(buf.data(), value_str.c_str(), len);
+        beamHigh_publisher_->put(std::move(buf));
+    }
+    void running_publish(const std::string& value_str) {
+        const auto len = value_str.size() + 1;
+        auto alloc_result = provider_->alloc_gc_defrag_blocking(len, zenoh::AllocAlignment({0}));
+        zenoh::ZShmMut&& buf = std::get<zenoh::ZShmMut>(std::move(alloc_result));
+        memcpy(buf.data(), value_str.c_str(), len);
+        running_publisher_->put(std::move(buf));
+    }
+    void parking_publish(const std::string& value_str) {
+        const auto len = value_str.size() + 1;
+        auto alloc_result = provider_->alloc_gc_defrag_blocking(len, zenoh::AllocAlignment({0}));
+        zenoh::ZShmMut&& buf = std::get<zenoh::ZShmMut>(std::move(alloc_result));
+        memcpy(buf.data(), value_str.c_str(), len);
+        parking_publisher_->put(std::move(buf));
+    }
+    void fogRear_publish(const std::string& value_str) {
+        const auto len = value_str.size() + 1;
+        auto alloc_result = provider_->alloc_gc_defrag_blocking(len, zenoh::AllocAlignment({0}));
+        zenoh::ZShmMut&& buf = std::get<zenoh::ZShmMut>(std::move(alloc_result));
+        memcpy(buf.data(), value_str.c_str(), len);
+        fogRear_publisher_->put(std::move(buf));
+    }
+    void fogFront_publish(const std::string& value_str) {
+        const auto len = value_str.size() + 1;
+        auto alloc_result = provider_->alloc_gc_defrag_blocking(len, zenoh::AllocAlignment({0}));
+        zenoh::ZShmMut&& buf = std::get<zenoh::ZShmMut>(std::move(alloc_result));
+        memcpy(buf.data(), value_str.c_str(), len);
+        fogFront_publisher_->put(std::move(buf));
+    }
+    void brake_publish(const std::string& value_str) {
+        const auto len = value_str.size() + 1;
+        auto alloc_result = provider_->alloc_gc_defrag_blocking(len, zenoh::AllocAlignment({0}));
+        zenoh::ZShmMut&& buf = std::get<zenoh::ZShmMut>(std::move(alloc_result));
+        memcpy(buf.data(), value_str.c_str(), len);
+        brake_publisher_->put(std::move(buf));
+    }
+    void hazard_publish(const std::string& value_str) {
+        const auto len = value_str.size() + 1;
+        auto alloc_result = provider_->alloc_gc_defrag_blocking(len, zenoh::AllocAlignment({0}));
+        zenoh::ZShmMut&& buf = std::get<zenoh::ZShmMut>(std::move(alloc_result));
+        memcpy(buf.data(), value_str.c_str(), len);
+        hazard_publisher_->put(std::move(buf));
+    }
+    void directionIndicatorLeft_publish(const std::string& value_str) {
+        const auto len = value_str.size() + 1;
+        auto alloc_result = provider_->alloc_gc_defrag_blocking(len, zenoh::AllocAlignment({0}));
+        zenoh::ZShmMut&& buf = std::get<zenoh::ZShmMut>(std::move(alloc_result));
+        memcpy(buf.data(), value_str.c_str(), len);
+        directionIndicatorLeft_publisher_->put(std::move(buf));
+    }
+    void directionIndicatorRight_publish(const std::string& value_str) {
+        const auto len = value_str.size() + 1;
+        auto alloc_result = provider_->alloc_gc_defrag_blocking(len, zenoh::AllocAlignment({0}));
+        zenoh::ZShmMut&& buf = std::get<zenoh::ZShmMut>(std::move(alloc_result));
+        memcpy(buf.data(), value_str.c_str(), len);
+        directionIndicatorRight_publisher_->put(std::move(buf));
+    }
+    void laneDeparture_publish(const std::string& value_str) {
+        const auto len = value_str.size() + 1;
+        auto alloc_result = provider_->alloc_gc_defrag_blocking(len, zenoh::AllocAlignment({0}));
+        zenoh::ZShmMut&& buf = std::get<zenoh::ZShmMut>(std::move(alloc_result));
+        memcpy(buf.data(), value_str.c_str(), len);
+        laneDeparture_publisher_->put(std::move(buf));
+    }
+    void currentGear_publish(const std::string& value_str) {
+        const auto len = value_str.size() + 1;
+        auto alloc_result = provider_->alloc_gc_defrag_blocking(len, zenoh::AllocAlignment({0}));
+        zenoh::ZShmMut&& buf = std::get<zenoh::ZShmMut>(std::move(alloc_result));
+        memcpy(buf.data(), value_str.c_str(), len);
+        currentGear_publisher_->put(std::move(buf));
+    }
+    void current_voltage_publish(const std::string& value_str) {
+        const auto len = value_str.size() + 1;
+        auto alloc_result = provider_->alloc_gc_defrag_blocking(len, zenoh::AllocAlignment({0}));
+        zenoh::ZShmMut&& buf = std::get<zenoh::ZShmMut>(std::move(alloc_result));
+        memcpy(buf.data(), value_str.c_str(), len);
+        current_voltage_publisher_->put(std::move(buf));
+    }
+    void current_current_publish(const std::string& value_str) {
+        const auto len = value_str.size() + 1;
+        auto alloc_result = provider_->alloc_gc_defrag_blocking(len, zenoh::AllocAlignment({0}));
+        zenoh::ZShmMut&& buf = std::get<zenoh::ZShmMut>(std::move(alloc_result));
+        memcpy(buf.data(), value_str.c_str(), len);
+        current_current_publisher_->put(std::move(buf));
+    }
+    void current_power_publish(const std::string& value_str) {
+        const auto len = value_str.size() + 1;
+        auto alloc_result = provider_->alloc_gc_defrag_blocking(len, zenoh::AllocAlignment({0}));
+        zenoh::ZShmMut&& buf = std::get<zenoh::ZShmMut>(std::move(alloc_result));
+        memcpy(buf.data(), value_str.c_str(), len);
+        current_power_publisher_->put(std::move(buf));
+    }
+    void state_of_charge_publish(const std::string& value_str) {
+        const auto len = value_str.size() + 1;
+        auto alloc_result =
+            provider_->alloc_gc_defrag_blocking(len, zenoh::AllocAlignment({0}));
+        zenoh::ZShmMut&& buf = std::get<zenoh::ZShmMut>(std::move(alloc_result));
+        memcpy(buf.data(), value_str.c_str(), len);
+        state_of_charge_publisher_->put(std::move(buf));
+    }
+    void right_lanes_publish(const std::string& value_str) {
+        const auto len = value_str.size() + 1;
+        auto alloc_result = provider_->alloc_gc_defrag_blocking(len, zenoh::AllocAlignment({0}));
+        zenoh::ZShmMut&& buf = std::get<zenoh::ZShmMut>(std::move(alloc_result));
+        memcpy(buf.data(), value_str.c_str(), len);
+        right_lanes_publisher_->put(std::move(buf));
+    }
+    void left_lanes_publish(const std::string& value_str) {
+        const auto len = value_str.size() + 1;
+        auto alloc_result = provider_->alloc_gc_defrag_blocking(len, zenoh::AllocAlignment({0}));
+        zenoh::ZShmMut&& buf = std::get<zenoh::ZShmMut>(std::move(alloc_result));
+        memcpy(buf.data(), value_str.c_str(), len);
+        left_lanes_publisher_->put(std::move(buf));
+    }
+    void obstacleWarning_publish(const std::string& value_str) {
+        const auto len = value_str.size() + 1;
+        auto alloc_result = provider_->alloc_gc_defrag_blocking(len, zenoh::AllocAlignment({0}));
+        zenoh::ZShmMut&& buf = std::get<zenoh::ZShmMut>(std::move(alloc_result));
+        memcpy(buf.data(), value_str.c_str(), len);
+        obstacleWarning_publisher_->put(std::move(buf));
+    }
+    void sae0_publish(const std::string& value_str) {
+        const auto len = value_str.size() + 1;
+        auto alloc_result = provider_->alloc_gc_defrag_blocking(len, zenoh::AllocAlignment({0}));
+        zenoh::ZShmMut&& buf = std::get<zenoh::ZShmMut>(std::move(alloc_result));
+        memcpy(buf.data(), value_str.c_str(), len);
+        sae0_publisher_->put(std::move(buf));
+    }
+    void sae1_publish(const std::string& value_str) {
+        const auto len = value_str.size() + 1;
+        auto alloc_result = provider_->alloc_gc_defrag_blocking(len, zenoh::AllocAlignment({0}));
+        zenoh::ZShmMut&& buf = std::get<zenoh::ZShmMut>(std::move(alloc_result));
+        memcpy(buf.data(), value_str.c_str(), len);
+        sae1_publisher_->put(std::move(buf));
+    }
+    void sae2_publish(const std::string& value_str) {
+        const auto len = value_str.size() + 1;
+        auto alloc_result = provider_->alloc_gc_defrag_blocking(len, zenoh::AllocAlignment({0}));
+        zenoh::ZShmMut&& buf = std::get<zenoh::ZShmMut>(std::move(alloc_result));
+        memcpy(buf.data(), value_str.c_str(), len);
+        sae2_publisher_->put(std::move(buf));
+    }
+    void sae5_publish(const std::string& value_str) {
+        const auto len = value_str.size() + 1;
+        auto alloc_result = provider_->alloc_gc_defrag_blocking(len, zenoh::AllocAlignment({0}));
+        zenoh::ZShmMut&& buf = std::get<zenoh::ZShmMut>(std::move(alloc_result));
+        memcpy(buf.data(), value_str.c_str(), len);
+        sae5_publisher_->put(std::move(buf));
+    }
+    void cruise_control_publish(const std::string& value_str) {
+        const auto len = value_str.size() + 1;
+        auto alloc_result = provider_->alloc_gc_defrag_blocking(len, zenoh::AllocAlignment({0}));
+        zenoh::ZShmMut&& buf = std::get<zenoh::ZShmMut>(std::move(alloc_result));
+        memcpy(buf.data(), value_str.c_str(), len);
+        cruise_control_publisher_->put(std::move(buf));
+    }
+    void speedLimit_publish(const std::string& value_str) {
+        const auto len = value_str.size() + 1;
+        auto alloc_result = provider_->alloc_gc_defrag_blocking(len, zenoh::AllocAlignment({0}));
+        zenoh::ZShmMut&& buf = std::get<zenoh::ZShmMut>(std::move(alloc_result));
+        memcpy(buf.data(), value_str.c_str(), len);
+        speedLimit_publisher_->put(std::move(buf));
+    }
+    void stopSign_publish(const std::string& value_str) {
+        const auto len = value_str.size() + 1;
+        auto alloc_result = provider_->alloc_gc_defrag_blocking(len, zenoh::AllocAlignment({0}));
+        zenoh::ZShmMut&& buf = std::get<zenoh::ZShmMut>(std::move(alloc_result));
+        memcpy(buf.data(), value_str.c_str(), len);
+        stopSign_publisher_->put(std::move(buf));
+    }
+    void yieldSign_publish(const std::string& value_str) {
+        const auto len = value_str.size() + 1;
+        auto alloc_result = provider_->alloc_gc_defrag_blocking(len, zenoh::AllocAlignment({0}));
+        zenoh::ZShmMut&& buf = std::get<zenoh::ZShmMut>(std::move(alloc_result));
+        memcpy(buf.data(), value_str.c_str(), len);
+        yieldSign_publisher_->put(std::move(buf));
+    }
+    void pedestrianZone_publish(const std::string& value_str) {
+        const auto len = value_str.size() + 1;
+        auto alloc_result = provider_->alloc_gc_defrag_blocking(len, zenoh::AllocAlignment({0}));
+        zenoh::ZShmMut&& buf = std::get<zenoh::ZShmMut>(std::move(alloc_result));
+        memcpy(buf.data(), value_str.c_str(), len);
+        pedestrianZone_publisher_->put(std::move(buf));
+    }
+    void trafficLight_publish(const std::string& value_str) {
+        const auto len = value_str.size() + 1;
+        auto alloc_result = provider_->alloc_gc_defrag_blocking(len, zenoh::AllocAlignment({0}));
+        zenoh::ZShmMut&& buf = std::get<zenoh::ZShmMut>(std::move(alloc_result));
+        memcpy(buf.data(), value_str.c_str(), len);
+        trafficLight_publisher_->put(std::move(buf));
+    }
+    void dangerSign_publish(const std::string& value_str) {
+        const auto len = value_str.size() + 1;
+        auto alloc_result = provider_->alloc_gc_defrag_blocking(len, zenoh::AllocAlignment({0}));
+        zenoh::ZShmMut&& buf = std::get<zenoh::ZShmMut>(std::move(alloc_result));
+        memcpy(buf.data(), value_str.c_str(), len);
+        dangerSign_publisher_->put(std::move(buf));
+    }
+};
+
 int main(int argc, char** argv)
 {
     std::vector<uint8_t> laneDataBuffer; 
@@ -53,21 +348,22 @@ int main(int argc, char** argv)
     std::cout << "CAN socket bound to can0 interface successfully."
               << std::endl;
 
-    std::unique_ptr<zenoh::Session> session;
+    std::shared_ptr<zenoh::Session> session;
+
     try
     {
         if (argc == 2)
         {
             std::cout << "Using configuration file: " << argv[1] << std::endl;
             auto config = Config::from_file(argv[1]);
-            session     = std::make_unique<zenoh::Session>(
+            session     = std::make_shared<zenoh::Session>(
                 zenoh::Session::open(std::move(config)));
-        }
-        else
+            }
+            else
         {
             std::cout << "Using default configuration." << std::endl;
             auto config = Config::create_default();
-            session     = std::make_unique<zenoh::Session>(
+            session     = std::make_shared<zenoh::Session>(
                 zenoh::Session::open(std::move(config)));
         }
     }
@@ -77,69 +373,8 @@ int main(int argc, char** argv)
         close(canSocket);
         exit(1);
     }
-
-    auto speed_pub =
-        session->declare_publisher(zenoh::KeyExpr("Vehicle/1/Speed"));
-    auto beamLow_pub = session->declare_publisher(
-        zenoh::KeyExpr("Vehicle/1/Body/Lights/Beam/Low"));
-    auto beamHigh_pub = session->declare_publisher(
-        zenoh::KeyExpr("Vehicle/1/Body/Lights/Beam/High"));
-    auto running_pub = session->declare_publisher(
-        zenoh::KeyExpr("Vehicle/1/Body/Lights/Running"));
-    auto parking_pub = session->declare_publisher(
-        zenoh::KeyExpr("Vehicle/1/Body/Lights/Parking"));
-    auto fogRear_pub = session->declare_publisher(
-        zenoh::KeyExpr("Vehicle/1/Body/Lights/Fog/Rear"));
-    auto fogFront_pub = session->declare_publisher(
-        zenoh::KeyExpr("Vehicle/1/Body/Lights/Fog/Front"));
-    auto brake_pub = session->declare_publisher(
-        zenoh::KeyExpr("Vehicle/1/Body/Lights/Brake"));
-    auto hazard_pub = session->declare_publisher(
-        zenoh::KeyExpr("Vehicle/1/Body/Lights/Hazard"));
-    auto directionIndicatorLeft_pub = session->declare_publisher(
-        zenoh::KeyExpr("Vehicle/1/Body/Lights/DirectionIndicator/Left"));
-    auto directionIndicatorRight_pub = session->declare_publisher(
-        zenoh::KeyExpr("Vehicle/1/Body/Lights/DirectionIndicator/Right"));
-    auto currentGear_pub = session->declare_publisher(
-        zenoh::KeyExpr("Vehicle/1/Powertrain/Transmission/CurrentGear"));
-    auto current_voltage_pub = session->declare_publisher(
-        zenoh::KeyExpr("Vehicle/1/Powertrain/TractionBattery/CurentVoltage"));
-    auto current_current_pub = session->declare_publisher(
-        zenoh::KeyExpr("Vehicle/1/Powertrain/TractionBattery/CurrentCurrent"));
-    auto current_power_pub = session->declare_publisher(
-        zenoh::KeyExpr("Vehicle/1/Powertrain/TractionBattery/CurrentPower"));
-    auto state_of_charge_pub = session->declare_publisher(
-        zenoh::KeyExpr("Vehicle/1/Powertrain/TractionBattery/StateOfCharge"));
-    auto right_lanes_pub = session->declare_publisher(
-        zenoh::KeyExpr("Vehicle/1/Scene/Lanes/Right"));
-    auto left_lanes_pub = session->declare_publisher(
-        zenoh::KeyExpr("Vehicle/1/Scene/Lanes/Left"));
-    auto obstacleWarning_pub = session->declare_publisher(
-        zenoh::KeyExpr("Vehicle/1/ADAS/ObstacleDetection/Warning"));
-    auto laneDeparture_pub = session->declare_publisher(
-        zenoh::KeyExpr("Vehicle/1/ADAS/LaneDeparture/Detected"));
-    auto sae0_pub = session->declare_publisher(
-        zenoh::KeyExpr("Vehicle/1/ADAS/ActiveAutonomyLevel/SAE_0"));
-    auto sae1_pub = session->declare_publisher(
-        zenoh::KeyExpr("Vehicle/1/ADAS/ActiveAutonomyLevel/SAE_1"));
-    auto sae2_pub = session->declare_publisher(
-        zenoh::KeyExpr("Vehicle/1/ADAS/ActiveAutonomyLevel/SAE_2"));
-    auto sae5_pub = session->declare_publisher(
-        zenoh::KeyExpr("Vehicle/1/ADAS/ActiveAutonomyLevel/SAE_5"));
-    auto cruise_control_pub = session->declare_publisher(
-        zenoh::KeyExpr("Vehicle/1/ADAS/ActiveAutonomyLevel/CruiseControl"));
-    auto speedLimit_pub = session->declare_publisher(
-        zenoh::KeyExpr("Vehicle/1/Environment/RoadSigns/SpeedLimit"));
-    auto stopSign_pub = session->declare_publisher(
-        zenoh::KeyExpr("Vehicle/1/Environment/RoadSigns/Stop"));
-    auto yieldSign_pub = session->declare_publisher(
-        zenoh::KeyExpr("Vehicle/1/Environment/RoadSigns/Yield"));
-    auto pedestrianZone_pub = session->declare_publisher(
-        zenoh::KeyExpr("Vehicle/1/Environment/RoadSigns/PedestrianZone"));
-    auto trafficLight_pub = session->declare_publisher( 
-        zenoh::KeyExpr("Vehicle/1/Environment/RoadSigns/TrafficLight"));
-    auto dangerSign_pub = session->declare_publisher(
-        zenoh::KeyExpr("Vehicle/1/Environment/RoadSigns/DangerSign"));
+    
+    SHMPublishers publishers(session);
 
     while (1)
     {
@@ -166,7 +401,7 @@ int main(int argc, char** argv)
 
                 std::string speed_str = std::to_string(speed_kmh);
                 std::cout << "Publishing speed: " << speed_str << " km/h" << std::endl;
-                speed_pub.put(speed_str.c_str());
+                publishers.speed_publisher(speed_str);
             }
         }
         else if (frame.can_id == 0x02)
@@ -180,7 +415,7 @@ int main(int argc, char** argv)
             std::string battery_str = std::to_string(battery);
 
             std::cout << "Publishing battery state of charge: " << battery_str << "%" << std::endl;
-            state_of_charge_pub.put(battery_str.c_str());
+            publishers.state_of_charge_publish(battery_str);
         }
         else if (frame.can_id >= 0x700 && frame.can_id <= 0x707)
         {
@@ -188,35 +423,35 @@ int main(int argc, char** argv)
             switch (frame.can_id)
             {
             case 0x700:
-                directionIndicatorLeft_pub.put(std::to_string(lightState));
+                publishers.directionIndicatorLeft_publish(std::to_string(lightState));
                 std::cout << "Publishing Direction Indicator Left: " << lightState << std::endl;
                 break;
             case 0x701:
-                directionIndicatorRight_pub.put(std::to_string(lightState));
+                publishers.directionIndicatorRight_publish(std::to_string(lightState));
                 std::cout << "Publishing Direction Indicator Right: " << lightState << std::endl;
                 break;
             case 0x702:
-                beamLow_pub.put(std::to_string(lightState));
+                publishers.beamLow_publish(std::to_string(lightState));
                 std::cout << "Publishing Beam Low: " << lightState << std::endl;
                 break;
             case 0x703:
-                beamHigh_pub.put(std::to_string(lightState));
+                publishers.beamHigh_publish(std::to_string(lightState));
                 std::cout << "Publishing Beam High: " << lightState << std::endl;
                 break;
             case 0x704:
-                fogFront_pub.put(std::to_string(lightState));
+                publishers.fogFront_publish(std::to_string(lightState));
                 std::cout << "Publishing Fog Front: " << lightState << std::endl;
                 break;
             case 0x705:
-                fogRear_pub.put(std::to_string(lightState));
+                publishers.fogRear_publish(std::to_string(lightState));
                 std::cout << "Publishing Fog Rear: " << lightState << std::endl;
                 break;
             case 0x706:
-                hazard_pub.put(std::to_string(lightState));
+                publishers.hazard_publish(std::to_string(lightState));
                 std::cout << "Publishing Hazard: " << lightState << std::endl;
                 break;
             case 0x707:
-                parking_pub.put(std::to_string(lightState));
+                publishers.parking_publish(std::to_string(lightState));
                 std::cout << "Publishing Parking: " << lightState << std::endl;
                 break;
             default:
@@ -231,7 +466,7 @@ int main(int argc, char** argv)
             memcpy(&gear, frame.data, sizeof(gear));
 
             std::cout << "Can received gear: " << gear << std::endl;
-            currentGear_pub.put(std::to_string(gear));
+            publishers.currentGear_publish(std::to_string(gear));
         }
         if (frame.can_id == 0x100 || frame.can_id == 0x101)
         {
@@ -258,7 +493,7 @@ int main(int argc, char** argv)
                         stream << leftLane[i] << " ";
 
                     std::cout << "Publishing left lane: " << stream.str() << std::endl;
-                    left_lanes_pub.put(stream.str());
+                    publishers.left_lanes_publish(stream.str());
                     std::fill(std::begin(leftReceived), std::end(leftReceived), false);
                 }
             }
@@ -274,90 +509,90 @@ int main(int argc, char** argv)
                         stream << rightLane[i] << " ";
                     
                     std::cout << "Publishing right lane: " << stream.str() << std::endl;
-                    right_lanes_pub.put(stream.str());
+                    publishers.right_lanes_publish(stream.str());
                     std::fill(std::begin(rightReceived), std::end(rightReceived), false);
                 }
             }
         }
         else if (frame.can_id == 0x200)
-            obstacleWarning_pub.put("1");
+            publishers.obstacleWarning_publish("1");
         else if (frame.can_id == 0x301) //left lane departure
         {
             std::cout << "Publishing lane departure to left." << std::endl;
-            laneDeparture_pub.put("10");
+            publishers.laneDeparture_publish("10");
         }
         else if (frame.can_id == 0x302) //left lane departure off
         {
             std::cout << "Publishing lane departure to left or right off." << std::endl;
-            laneDeparture_pub.put("11"); 
+            publishers.laneDeparture_publish("11");
         }
         else if(frame.can_id == 0x303) //right lane departure
         {
             std::cout << "Publishing lane departure to right." << std::endl;
-            laneDeparture_pub.put("20"); 
+            publishers.laneDeparture_publish("20");
         }
         else if (frame.can_id == 0x400)
-            sae0_pub.put("0");
+            publishers.sae0_publish("0");
         else if (frame.can_id == 0x401)
-            sae1_pub.put("1");
+            publishers.sae1_publish("1");
         else if (frame.can_id == 0x402)
-            sae2_pub.put("2");
+            publishers.sae2_publish("2");
         else if (frame.can_id == 0x405)
-            sae5_pub.put("5");
+            publishers.sae5_publish("5");
         else if (frame.can_id == 0x406)
         {
             std::cout << "Publishing cruise control activated." << std::endl;
-            cruise_control_pub.put("1");
+            publishers.cruise_control_publish("1");
         }
         else if (frame.can_id == 0x407)
         {
             std::cout << "Publishing cruise control deactivated." << std::endl;
-            cruise_control_pub.put("0");
+            publishers.cruise_control_publish("0");
         }
         else if (frame.can_id == 0x500)
         {
             std::cout << "Publishing speed limit: 50km/h" << std::endl;
-            speedLimit_pub.put("50");
+            publishers.speedLimit_publish("50");
         }
         else if (frame.can_id == 0x505)
         {
             std::cout << "Publishing speed limit: 80km/h" << std::endl;
-            speedLimit_pub.put("80");
+            publishers.speedLimit_publish("80");
         }
         else if (frame.can_id == 0x501)
         {
             std::cout << "Publishing stop sign detected. (11)" << std::endl;
-            stopSign_pub.put("1");
+            publishers.stopSign_publish("1");
         }
         else if (frame.can_id == 0x502)
         {
             std::cout << "Publishing yield sign detected (12)." << std::endl;
-            yieldSign_pub.put("1");
+            publishers.yieldSign_publish("1");
         }
         else if (frame.can_id == 0x503)
         {
             std::cout << "Publishing pedestrian zone sign detected. (13)" << std::endl;
-            pedestrianZone_pub.put("1");
+            publishers.pedestrianZone_publish("1");
         }
         else if (frame.can_id == 0x504)
         {
             std::cout << "Publishing danger sign detected. (17)" << std::endl;
-            dangerSign_pub.put("1");
+            publishers.dangerSign_publish("1");
         }
         else if (frame.can_id == 0x600)
         {
             std::cout << "Publishing traffic sign detected: yellow (14)" << std::endl;
-            trafficLight_pub.put("yellow");
+            publishers.trafficLight_publish("yellow");
         }
         else if (frame.can_id == 0x601)
         {
             std::cout << "Publishing traffic sign detected: green (15)" << std::endl;
-            trafficLight_pub.put("green");
+            publishers.trafficLight_publish("green");
         }
         else if (frame.can_id == 0x602)
         {
             std::cout << "Publishing traffic sign detected: red (16)" << std::endl;
-            trafficLight_pub.put("red");
+            publishers.trafficLight_publish("red");
         }
         
         usleep(10);

@@ -133,26 +133,6 @@ void InstrumentCluster::setupSubscriptions()
             setGear(currentGear);
         },
         zenoh::closures::none));
-        
-    leftLane_subscriber.emplace(session->declare_subscriber(
-        "Vehicle/1/Scene/Lanes/Left",
-        [this](const zenoh::Sample& sample) {
-
-            std::string laneData = sample.get_payload().as_string();
-            std::cout << "Recebido leftLaneData: " << laneData << std::endl;
-            parseLaneData(laneData, "leftLane");
-        },
-        zenoh::closures::none));
-
-    rightLane_subscriber.emplace(session->declare_subscriber(
-        "Vehicle/1/Scene/Lanes/Right",
-        [this](const zenoh::Sample& sample) {
-
-            std::string laneData = sample.get_payload().as_string();
-            std::cout << "Recebido rightLaneData: " << laneData << std::endl;
-            parseLaneData(laneData, "rightLane");
-        },
-        zenoh::closures::none));
     obstacleWarning_subscriber.emplace(session->declare_subscriber(
         "Vehicle/1/ADAS/ObstacleDetection/Warning",
         [this](const zenoh::Sample& sample) {
@@ -163,30 +143,26 @@ void InstrumentCluster::setupSubscriptions()
     laneDeparture_subscriber.emplace(session->declare_subscriber(
         "Vehicle/1/ADAS/LaneDeparture/Detected",
         [this](const zenoh::Sample& sample) {
-            try {
-                int isDeparting = std::stoi(sample.get_payload().as_string());
-                if (isDeparting == 10) //lane departure to left
-                {
-                    std::cout << "Received lane departure to left" << std::endl;
-                    setLaneDeparture(10);
-                    std::cout << "Setting warning code to 2" << std::endl;
-                    setWarningCode(2);
-                } 
-                else if (isDeparting == 11) { //lane departure to left off
-                    std::cout << "Received lane departure to left or right off" << std::endl;
-                    setLaneDeparture(11);
-                    std::cout << "Setting warning code to 0" << std::endl;
-                    setWarningCode(0);
-                }
-                else if(isDeparting == 20) { //lane departure to right
-                    std::cout << "Received lane departure to right" << std::endl;
-                    setLaneDeparture(20);
-                    std::cout << "Setting warning code to 2" << std::endl;
-                    setWarningCode(2);
-                } 
-            } catch (const std::exception& e) {
-                std::cerr << "Error parsing lane departure data: " << e.what() << std::endl;
+            int isDeparting = std::stoi(sample.get_payload().as_string());
+            if (isDeparting == 10) //lane departure to left
+            {
+                std::cout << "Received lane departure to left" << std::endl;
+                setLaneDeparture(10);
+                std::cout << "Setting warning code to 2" << std::endl;
+                setWarningCode(2);
+            } 
+            else if (isDeparting == 11) { //lane departure to left off
+                std::cout << "Received lane departure to left or right off" << std::endl;
+                setLaneDeparture(11);
+                std::cout << "Setting warning code to 0" << std::endl;
+                setWarningCode(0);
             }
+            else if(isDeparting == 20) { //lane departure to right
+                std::cout << "Received lane departure to right" << std::endl;
+                setLaneDeparture(20);
+                std::cout << "Setting warning code to 2" << std::endl;
+                setWarningCode(2);
+            } 
         },
         zenoh::closures::none));
     sae0_subscriber.emplace(session->declare_subscriber(

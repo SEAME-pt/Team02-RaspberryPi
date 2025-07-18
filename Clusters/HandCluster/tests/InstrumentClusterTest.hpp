@@ -25,7 +25,15 @@ private slots: // Test functions should be in private slots
     void testLaneDeparture();
     void testAutonomyLevel();
     void testInstrumentClusterConstructor();
-    // void testSpeedCallback();
+    void testInstrumentClusterConstructorFromFile();
+    void testCruiseControl();
+    void testClusterDestruction();
+    void testObstacleWarning();
+    void testAutonomyLevelFromZenoh();
+    void testLaneDepartureFromZenoh();
+    void testSpeedLimitFromZenoh();
+    void testTrafficSignsFromZenoh();
+    void testCruiseControlFromZenoh();
 };
 
 

@@ -15,15 +15,15 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 
-include_directories(Clusters/HandCluster/include)
-qt_add_resources(QT_RESOURCES_HCA ./Clusters/HandCluster/ui/resources.qrc)
+include_directories(Cluster/include)
+qt_add_resources(QT_RESOURCES_HCA ./Cluster/ui/resources.qrc)
 
 
 add_executable(InstrumentClusterApp
     ${QT_RESOURCES_HCA}
-    ./Clusters/HandCluster/src/main.cpp
-    ./Clusters/HandCluster/src/InstrumentCluster.cpp
-    ./Clusters/HandCluster/include/InstrumentCluster.hpp
+    ./Cluster/src/main.cpp
+    ./Cluster/src/InstrumentCluster.cpp
+    ./Cluster/include/InstrumentCluster.hpp
 )
 
 add_executable(MiddleWareApp

@@ -77,5 +77,6 @@ tests/build/
 deploy/build/
 deploy/.qt/
 deploy/deployLocal/build/
-
+MiddleWareApp
+InstrumentClusterApp
 

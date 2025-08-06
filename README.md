@@ -59,7 +59,7 @@ The Jetson Nano sends vehicle data over CAN bus to the Raspberry Pi, which proce
 
 Once the application is up and running, the instrument cluster will display `real-time speed data` and the `vehicle's battery status` on an LCD screen. The data is continuously updated as it is received **via the CAN bus**.
 
-This project can be deployed and tested in two main environments (in a raspberry pi 4 and locally in you computer). Check the deploy manual [here]
+This project's UI can be deployed and tested in two main environments (in a raspberry pi 4 and locally in you computer). Check the deploy manual [here]
 
 ## Testing
 

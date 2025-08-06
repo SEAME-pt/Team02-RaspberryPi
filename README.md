@@ -9,47 +9,14 @@
 ![Cluster GIF](https://github.com/SEAME-pt/Team02-RaspberryPi/blob/readme/assets/instrumentCluster.gif)
 
 
-
 ## Table of Contents
-
-
-1. [About The Project](#about-the-project)
-
-
-   - [Built With](#built-with)
-
-
-2. [Usage](#usage)
-
-
-4. [Contributing](#contributing)
-
-
-5. [License](#license)
-
-
-6. [Contact](#contact)
-
-
-7. [Acknowledgments](#acknowledgments)
-
-
-
-
-## About The Project
-
-
-
-
 
 
 The **Instrument Cluster** is designed to provide real-time speed data from a PiRacer car on a graphical interface (GUI). The application is split across two devices: the **Jetson Nano** handles all the processing tasks, while the **Raspberry Pi** is used solely for rendering the Qt-based display. Both devices receive speed data simultaneously from the sensor via the Controller Area Network (CAN) protocol. The Jetson Nano processes the data for any necessary computations (such as filtering, calculations, etc.), and the Raspberry Pi renders the GUI with the processed speed data.
 
 
 
-
 This architecture allows for improved performance by offloading processing to the Jetson Nano while simplifying the display connection on the Raspberry Pi. Check it out the pheripherals Readme to better understand about the project architecture.
-
 
 
 
@@ -451,14 +418,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 ## Acknowledgments
 
-
-
-
-
 - **Qt Framework:** [Qt](https://www.qt.io/) – A cross-platform framework for GUI applications.
-
-
-- **Jetson Nano:** [NVIDIA Jetson Nano](https://developer.nvidia.com/embedded/jetson-nano) – A powerful single-board computer for processing tasks.
 
 
 - **Raspberry Pi Foundation:** [Raspberry Pi](https://www.raspberrypi.org/) – The small, powerful computer that powers the display side of the project.

@@ -4,7 +4,10 @@
 
 <p>A real-time vehicle speed and data display. <p>
 
-![Cluster GIF](github.com/SEAME-pt/Team02-RaspberryPi/blob/readme/assets/cluster.gif)
+<p align="center">
+  <img src="https://raw.githubusercontent.com/SEAME-pt/Team02-Course/main/RaspberryPi/assets/cluster.gif" alt="Cluster GIF" width="600" />
+</p>
+
 
 ## Table of Contents
 

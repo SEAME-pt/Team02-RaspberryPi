@@ -1,14 +1,7 @@
 <br />
 
 
-<div align="center">
-
-
   <h1 align="center">Instrument Cluster</h1>
-
-
-  <p align="center">
-
 
     A real-time vehicle speed and data display.
 
@@ -16,11 +9,7 @@
     <br />
 
 
-    ![Cluster GIF](https://github.com/SEAME-pt/Team02-RaspberryPi/blob/readme/assets/cluster.gif)
-
-
-
-    <br />
+    ![Cluster GIF](https://raw.githubusercontent.com/SEAME-pt/Team02-RaspberryPi/readme/assets/cluster.gif)
 
 
     ·
@@ -34,11 +23,6 @@
 
     <a href="https://github.com/SEAME-pt/Team02-Cluster/issues/new?labels=enhancement&template=feature-request.yml">Request Feature</a>
 
-
-  </p>
-
-
-</div>
 
 
 

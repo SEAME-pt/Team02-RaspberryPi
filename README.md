@@ -1,8 +1,6 @@
 <h1 align="center">Instrument Cluster</h1>
 
-<p>A real-time vehicle speed and data display. <p>
-
-## Demo
+<h4 align="center">A real-time vehicle speed and data display.</h4>
 
 ![Cluster GIF](https://github.com/SEAME-pt/Team02-RaspberryPi/blob/readme/assets/instrumentCluster.gif)
 

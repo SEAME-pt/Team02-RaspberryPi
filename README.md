@@ -6,7 +6,7 @@
 
 ## Demo
 
-![Cluster GIF](https://raw.githubusercontent.com/SEAME-pt/Team02-Course/main/RaspberryPi/assets/instrumentCluster.gif)
+![Cluster GIF](https://github.com/SEAME-pt/Team02-RaspberryPi/blob/readme/assets/instrumentCluster.gif)
 
 
 

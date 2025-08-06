@@ -34,7 +34,7 @@ The Jetson Nano sends vehicle data over CAN bus to the Raspberry Pi, which proce
 - Publishes vehicle data using Zenoh messaging
 - Handles various vehicle systems (lights, battery, speed, ADAS)
 
-🗂️ [Check here](https://github.com/SEAME-pt/Team02-RaspberryPi/blob/80-task-object-detection-in-cluster/MiddleWare/src/can-id-reference-table.md) the CAN ID Reference Table in middleware
+🗂️ [Check here](https://github.com/SEAME-pt/Team02-RaspberryPi/blob/readme/MiddleWare/src/can-id-reference-table.md) the CAN ID Reference Table in middleware
 
 ## Vehicle Data Supported
 

@@ -16,7 +16,7 @@
     <br />
 
 
-    ![Cluster GIF](./assets/cluster.gif)
+    ![Cluster GIF](https://github.com/SEAME-pt/Team02-RaspberryPi/blob/readme/assets/cluster.gif)
 
 
 

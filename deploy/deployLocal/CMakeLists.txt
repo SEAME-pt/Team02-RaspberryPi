@@ -27,14 +27,14 @@ include_directories(/usr/local/include)
 link_directories(/usr/local/lib)
 
 # Recursos Qt
-qt_add_resources(QT_RESOURCES_HCA ../../Clusters/HandCluster/ui/resources.qrc)
+qt_add_resources(QT_RESOURCES_HCA ../../Cluster/ui/resources.qrc)
 
 # Executável principal
 add_executable(InstrumentClusterLocalInstance
     ${QT_RESOURCES_HCA}
-    ../../Clusters/HandCluster/src/main.cpp
-    ../../Clusters/HandCluster/src/InstrumentCluster.cpp
-    ../../Clusters/HandCluster/include/InstrumentCluster.hpp
+    ../../Cluster/src/main.cpp
+    ../../Cluster/src/InstrumentCluster.cpp
+    ../../Cluster/include/InstrumentCluster.hpp
 )
 
 # Linka bibliotecas

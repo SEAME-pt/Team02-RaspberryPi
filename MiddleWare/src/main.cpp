@@ -162,10 +162,10 @@ int main(int argc, char** argv)
             if (rpm >= -1000 && rpm <= 1000)
             {
                 double wheel_circumference = wheelDiameter * M_PI;
-                double speed_kmh = rpm * wheel_circumference * 60.0 / 1000.0;
+                double speed_m_per_min = rpm * wheel_circumference;
 
-                std::string speed_str = std::to_string(speed_kmh);
-                std::cout << "Publishing speed: " << speed_str << " km/h" << std::endl;
+                std::string speed_str = std::to_string(speed_m_per_min);
+                std::cout << "Publishing speed: " << speed_str << " m/min" << std::endl;
                 speed_pub.put(speed_str.c_str());
             }
         }

@@ -73,7 +73,7 @@ Item {
             }
 
             if (value === 0 || path === "") {
-                speedSigns.clear()
+                // speedSigns.clear()
                 trafficLights.clear()
                 stopSignSource = ""
                 yieldSignSource = ""

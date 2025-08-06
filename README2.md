@@ -16,7 +16,8 @@
     <br />
 
 
-    [GIF]
+    ![Cluster GIF](./assets/cluster.gif)
+
 
 
     <br />

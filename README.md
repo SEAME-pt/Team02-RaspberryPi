@@ -4,11 +4,9 @@
 
 ![Cluster GIF](https://github.com/SEAME-pt/Team02-RaspberryPi/blob/readme/assets/instrumentCluster.gif)
 
-# Team02 RaspberryPi - Car Dashboard System
+## Overview
 
 This repository contains a car dashboard system that runs on a Raspberry Pi, displaying real-time vehicle information on a dashboard screen.
-
-## Overview
 
 The system consists of two main applications:
 - **Instrument Cluster** - A QML-based dashboard display

@@ -1,13 +1,10 @@
 
 
-![Cluster GIF](https://raw.githubusercontent.com/SEAME-pt/Team02-Course/main/RaspberryPi/assets/cluster.gif)
-
-  <h1 align="center">Instrument Cluster</h1>
+<h1 align="center">Instrument Cluster</h1>
 
 <p>A real-time vehicle speed and data display. <p>
 
-
-
+![Cluster GIF](github.com/SEAME-pt/Team02-RaspberryPi/blob/readme/assets/cluster.gif)
 
 ## Table of Contents
 
